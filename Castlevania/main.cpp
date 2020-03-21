@@ -29,11 +29,9 @@
 #define ID_TEX_BRICK 10
 #define ID_TEX_MISC 20
 
-
-
 CGame *game;
 CSimon *simon;
-//CBrick * brick;
+CBrick * brick;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -57,7 +55,7 @@ void LoadResources()
 	CTextures * textures = CTextures::GetInstance();
 
 	textures->Add(ID_TEX_SIMON, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
-	//textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(156, 219, 239));
+	textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(156, 219, 239));
 
 
 	CSprites * sprites = CSprites::GetInstance();
@@ -76,8 +74,8 @@ void LoadResources()
 	sprites->Add(10013, 60, 198, 120, 264, texsimon);
 	sprites->Add(10014, 0, 198, 60, 264, texsimon);
 
-	/*LPDIRECT3DTEXTURE9 texMisc = textures->Get(ID_TEX_BRICK);
-	sprites->Add(20001, 300, 117, 315, 132, texMisc);	//brick*/
+	LPDIRECT3DTEXTURE9 texMisc = textures->Get(ID_TEX_BRICK);
+	sprites->Add(20001, 127, 65, 162, 100, texMisc);	//brick
 
 
 
@@ -88,14 +86,14 @@ void LoadResources()
 	ani->Add(10002);
 	ani->Add(10003);
 	ani->Add(10004);
-	animations->Add(500, ani);
+	animations->Add((int)SimonAniId::IDLEGORIGHT, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
 	ani->Add(10012);
 	ani->Add(10013);
 	ani->Add(10014);
-	animations->Add(501, ani);
+	animations->Add((int)SimonAniId::IDLEGOLEFT, ani);
 
 	simon = new CSimon();
 	simon->AddAnimation(500);
@@ -103,10 +101,10 @@ void LoadResources()
 
 	simon->SetPosition(10.0f, 100.0f);
 
-	/*ani = new CAnimation(100);
+	ani = new CAnimation(100);
 	ani->Add(20001);
 
-	animations->Add(510, ani);
+	animations->Add((int)BrickAniID::STAND, ani);
 	
 
 	
@@ -114,7 +112,7 @@ void LoadResources()
 	brick->AddAnimation(510);
 
 	brick->SetPosition(1.0f, 100.0f);
-	*/
+	
 }
 
 /*
@@ -124,7 +122,7 @@ void LoadResources()
 void Update(DWORD dt)
 {
 	simon->Update(dt);
-	//brick->Update(dt);
+	brick->Update(dt);
 }
 
 /*
@@ -144,7 +142,7 @@ void Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		simon->Render();
-		//brick->Render();
+		brick->Render();
 
 		//
 		// TEST SPRITE DRAW

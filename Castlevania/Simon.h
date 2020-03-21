@@ -2,14 +2,17 @@
 #include "GameObject.h"
 #include "Animations.h"
 
+enum class SimonAniId {
+	IDLEGORIGHT = 500,
+	IDLEGOLEFT = 501
+};
+
 class CSimon : public CGameObject
 {
 	float x = 0;
 	float y = 0;
 
 	float vx = 0.07f;
-
-	int currentState;
 
 	vector<LPANIMATION> animations;
 public:

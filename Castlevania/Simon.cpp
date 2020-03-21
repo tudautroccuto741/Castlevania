@@ -10,8 +10,8 @@ void CSimon::Render()
 {
 	LPANIMATION ani;
 
-	if (vx > 0) ani = CAnimations::GetInstance()->Get(500); 
-	else ani = CAnimations::GetInstance()->Get(501);
+	if (vx > 0) ani = CAnimations::GetInstance()->Get((int)SimonAniId::IDLEGORIGHT); 
+	else ani = CAnimations::GetInstance()->Get((int)SimonAniId::IDLEGOLEFT);
 	//ani = animations[0];
 	ani->Render(x, y);
 }
