@@ -11,7 +11,7 @@ CGameObject::CGameObject()
 	x = y = 0;
 	vx = 0.07f;
 }
-
+/*
 void CGameObject::Update(DWORD dt)
 {
 	x += vx * dt;
@@ -25,6 +25,7 @@ void CGameObject::Render()
 	//ani = animations[0];
 	ani->Render(x, y);
 }
+*/
 
 void CGameObject::AddAnimation(int aniId)
 {

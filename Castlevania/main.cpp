@@ -12,25 +12,28 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Animations.h"
+#include "Simon.h"
+#include "Brick.h"
 
 
-#define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"02 - Sprite animation"
+#define WINDOW_CLASS_NAME L"Castlevania"
+#define MAIN_WINDOW_TITLE L"Castlevania"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(200, 200, 255)
-#define SCREEN_WIDTH 320
+#define SCREEN_WIDTH 350
 #define SCREEN_HEIGHT 240
 
 #define MAX_FRAME_RATE 60
 
-#define ID_TEX_MARIO 0
-#define ID_TEX_ENEMY 10
+#define ID_TEX_SIMON 0
+#define ID_TEX_BRICK 10
 #define ID_TEX_MISC 20
 
 
 
 CGame *game;
-CGameObject *mario;
+CSimon *simon;
+//CBrick * brick;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -47,37 +50,34 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 /*
 	Load all game resources
-	In this example: load textures, sprites, animations and mario object
+	In this example: load textures, sprites, animations and SIMON object
 */
 void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
 
-	textures->Add(ID_TEX_MARIO, L"textures\\mario.png", D3DCOLOR_XRGB(176, 224, 248));
-	//textures->Add(ID_ENEMY_TEXTURE, L"textures\\enemies.png", D3DCOLOR_XRGB(156, 219, 239));
-	//textures->Add(ID_TEX_MISC, L"textures\\misc.png", D3DCOLOR_XRGB(156, 219, 239));
+	textures->Add(ID_TEX_SIMON, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
+	//textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(156, 219, 239));
 
 
 	CSprites * sprites = CSprites::GetInstance();
 	CAnimations * animations = CAnimations::GetInstance();
 
-	LPDIRECT3DTEXTURE9 texMario = textures->Get(ID_TEX_MARIO);
+	LPDIRECT3DTEXTURE9 texsimon = textures->Get(ID_TEX_SIMON);
 
-	// readline => id, left, top, right 
+	// readline => id, left, top, right, bottom
+	sprites->Add(10001, 240, 0, 300, 66, texsimon);		//idle simon go right
+	sprites->Add(10002, 300, 0, 360, 66, texsimon);
+	sprites->Add(10003, 420, 0, 480, 66, texsimon);
+	sprites->Add(10004, 540, 0, 600, 66, texsimon);
 
-	sprites->Add(10001, 246, 154, 259, 181, texMario);
-	sprites->Add(10002, 275, 154, 290, 181, texMario);
-	sprites->Add(10003, 304, 154, 321, 181, texMario);
+	sprites->Add(10011, 180, 198, 240, 264, texsimon);	//idle simon go left
+	sprites->Add(10012, 120, 198, 180, 264, texsimon);
+	sprites->Add(10013, 60, 198, 120, 264, texsimon);
+	sprites->Add(10014, 0, 198, 60, 264, texsimon);
 
-	sprites->Add(10011, 186, 154, 199, 181, texMario);
-	sprites->Add(10012, 155, 154, 170, 181, texMario);
-	sprites->Add(10013, 125, 154, 140, 181, texMario);
-
-	LPDIRECT3DTEXTURE9 texMisc = textures->Get(ID_TEX_MISC);
-	sprites->Add(20001, 300, 117, 315, 132, texMisc);
-	sprites->Add(20002, 318, 117, 333, 132, texMisc);
-	sprites->Add(20003, 336, 117, 351, 132, texMisc);
-	sprites->Add(20004, 354, 117, 369, 132, texMisc);
+	/*LPDIRECT3DTEXTURE9 texMisc = textures->Get(ID_TEX_BRICK);
+	sprites->Add(20001, 300, 117, 315, 132, texMisc);	//brick*/
 
 
 
@@ -87,30 +87,34 @@ void LoadResources()
 	ani->Add(10001);
 	ani->Add(10002);
 	ani->Add(10003);
+	ani->Add(10004);
 	animations->Add(500, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
 	ani->Add(10012);
 	ani->Add(10013);
+	ani->Add(10014);
 	animations->Add(501, ani);
 
-	/*
-	ani = new CAnimation(100);
-	ani->Add(20001,1000);
-	ani->Add(20002);
-	ani->Add(20003);
-	ani->Add(20004);
+	simon = new CSimon();
+	simon->AddAnimation(500);
+	simon->AddAnimation(501);
+
+	simon->SetPosition(10.0f, 100.0f);
+
+	/*ani = new CAnimation(100);
+	ani->Add(20001);
+
 	animations->Add(510, ani);
+	
+
+	
+	brick = new CBrick();
+	brick->AddAnimation(510);
+
+	brick->SetPosition(1.0f, 100.0f);
 	*/
-
-	mario = new CGameObject();
-	mario->AddAnimation(500);
-	mario->AddAnimation(501);
-	//mario->AddAnimation(510);
-
-
-	mario->SetPosition(10.0f, 100.0f);
 }
 
 /*
@@ -119,7 +123,8 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-	mario->Update(dt);
+	simon->Update(dt);
+	//brick->Update(dt);
 }
 
 /*
@@ -138,7 +143,8 @@ void Render()
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		mario->Render();
+		simon->Render();
+		//brick->Render();
 
 		//
 		// TEST SPRITE DRAW
@@ -153,7 +159,7 @@ void Render()
 		r.top = 234;
 		r.right = 292;
 		r.bottom = 264;
-		spriteHandler->Draw(textures->Get(ID_TEX_MARIO), &r, NULL, &p, D3DCOLOR_XRGB(255, 255, 255));
+		spriteHandler->Draw(textures->Get(ID_TEX_simon), &r, NULL, &p, D3DCOLOR_XRGB(255, 255, 255));
 		*/
 
 		spriteHandler->End();
