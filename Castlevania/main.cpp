@@ -14,24 +14,24 @@
 #include "Animations.h"
 #include "Simon.h"
 #include "Brick.h"
-
+#include "Candle.h"
+#include "SampleKeyHander.h"
 
 #define WINDOW_CLASS_NAME L"Castlevania"
 #define MAIN_WINDOW_TITLE L"Castlevania"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(200, 200, 255)
-#define SCREEN_WIDTH 350
-#define SCREEN_HEIGHT 240
-
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
 #define MAX_FRAME_RATE 60
-
-#define ID_TEX_SIMON 0
-#define ID_TEX_BRICK 10
 #define ID_TEX_MISC 20
 
 CGame *game;
 CSimon *simon;
-CBrick * brick;
+
+//CBrick * brick;
+CCandle * candle;
+CSampleKeyHander * keyHandler;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -54,18 +54,19 @@ void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
 
-	textures->Add(ID_TEX_SIMON, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(156, 219, 239));
+	textures->Add((int)SimonAniId::ID_TEX_SIMON, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
+	//textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add((int)CandleAniID::ID_TEX_CANDLE, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 
 
 	CSprites * sprites = CSprites::GetInstance();
 	CAnimations * animations = CAnimations::GetInstance();
 
-	LPDIRECT3DTEXTURE9 texsimon = textures->Get(ID_TEX_SIMON);
+	LPDIRECT3DTEXTURE9 texsimon = textures->Get((int)SimonAniId::ID_TEX_SIMON);
 
 	// readline => id, left, top, right, bottom
 	sprites->Add(10001, 240, 0, 300, 66, texsimon);		//idle simon go right
-	sprites->Add(10002, 300, 0, 360, 66, texsimon);
+	sprites->Add(10002, 310, 0, 350, 66, texsimon);
 	sprites->Add(10003, 420, 0, 480, 66, texsimon);
 	sprites->Add(10004, 540, 0, 600, 66, texsimon);
 
@@ -74,9 +75,11 @@ void LoadResources()
 	sprites->Add(10013, 60, 198, 120, 264, texsimon);
 	sprites->Add(10014, 0, 198, 60, 264, texsimon);
 
-	LPDIRECT3DTEXTURE9 texMisc = textures->Get(ID_TEX_BRICK);
-	sprites->Add(20001, 127, 65, 162, 100, texMisc);	//brick
+	/*LPDIRECT3DTEXTURE9 texBrick = textures->Get((int)BrickAniID::ID_TEX_BRICK); //brick
+	sprites->Add(20001, 127, 65, 162, 100, texMisc);	*/
 
+	LPDIRECT3DTEXTURE9 texCandle = textures->Get((int)CandleAniID::ID_TEX_CANDLE); //candle
+	sprites->Add(30001, 0, 0, 32, 64, texCandle);
 
 
 	LPANIMATION ani;
@@ -96,12 +99,12 @@ void LoadResources()
 	animations->Add((int)SimonAniId::IDLEGOLEFT, ani);
 
 	simon = new CSimon();
-	simon->AddAnimation(500);
-	simon->AddAnimation(501);
+	simon->AddAnimation((int)SimonAniId::IDLEGOLEFT);
+	simon->AddAnimation((int)SimonAniId::IDLEGORIGHT);
 
-	simon->SetPosition(10.0f, 100.0f);
+	simon->SetPosition(0.0f, 100.0f);
 
-	ani = new CAnimation(100);
+/*	ani = new CAnimation(100);
 	ani->Add(20001);
 
 	animations->Add((int)BrickAniID::STAND, ani);
@@ -109,10 +112,20 @@ void LoadResources()
 
 	
 	brick = new CBrick();
-	brick->AddAnimation(510);
+	brick->AddAnimation((int)BrickAniID::STAND);
 
-	brick->SetPosition(1.0f, 100.0f);
+	brick->SetPosition(10.0f, 100.0f);
+	*/
+	ani = new CAnimation(100);
+	ani->Add(30001);
 	
+	animations->Add((int)CandleAniID::STAND, ani);
+
+	candle = new CCandle();
+	candle->AddAnimation((int)CandleAniID::STAND);
+
+	candle->SetPosition(20.0f, 50.0f);
+
 }
 
 /*
@@ -122,8 +135,10 @@ void LoadResources()
 void Update(DWORD dt)
 {
 	simon->Update(dt);
-	brick->Update(dt);
+//	brick->Update(dt);
+	candle->Update(dt);
 }
+
 
 /*
 	Render a frame
@@ -142,23 +157,8 @@ void Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
 		simon->Render();
-		brick->Render();
-
-		//
-		// TEST SPRITE DRAW
-		//
-
-		/*
-		CTextures *textures = CTextures::GetInstance();
-
-		D3DXVECTOR3 p(20, 20, 0);
-		RECT r;
-		r.left = 274;
-		r.top = 234;
-		r.right = 292;
-		r.bottom = 264;
-		spriteHandler->Draw(textures->Get(ID_TEX_simon), &r, NULL, &p, D3DCOLOR_XRGB(255, 255, 255));
-		*/
+//		brick->Render();
+		candle->Render();
 
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -241,6 +241,9 @@ int Run()
 		if (dt >= tickPerFrame)
 		{
 			frameStart = now;
+
+			game->ProcessKeyboard();
+
 			Update(dt);
 			Render();
 		}
@@ -257,6 +260,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	game = CGame::GetInstance();
 	game->Init(hWnd);
+
+	keyHandler = new CSampleKeyHander();
+	game->InitKeyboard(keyHandler);
 
 	LoadResources();
 	Run();

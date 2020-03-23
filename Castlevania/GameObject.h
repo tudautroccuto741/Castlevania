@@ -9,19 +9,28 @@ using namespace std;
 
 class CGameObject
 {
+protected:
 	float x;
 	float y;
 
 	float vx;
+	float vy;
+
+	int nx;
 
 	int currentState;
 
-	vector<LPANIMATION> animations;
+	static vector<LPANIMATION> animations;
 
 public:
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
+
 	void SetState(int state) { this->currentState = state; }
-	void AddAnimation(int aniId);
+	int GetState() { return this->currentState; }
+
+
+	static void AddAnimation(int aniId);
 
 	CGameObject();
 

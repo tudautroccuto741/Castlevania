@@ -2,12 +2,12 @@
 #include "GameObject.h"
 #include "Animations.h"
 
-enum class BrickAniID {
-	STAND = 600,
-	ID_TEX_BRICK = 100
+enum class CandleAniID {
+	STAND = 600, 
+	ID_TEX_CANDLE = 200
 };
 
-class CBrick : public CGameObject
+class CCandle : public CGameObject
 {
 	float x = 0;
 	float y = 0;
