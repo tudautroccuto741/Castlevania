@@ -21,16 +21,16 @@
 #define MAIN_WINDOW_TITLE L"Castlevania"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(200, 200, 255)
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 #define MAX_FRAME_RATE 60
 #define ID_TEX_MISC 20
 
 CGame *game;
-CSimon *simon;
+//CSimon *simon;
 
 //CBrick * brick;
-CCandle * candle;
+//CCandle * candle;
 CSampleKeyHander * keyHandler;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -56,7 +56,7 @@ void LoadResources()
 
 	textures->Add((int)SimonAniId::ID_TEX_SIMON, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
 	//textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
-	textures->Add((int)CandleAniID::ID_TEX_CANDLE, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
+	//textures->Add((int)CandleAniID::ID_TEX_CANDLE, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 
 
 	CSprites * sprites = CSprites::GetInstance();
@@ -78,31 +78,48 @@ void LoadResources()
 	/*LPDIRECT3DTEXTURE9 texBrick = textures->Get((int)BrickAniID::ID_TEX_BRICK); //brick
 	sprites->Add(20001, 127, 65, 162, 100, texMisc);	*/
 
-	LPDIRECT3DTEXTURE9 texCandle = textures->Get((int)CandleAniID::ID_TEX_CANDLE); //candle
-	sprites->Add(30001, 0, 0, 32, 64, texCandle);
+	//LPDIRECT3DTEXTURE9 texCandle = textures->Get((int)CandleAniID::ID_TEX_CANDLE); //candle
+	//sprites->Add(30001, 0, 0, 32, 64, texCandle);
 
 
 	LPANIMATION ani;
 
 	ani = new CAnimation(100);
 	ani->Add(10001);
+	animations->Add((int)SimonAniId::IDLEGOLEFT, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(10011);
+	animations->Add((int)SimonAniId::IDLEGORIGHT, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(10001);
 	ani->Add(10002);
 	ani->Add(10003);
 	ani->Add(10004);
-	animations->Add((int)SimonAniId::IDLEGORIGHT, ani);
+	animations->Add((int)SimonAniId::WALKRIGHT, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
 	ani->Add(10012);
 	ani->Add(10013);
 	ani->Add(10014);
-	animations->Add((int)SimonAniId::IDLEGOLEFT, ani);
+	animations->Add((int)SimonAniId::WALKLEFT, ani);
 
-	simon = new CSimon();
+
+
+
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGOLEFT);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGORIGHT);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKRIGHT);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKLEFT);
+
+	CSimon::GetInstance()->SetPosition(0.0f, 100.0f);
+	/*simon = new CSimon();
 	simon->AddAnimation((int)SimonAniId::IDLEGOLEFT);
 	simon->AddAnimation((int)SimonAniId::IDLEGORIGHT);
 
-	simon->SetPosition(0.0f, 100.0f);
+	simon->SetPosition(0.0f, 100.0f);*/
 
 /*	ani = new CAnimation(100);
 	ani->Add(20001);
@@ -116,7 +133,7 @@ void LoadResources()
 
 	brick->SetPosition(10.0f, 100.0f);
 	*/
-	ani = new CAnimation(100);
+	/*ani = new CAnimation(100);
 	ani->Add(30001);
 	
 	animations->Add((int)CandleAniID::STAND, ani);
@@ -124,7 +141,7 @@ void LoadResources()
 	candle = new CCandle();
 	candle->AddAnimation((int)CandleAniID::STAND);
 
-	candle->SetPosition(20.0f, 50.0f);
+	candle->SetPosition(20.0f, 50.0f);*/
 
 }
 
@@ -134,9 +151,9 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-	simon->Update(dt);
+	CSimon::GetInstance()->Update(dt);
 //	brick->Update(dt);
-	candle->Update(dt);
+	//candle->Update(dt);
 }
 
 
@@ -156,9 +173,9 @@ void Render()
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		simon->Render();
+		CSimon::GetInstance()->Render();
 //		brick->Render();
-		candle->Render();
+		//candle->Render();
 
 		spriteHandler->End();
 		d3ddv->EndScene();

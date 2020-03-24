@@ -17,19 +17,21 @@
 #define SIMON_ANI_WALKING_LEFT		3
 
 enum class SimonAniId {
-	IDLEGORIGHT = 500,
-	IDLEGOLEFT = 501,
+	IDLEGORIGHT = 400,
+	IDLEGOLEFT = 401,
+	WALKRIGHT = 500,
+	WALKLEFT = 501,
 	ID_TEX_SIMON = 0
 };
 
 class CSimon : public CGameObject
 {
 
-	float x =0;
-	float y =0;
+	float x = 0;
+	float y = 0;
 
-	float vx =0;
-	float vy =0;
+	float vx = 0;
+	float vy = 0;
 
 	int nx = 1;
 	static CSimon * __instance;

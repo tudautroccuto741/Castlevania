@@ -2,6 +2,8 @@
 
 void CSimon::Update(DWORD dt)
 {
+	x += vx * dt;
+	y += vy * dt;
 	// simple fall down
 	vy += SIMON_GRAVITY;
 	if (y > 100)
@@ -51,6 +53,7 @@ void CSimon::SetState(int state)
 		break;
 	}
 }
+
 CSimon * CSimon::__instance = NULL;
 CSimon* CSimon::GetInstance()
 {
