@@ -6,10 +6,11 @@
 
 void CSampleKeyHander::OnKeyDown(int KeyCode)
 {
+	int j;
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
+	case DIK_UP:
 		CSimon::GetInstance()->SetState(SIMON_STATE_JUMP);
 		break;
 	}

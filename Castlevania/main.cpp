@@ -65,15 +65,19 @@ void LoadResources()
 	LPDIRECT3DTEXTURE9 texsimon = textures->Get((int)SimonAniId::ID_TEX_SIMON);
 
 	// readline => id, left, top, right, bottom
-	sprites->Add(10001, 240, 0, 300, 66, texsimon);		//idle simon go right
-	sprites->Add(10002, 310, 0, 350, 66, texsimon);
-	sprites->Add(10003, 420, 0, 480, 66, texsimon);
-	sprites->Add(10004, 540, 0, 600, 66, texsimon);
+	sprites->Add(10001, 420, 0, 480, 66, texsimon);		//idle simon go right
+	//sprites->Add(10004, 240, 0, 300, 66, texsimon);		
+	sprites->Add(10002, 360, 0, 420, 66, texsimon);
+	sprites->Add(10003, 300, 0, 360, 66, texsimon);
 
-	sprites->Add(10011, 180, 198, 240, 264, texsimon);	//idle simon go left
-	sprites->Add(10012, 120, 198, 180, 264, texsimon);
-	sprites->Add(10013, 60, 198, 120, 264, texsimon);
-	sprites->Add(10014, 0, 198, 60, 264, texsimon);
+
+	sprites->Add(10011, 0, 198, 60, 264, texsimon);		//idle simon go left
+	//sprites->Add(10014, 180, 198, 240, 264, texsimon);	
+	sprites->Add(10012, 60, 198, 120, 264, texsimon);
+	sprites->Add(10013, 120, 198, 180, 264, texsimon);
+
+	sprites->Add(10020, 180, 0, 240, 66, texsimon);		//simon sit right
+	sprites->Add(10021, 240, 198, 300, 264, texsimon);		//simon sit left
 
 	/*LPDIRECT3DTEXTURE9 texBrick = textures->Get((int)BrickAniID::ID_TEX_BRICK); //brick
 	sprites->Add(20001, 127, 65, 162, 100, texMisc);	*/
@@ -96,23 +100,34 @@ void LoadResources()
 	ani->Add(10001);
 	ani->Add(10002);
 	ani->Add(10003);
-	ani->Add(10004);
+	//ani->Add(10004);
 	animations->Add((int)SimonAniId::WALKRIGHT, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
 	ani->Add(10012);
 	ani->Add(10013);
-	ani->Add(10014);
+	//ani->Add(10014);
 	animations->Add((int)SimonAniId::WALKLEFT, ani);
 
+	ani = new CAnimation(100);
+	ani->Add(10001);
+	ani->Add(10020);
+	animations->Add((int)SimonAniId::IDJUMPRIGHT, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(10011);
+	ani->Add(10021);
+	animations->Add((int)SimonAniId::IDJUMPLEFT, ani);
 
 
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGOLEFT); //0
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGORIGHT);//1
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKRIGHT);//2
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKLEFT);//3
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJUMPRIGHT);//4
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJUMPLEFT);//5
 
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGOLEFT);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGORIGHT);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKRIGHT);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKLEFT);
 
 	CSimon::GetInstance()->SetPosition(0.0f, 100.0f);
 	/*simon = new CSimon();
