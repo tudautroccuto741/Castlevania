@@ -66,28 +66,28 @@ void LoadResources()
 
 	// readline => id, left, top, right, bottom
 	sprites->Add(10001, 420, 0, 480, 66, texsimon);		//idle simon go right
-	//sprites->Add(10004, 240, 0, 300, 66, texsimon);		
-	sprites->Add(10002, 360, 0, 420, 66, texsimon);
+	sprites->Add(10002, 240, 0, 300, 66, texsimon);		
 	sprites->Add(10003, 300, 0, 360, 66, texsimon);
+	sprites->Add(10004, 360, 0, 420, 66, texsimon);
 
 
 	sprites->Add(10011, 0, 198, 60, 264, texsimon);		//idle simon go left
-	//sprites->Add(10014, 180, 198, 240, 264, texsimon);	
-	sprites->Add(10012, 60, 198, 120, 264, texsimon);
+	sprites->Add(10012, 180, 198, 240, 264, texsimon);	
 	sprites->Add(10013, 120, 198, 180, 264, texsimon);
+	sprites->Add(10014, 60, 198, 120, 264, texsimon);
 
 	sprites->Add(10020, 180, 0, 240, 66, texsimon);		//simon sit right
 	sprites->Add(10021, 240, 198, 300, 264, texsimon);		//simon sit left
 
-	sprites->Add(10030, 240, 0, 300, 66, texsimon);		//simon whipping right
-	sprites->Add(10031, 120, 0, 180, 66, texsimon);
+		//simon whipping right
+	sprites->Add(10031, 117, 0, 180, 66, texsimon);
 	sprites->Add(10032, 60, 0, 120, 66, texsimon);
-	sprites->Add(10033, 0, 0, 60, 66, texsimon);
+	sprites->Add(10033, 0, 0, 66, 66, texsimon);
 
-	sprites->Add(10034, 60, 198, 120, 264, texsimon);		//simon whipping left
-	sprites->Add(10035, 300, 198, 360, 264, texsimon);
+		//simon whipping left
+	sprites->Add(10035, 300, 198, 365, 264, texsimon);
 	sprites->Add(10036, 360, 198, 420, 264, texsimon);
-	sprites->Add(10037, 420, 198, 480, 264, texsimon);
+	sprites->Add(10037, 417, 198, 480, 264, texsimon);
 
 
 	/*LPDIRECT3DTEXTURE9 texBrick = textures->Get((int)BrickAniID::ID_TEX_BRICK); //brick
@@ -111,14 +111,14 @@ void LoadResources()
 	ani->Add(10001);
 	ani->Add(10002);
 	ani->Add(10003);
-	//ani->Add(10004);
+	ani->Add(10004);
 	animations->Add((int)SimonAniId::walkRight, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
 	ani->Add(10012);
 	ani->Add(10013);
-	//ani->Add(10014);
+	ani->Add(10014);
 	animations->Add((int)SimonAniId::walkLeft, ani);
 
 	ani = new CAnimation(100);
@@ -132,14 +132,12 @@ void LoadResources()
 	animations->Add((int)SimonAniId::IDJumpLeft, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(10030); 
 	ani->Add(10031); 
 	ani->Add(10032);
 	ani->Add(10033);
 	animations->Add((int)SimonAniId::IDWhipRight, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(10034);
 	ani->Add(10035);
 	ani->Add(10036);
 	ani->Add(10037);

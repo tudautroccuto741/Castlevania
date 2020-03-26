@@ -14,6 +14,7 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 		break;
 	case DIK_X:
 		CSimon::GetInstance()->SetState((int)SimonID::stateWhip);
+		break;
 	}
 }
 
