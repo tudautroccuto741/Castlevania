@@ -28,20 +28,14 @@ void CSimon::Render()
 			{ 
 				ani = (int)SimonAniId::aniJumpRight;
 			}
-			else 
-			{ 
-				ani = (int)SimonAniId::aniIdleRight; 
-			}
-
-
-			/*if (isWhipping == true) //whipping
+			else if (isWhipping == true) //whipping
 			{
 				ani = (int)SimonAniId::aniWhipRight;
 			}
 			else
 			{
 				ani = (int)SimonAniId::aniIdleRight;
-			}*/
+			}
 		}
 		else 
 		{
@@ -49,17 +43,14 @@ void CSimon::Render()
 			{
 				ani = (int)SimonAniId::aniJumpLeft;
 			}
-			else ani = (int)SimonAniId::aniIdleLeft;
-
-
-			/*if (isWhipping == true) //whipping
+			else if (isWhipping == true) //whipping
 			{
 				ani = (int)SimonAniId::aniWhipLeft;
 			}
 			else
 			{
 				ani = (int)SimonAniId::aniIdleLeft;
-			}*/
+			}
 		}
 	}
 	else if (vx > 0)
