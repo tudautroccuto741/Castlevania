@@ -54,7 +54,7 @@ void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
 
-	textures->Add((int)SimonAniId::ID_TEX_SIMON, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add((int)SimonID::IDTex, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
 	//textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	//textures->Add((int)CandleAniID::ID_TEX_CANDLE, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 
@@ -62,7 +62,7 @@ void LoadResources()
 	CSprites * sprites = CSprites::GetInstance();
 	CAnimations * animations = CAnimations::GetInstance();
 
-	LPDIRECT3DTEXTURE9 texsimon = textures->Get((int)SimonAniId::ID_TEX_SIMON);
+	LPDIRECT3DTEXTURE9 texsimon = textures->Get((int)SimonID::IDTex);
 
 	// readline => id, left, top, right, bottom
 	sprites->Add(10001, 420, 0, 480, 66, texsimon);		//idle simon go right
@@ -79,6 +79,15 @@ void LoadResources()
 	sprites->Add(10020, 180, 0, 240, 66, texsimon);		//simon sit right
 	sprites->Add(10021, 240, 198, 300, 264, texsimon);		//simon sit left
 
+	sprites->Add(10030, 110, 0, 180, 66, texsimon);		//simon whipping right
+	sprites->Add(10031, 70, 0, 100, 66, texsimon);
+	sprites->Add(10032, 0, 0, 70, 66, texsimon);
+
+	sprites->Add(10033, 420, 198, 480, 264, texsimon);		//simon whipping left
+	sprites->Add(10034, 360, 198, 420, 264, texsimon);
+	sprites->Add(10035, 300, 198, 240, 264, texsimon);
+
+
 	/*LPDIRECT3DTEXTURE9 texBrick = textures->Get((int)BrickAniID::ID_TEX_BRICK); //brick
 	sprites->Add(20001, 127, 65, 162, 100, texMisc);	*/
 
@@ -90,49 +99,64 @@ void LoadResources()
 
 	ani = new CAnimation(100);
 	ani->Add(10001);
-	animations->Add((int)SimonAniId::IDLEGOLEFT, ani);
+	animations->Add((int)SimonAniId::idleGoLeft, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
-	animations->Add((int)SimonAniId::IDLEGORIGHT, ani);
+	animations->Add((int)SimonAniId::idleGoRight, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10001);
 	ani->Add(10002);
 	ani->Add(10003);
 	//ani->Add(10004);
-	animations->Add((int)SimonAniId::WALKRIGHT, ani);
+	animations->Add((int)SimonAniId::walkRight, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
 	ani->Add(10012);
 	ani->Add(10013);
 	//ani->Add(10014);
-	animations->Add((int)SimonAniId::WALKLEFT, ani);
+	animations->Add((int)SimonAniId::walkLeft, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(10001);
+	//ani->Add(10001);
 	ani->Add(10020);
-	animations->Add((int)SimonAniId::IDJUMPRIGHT, ani);
+	animations->Add((int)SimonAniId::IDJumpRight, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(10011);
+	//ani->Add(10011);
 	ani->Add(10021);
-	animations->Add((int)SimonAniId::IDJUMPLEFT, ani);
+	animations->Add((int)SimonAniId::IDJumpLeft, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(10030); 
+	ani->Add(10031); 
+	ani->Add(10032);
+	animations->Add((int)SimonAniId::IDWhipRight, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(10033);
+	ani->Add(10034);
+	ani->Add(10035);
+	animations->Add((int)SimonAniId::IDWhipLeft, ani);
+	
 
 
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGOLEFT); //0
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDLEGORIGHT);//1
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKRIGHT);//2
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::WALKLEFT);//3
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJUMPRIGHT);//4
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJUMPLEFT);//5
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::idleGoLeft); 
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::idleGoRight);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::walkRight);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::walkLeft);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJumpRight);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJumpLeft);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDWhipRight);
+	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDWhipLeft);
 
 
 	CSimon::GetInstance()->SetPosition(0.0f, 100.0f);
 	/*simon = new CSimon();
-	simon->AddAnimation((int)SimonAniId::IDLEGOLEFT);
-	simon->AddAnimation((int)SimonAniId::IDLEGORIGHT);
+	simon->AddAnimation((int)SimonAniId::idleGoLeft);
+	simon->AddAnimation((int)SimonAniId::idleGoRight);
 
 	simon->SetPosition(0.0f, 100.0f);*/
 
@@ -299,5 +323,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	LoadResources();
 	Run();
 
-	return 0;
+		return 0;
 }

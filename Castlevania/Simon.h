@@ -6,27 +6,36 @@
 #define SIMON_JUMP_SPEED_Y		0.4f
 #define SIMON_GRAVITY			0.1f
 
-#define SIMON_STATE_IDLE			0
-#define SIMON_STATE_WALKING_RIGHT	100
-#define SIMON_STATE_WALKING_LEFT	200
-#define SIMON_STATE_JUMP			300
-
-
-#define SIMON_ANI_IDLE_RIGHT		0
-#define SIMON_ANI_IDLE_LEFT			1
-#define SIMON_ANI_WALKING_RIGHT		2
-#define SIMON_ANI_WALKING_LEFT		3
-#define SIMON_ANI_JUMP_RIGHT		4
-#define SIMON_ANI_JUMP_LEFT			5
-
 enum class SimonAniId {
-	IDLEGORIGHT = 400,
-	IDLEGOLEFT = 401,
-	WALKRIGHT = 500,
-	WALKLEFT = 501,
-	IDJUMPRIGHT = 600,
-	IDJUMPLEFT = 601,
-	ID_TEX_SIMON = 0
+	idleGoRight = 400,
+	idleGoLeft = 401,
+	walkRight = 500,
+	walkLeft = 501,
+	IDJumpRight = 600,
+	IDJumpLeft = 601,
+	IDWhipRight = 700,
+	IDWhipLeft = 701,
+
+
+	aniIdleRight =	0,
+	aniIdleLeft = 1,
+	aniWalkingRight = 2,
+	aniWalkingLeft	= 3,
+	aniJumpRight =	4,
+	aniJumpLeft = 5,
+	aniWhipRight = 6,
+	aniWhipLeft = 7
+};
+enum class SimonID
+{
+	IDTex = 0,
+	stateIdle = 0,
+
+	stateWalkingRight = 100,
+	stateWalkingLeft = 200,
+	stateJump = 300, 
+	stateSit = 400,
+	stateWhip = 500
 };
 
 class CSimon : public CGameObject
@@ -40,7 +49,7 @@ class CSimon : public CGameObject
 
 	int nx = 1;
 	bool isJumping;
-	bool isState;
+	bool isWhipping;
 
 	static CSimon * __instance;
 public:
@@ -48,6 +57,5 @@ public:
 	void Update(DWORD dt);
 	void Render();
 	void SetState(int state);	
-	void Jump();
 	static CSimon * GetInstance();
 };

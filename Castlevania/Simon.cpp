@@ -24,27 +24,47 @@ void CSimon::Render()
 	{
 		if (nx > 0)
 		{	
-			if (isJumping == true) 
+			if (isJumping == true)  //jump and sit
 			{ 
-				ani = SIMON_ANI_JUMP_RIGHT; 
+				ani = (int)SimonAniId::aniJumpRight;
 			}
 			else 
 			{ 
-				ani = SIMON_ANI_IDLE_RIGHT; 
+				ani = (int)SimonAniId::aniIdleRight; 
 			}
+
+
+			/*if (isWhipping == true) //whipping
+			{
+				ani = (int)SimonAniId::aniWhipRight;
+			}
+			else
+			{
+				ani = (int)SimonAniId::aniIdleRight;
+			}*/
 		}
 		else 
 		{
 			if (isJumping == true)
 			{
-				ani = SIMON_ANI_JUMP_LEFT;
+				ani = (int)SimonAniId::aniJumpLeft;
 			}
-			else ani = SIMON_ANI_IDLE_LEFT;
+			else ani = (int)SimonAniId::aniIdleLeft;
+
+
+			/*if (isWhipping == true) //whipping
+			{
+				ani = (int)SimonAniId::aniWhipLeft;
+			}
+			else
+			{
+				ani = (int)SimonAniId::aniIdleLeft;
+			}*/
 		}
 	}
 	else if (vx > 0)
-		ani = SIMON_ANI_WALKING_RIGHT;
-	else ani = SIMON_ANI_WALKING_LEFT;
+		ani =  (int)SimonAniId::aniWalkingRight;
+	else ani = (int)SimonAniId::aniWalkingLeft;
 
 	animations[ani]->Render(x, y);
 }
@@ -54,21 +74,28 @@ void CSimon::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case SIMON_STATE_WALKING_RIGHT:
+	case (int)SimonID::stateWalkingRight:
 		vx = SIMON_WALKING_SPEED;
 		nx = 1;
 		break;
-	case SIMON_STATE_WALKING_LEFT:
+	case (int)SimonID::stateWalkingLeft:
 		vx = -SIMON_WALKING_SPEED;
 		nx = -1;
 		break;
-	case SIMON_STATE_JUMP:
+	case (int)SimonID::stateJump:
 		isJumping = true;
 		vy = -SIMON_JUMP_SPEED_Y;
 		break;
-	case SIMON_STATE_IDLE:
+	case (int)SimonID::stateSit:
+		isJumping = true;
+		break;
+	case (int)SimonID::stateWhip:
+		isWhipping = true;
+		break;
+	case (int)SimonID::stateIdle:
 		vx = 0;
 		isJumping = false;
+		isWhipping = false;
 		break;
 	}
 }
@@ -80,11 +107,3 @@ CSimon* CSimon::GetInstance()
 	return __instance;
 }
 
-void CSimon::Jump()
-{
-	if (!isJumping)
-	{
-		isJumping = true;
-		//this->vy = -SIMON_JUMP_SPEED_Y;
-	}
-}
