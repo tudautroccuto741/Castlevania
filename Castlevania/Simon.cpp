@@ -5,7 +5,7 @@ void CSimon::Update(DWORD dt)
 	x += vx * dt;
 	y += vy * dt;
 	// simple fall down
-	vy += SIMON_GRAVITY;
+	vy += SIMON_GRAVITY;	//*dt
 	if (y > 100)
 	{
 		vy = 0; y = 100.0f;
@@ -28,9 +28,9 @@ void CSimon::Render()
 			{ 
 				ani = (int)SimonAniId::aniJumpRight;
 			}
-			else if (isWhipping == true) //whipping
+			else if (isAttacking == true) //whipping
 			{
-				ani = (int)SimonAniId::aniWhipRight;
+				ani = (int)SimonAniId::aniWhipRight;				
 			}
 			else
 			{
@@ -43,7 +43,7 @@ void CSimon::Render()
 			{
 				ani = (int)SimonAniId::aniJumpLeft;
 			}
-			else if (isWhipping == true) //whipping
+			else if (isAttacking == true) //whipping
 			{
 				ani = (int)SimonAniId::aniWhipLeft;
 			}
@@ -81,12 +81,17 @@ void CSimon::SetState(int state)
 		isJumping = true;
 		break;
 	case (int)SimonID::stateWhip:
-		isWhipping = true;
+		a = 0;
+		while (a <= 300) 
+		{
+			isAttacking = true;
+			a += 100;
+		}
 		break;
 	case (int)SimonID::stateIdle:
 		vx = 0;
 		isJumping = false;
-		isWhipping = false;
+		isAttacking = false;
 		break;
 	}
 }

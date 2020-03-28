@@ -49,7 +49,9 @@ class CSimon : public CGameObject
 
 	int nx = 1;
 	bool isJumping;
-	bool isWhipping;
+	bool isAttacking;
+
+	DWORD a = GetTickCount();
 
 	static CSimon * __instance;
 public:
