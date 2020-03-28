@@ -26,38 +26,38 @@ void CSimon::Render()
 		{	
 			if (isJumping == true)  //jump and sit
 			{ 
-				ani = (int)SimonAniId::aniJumpRight;
+				ani = (int)SimonAniId::IDJumpRight;
 			}
 			else if (isAttacking == true) //whipping
 			{
-				ani = (int)SimonAniId::aniWhipRight;				
+				ani = (int)SimonAniId::IDWhipRight;				
 			}
 			else
 			{
-				ani = (int)SimonAniId::aniIdleRight;
+				ani = (int)SimonAniId::idleGoRight;
 			}
 		}
 		else 
 		{
 			if (isJumping == true)
 			{
-				ani = (int)SimonAniId::aniJumpLeft;
+				ani = (int)SimonAniId::IDJumpLeft;
 			}
 			else if (isAttacking == true) //whipping
 			{
-				ani = (int)SimonAniId::aniWhipLeft;
+				ani = (int)SimonAniId::IDWhipLeft;
 			}
 			else
 			{
-				ani = (int)SimonAniId::aniIdleLeft;
+				ani = (int)SimonAniId::idleGoLeft;
 			}
 		}
 	}
 	else if (vx > 0)
-		ani =  (int)SimonAniId::aniWalkingRight;
-	else ani = (int)SimonAniId::aniWalkingLeft;
+		ani =  (int)SimonAniId::walkRight;
+	else ani = (int)SimonAniId::walkLeft;
 
-	animations[ani]->Render(x, y);
+	CAnimations::GetInstance()->Get(ani)->Render(x, y);
 }
 
 void CSimon::SetState(int state)

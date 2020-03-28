@@ -7,28 +7,20 @@
 #define SIMON_GRAVITY			0.1f
 
 enum class SimonAniId {
-	idleGoRight = 400,
-	idleGoLeft = 401,
-	walkRight = 500,
-	walkLeft = 501,
-	IDJumpRight = 600,
-	IDJumpLeft = 601,
-	IDWhipRight = 700,
-	IDWhipLeft = 701,
 
-
-	aniIdleRight =	0,
-	aniIdleLeft = 1,
-	aniWalkingRight = 2,
-	aniWalkingLeft	= 3,
-	aniJumpRight =	4,
-	aniJumpLeft = 5,
-	aniWhipRight = 6,
-	aniWhipLeft = 7
+	idleGoRight,
+	idleGoLeft,
+	walkRight,
+	walkLeft,
+	IDJumpRight,
+	IDJumpLeft,
+	IDWhipRight,
+	IDWhipLeft
+	
 };
 enum class SimonID
 {
-	IDTex = 0,
+	IDTex = 11111,
 	stateIdle = 0,
 
 	stateWalkingRight = 100,

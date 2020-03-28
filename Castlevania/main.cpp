@@ -101,11 +101,11 @@ void LoadResources()
 
 	ani = new CAnimation(100);
 	ani->Add(10001);
-	animations->Add((int)SimonAniId::idleGoLeft, ani);
+	animations->Add((int)SimonAniId::idleGoRight, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10011);
-	animations->Add((int)SimonAniId::idleGoRight, ani);
+	animations->Add((int)SimonAniId::idleGoLeft, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(10001);
@@ -141,39 +141,13 @@ void LoadResources()
 	ani->Add(10035);
 	ani->Add(10036);
 	ani->Add(10037);
-	animations->Add((int)SimonAniId::IDWhipLeft, ani);
-	
-
-
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::idleGoLeft); 
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::idleGoRight);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::walkRight);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::walkLeft);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJumpRight);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDJumpLeft);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDWhipRight);
-	CSimon::GetInstance()->AddAnimation((int)SimonAniId::IDWhipLeft);
+	animations->Add((int)SimonAniId::IDWhipLeft, ani);	
 
 
 	CSimon::GetInstance()->SetPosition(0.0f, 100.0f);
-	/*simon = new CSimon();
-	simon->AddAnimation((int)SimonAniId::idleGoLeft);
-	simon->AddAnimation((int)SimonAniId::idleGoRight);
-
-	simon->SetPosition(0.0f, 100.0f);*/
-
-/*	ani = new CAnimation(100);
-	ani->Add(20001);
-
-	animations->Add((int)BrickAniID::STAND, ani);
 	
 
-	
-	brick = new CBrick();
-	brick->AddAnimation((int)BrickAniID::STAND);
 
-	brick->SetPosition(10.0f, 100.0f);
-	*/
 	/*ani = new CAnimation(100);
 	ani->Add(30001);
 	
