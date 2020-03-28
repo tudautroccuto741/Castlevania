@@ -9,6 +9,6 @@ void CCandle::Render()
 {
 	LPANIMATION ani;
 
-	ani = CAnimations::GetInstance()->Get((int)CandleAniID::STAND);
+	ani = CAnimations::GetInstance()->Get((int)CandleAniID::idleCandle);
 	ani->Render(x, y);
 }

@@ -3,8 +3,9 @@
 #include "Animations.h"
 
 enum class BrickAniID {
-	STAND = 600,
-	ID_TEX_BRICK = 100
+	IDTexBrick = 300,
+	idlebrick = 301,
+	
 };
 
 class CBrick : public CGameObject

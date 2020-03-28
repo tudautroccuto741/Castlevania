@@ -6,7 +6,8 @@
 #define SIMON_JUMP_SPEED_Y		0.4f
 #define SIMON_GRAVITY			0.1f
 
-enum class SimonAniId {
+enum class SimonAniId
+{
 
 	idleGoRight,
 	idleGoLeft,
@@ -20,14 +21,13 @@ enum class SimonAniId {
 };
 enum class SimonID
 {
-	IDTex = 11111,
-	stateIdle = 0,
-
-	stateWalkingRight = 100,
-	stateWalkingLeft = 200,
-	stateJump = 300, 
-	stateSit = 400,
-	stateWhip = 500
+	IDTex = 100,
+	stateIdle = 101,
+	stateWalkingRight = 102,
+	stateWalkingLeft = 103,
+	stateJump = 104, 
+	stateSit = 105,
+	stateWhip = 106
 };
 
 class CSimon : public CGameObject

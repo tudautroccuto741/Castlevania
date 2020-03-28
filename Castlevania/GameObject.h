@@ -7,12 +7,8 @@
 
 using namespace std;
 
-class CGameObject;
-typedef CGameObject * LPGAMEOBJECT;
-
 class CGameObject
 {
-	static vector <LPGAMEOBJECT> objects;
 protected:
 	float x;
 	float y;
@@ -31,9 +27,6 @@ public:
 
 	void SetState(int state) { this->currentState = state; }
 	int GetState() { return this->currentState; }
-
-
-	static void AddAnimation(int aniId);
 
 	CGameObject();
 

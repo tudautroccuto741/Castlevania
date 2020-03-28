@@ -122,12 +122,10 @@ void LoadResources()
 	animations->Add((int)SimonAniId::walkLeft, ani);
 
 	ani = new CAnimation(100);
-	//ani->Add(10001);
 	ani->Add(10020);
 	animations->Add((int)SimonAniId::IDJumpRight, ani);
 
 	ani = new CAnimation(100);
-	//ani->Add(10011);
 	ani->Add(10021);
 	animations->Add((int)SimonAniId::IDJumpLeft, ani);
 

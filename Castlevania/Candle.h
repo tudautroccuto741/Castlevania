@@ -3,8 +3,8 @@
 #include "Animations.h"
 
 enum class CandleAniID {
-	STAND = 600, 
-	ID_TEX_CANDLE = 200
+	IDTexCandle = 200,
+	idleCandle = 201
 };
 
 class CCandle : public CGameObject
