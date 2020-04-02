@@ -16,6 +16,7 @@
 #include "Brick.h"
 #include "Candle.h"
 #include "SampleKeyHander.h"
+#include "Whip.h"
 
 #define WINDOW_CLASS_NAME L"Castlevania"
 #define MAIN_WINDOW_TITLE L"Castlevania"
@@ -27,6 +28,7 @@
 #define ID_TEX_MISC 20
 
 CGame *game;
+CWhip *weapon;
 //CSimon *simon;
 
 //CBrick * brick;
@@ -54,15 +56,17 @@ void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
 
-	textures->Add((int)SimonID::IDTex, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add((int)SimonStateID::IDTex, L"textures\\1.png", D3DCOLOR_XRGB(255, 0, 255));
 	//textures->Add(ID_TEX_BRICK, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	//textures->Add((int)CandleAniID::ID_TEX_CANDLE, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
+	textures->Add((int)WhipAniID::IDTexWhip, L"textures\\2.png", D3DCOLOR_XRGB(255, 0, 255));
 
 
 	CSprites * sprites = CSprites::GetInstance();
 	CAnimations * animations = CAnimations::GetInstance();
 
-	LPDIRECT3DTEXTURE9 texsimon = textures->Get((int)SimonID::IDTex);
+	LPDIRECT3DTEXTURE9 texsimon = textures->Get((int)SimonStateID::IDTex);
+	LPDIRECT3DTEXTURE9 texweapon = textures->Get((int)WhipAniID::IDTexWhip);
 
 	// readline => id, left, top, right, bottom
 	sprites->Add(10001, 420, 0, 480, 66, texsimon);		//idle simon go right
@@ -80,14 +84,24 @@ void LoadResources()
 	sprites->Add(10021, 240, 198, 300, 264, texsimon);		//simon sit left
 
 		//simon whipping right
-	sprites->Add(10031, 117, 0, 180, 66, texsimon);
-	sprites->Add(10032, 60, 0, 120, 66, texsimon);
-	sprites->Add(10033, 0, 0, 66, 66, texsimon);
+	sprites->Add(10031, 119, 0, 179, 66, texsimon);
+	sprites->Add(10032, 59, 0, 119, 66, texsimon);
+	sprites->Add(10033, 0, 0, 60, 66, texsimon);
 
 		//simon whipping left
-	sprites->Add(10035, 300, 198, 365, 264, texsimon);
+	sprites->Add(10035, 300, 198, 360, 264, texsimon);
 	sprites->Add(10036, 360, 198, 420, 264, texsimon);
-	sprites->Add(10037, 417, 198, 480, 264, texsimon);
+	sprites->Add(10037, 420, 198, 480, 264, texsimon);
+
+	//weapon: Whip
+	sprites->Add(10040, 392, 0, 452, 66, texweapon);
+	sprites->Add(10041, 330, 0, 390, 66, texweapon);
+	sprites->Add(10042, 262, 0, 322, 66, texweapon);
+
+	sprites->Add(10043, 2, 0, 62, 66, texweapon);
+	sprites->Add(10044, 63, 0, 123, 66, texweapon);
+	sprites->Add(10045, 131, 0, 191, 66, texweapon);
+
 
 
 	/*LPDIRECT3DTEXTURE9 texBrick = textures->Get((int)BrickAniID::ID_TEX_BRICK); //brick
@@ -129,13 +143,15 @@ void LoadResources()
 	ani->Add(10021);
 	animations->Add((int)SimonAniId::IDJumpLeft, ani);
 
-	ani = new CAnimation(100);
+	// sprite - sprite - sprite 
+// (---100---)(---100---)(---100---)
+	ani = new CAnimation(150);
 	ani->Add(10031); 
 	ani->Add(10032);
 	ani->Add(10033);
 	animations->Add((int)SimonAniId::IDWhipRight, ani);
 
-	ani = new CAnimation(100);
+	ani = new CAnimation(150);
 	ani->Add(10035);
 	ani->Add(10036);
 	ani->Add(10037);
@@ -144,7 +160,19 @@ void LoadResources()
 
 	CSimon::GetInstance()->SetPosition(0.0f, 100.0f);
 	
+	ani = new CAnimation(150);
+	ani->Add(10040);
+	ani->Add(10041);
+	ani->Add(10042);
+	animations->Add((int)WhipAniID::idleWhipRight, ani);
 
+	ani = new CAnimation(150);
+	ani->Add(10043);
+	ani->Add(10044);
+	ani->Add(10045);
+	animations->Add((int)WhipAniID::idleWhipLeft, ani);
+
+	//CWhip::GetInstance()->SetPosition(0.0f, 100.f);
 
 	/*ani = new CAnimation(100);
 	ani->Add(30001);
@@ -297,5 +325,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	LoadResources();
 	Run();
 
-		return 0;
+	return 0;
 }

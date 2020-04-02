@@ -9,11 +9,13 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_UP:
-		CSimon::GetInstance()->SetState((int)SimonID::stateJump);
+	case DIK_K:
+
+		CSimon::GetInstance()->SetState((int)SimonStateID::stateJump);
 		break;
-	case DIK_X:
-		CSimon::GetInstance()->SetState((int)SimonID::stateWhip);
+
+	case DIK_L:
+		CSimon::GetInstance()->SetState((int)SimonStateID::stateWhip);
 		break;
 	}
 }
@@ -25,11 +27,12 @@ void CSampleKeyHander::OnKeyUp(int KeyCode)
 
 void CSampleKeyHander::KeyState(BYTE *states)
 {
-	if (CGame::GetInstance()->IsKeyDown(DIK_RIGHT))
-		CSimon::GetInstance()->SetState((int)SimonID::stateWalkingRight);
-	else if (CGame::GetInstance()->IsKeyDown(DIK_LEFT))
-		CSimon::GetInstance()->SetState((int)SimonID::stateWalkingLeft);
-	else if (CGame::GetInstance()->IsKeyDown(DIK_Z))
-		CSimon::GetInstance()->SetState((int)SimonID::stateSit);
-	else CSimon::GetInstance()->SetState((int)SimonID::stateIdle);
+	//if (CSimon::GetInstance()->GetState() == ((int)SimonStateID::stateWhip)) return;
+	if (CGame::GetInstance()->IsKeyDown(DIK_D))
+		CSimon::GetInstance()->SetState((int)SimonStateID::stateWalkingRight);
+	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
+		CSimon::GetInstance()->SetState((int)SimonStateID::stateWalkingLeft);
+	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
+		CSimon::GetInstance()->SetState((int)SimonStateID::stateSit);
+	else CSimon::GetInstance()->SetState((int)SimonStateID::stateIdle);
 }

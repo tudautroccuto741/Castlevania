@@ -4,9 +4,6 @@
 
 using namespace std;
 
-/*
-	Manage texture database
-*/
 class CTextures
 {
 	static CTextures * __instance;

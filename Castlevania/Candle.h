@@ -2,7 +2,8 @@
 #include "GameObject.h"
 #include "Animations.h"
 
-enum class CandleAniID {
+enum class CandleAniID 
+{
 	IDTexCandle = 200,
 	idleCandle = 201
 };
