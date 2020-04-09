@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class CWeapons
+class CWeapons:CGameObject
 {
 protected:
 	float x;
@@ -12,14 +12,13 @@ protected:
 
 	int nx;
 
-	static class CWeapons * __instance;
+	//static class CWeapons * __instance;
 public:
 	
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
-
-	static CWeapons * GetInstance();
+	//static CWeapons * GetInstance();
 };
 
 

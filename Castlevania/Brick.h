@@ -6,17 +6,15 @@
 enum class BrickAniID 
 {
 	IDTexBrick = 300,
-	idlebrick = 301
+	idleBrick = 301
 };
 
 class CBrick : public CGameObject
 {
-	float x = 0;
-	float y = 0;
-
 public:
 
 	void Update(DWORD dt);
-	void Render();
-	//virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
+	virtual void Render();
+	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
+	CBrick();
 };

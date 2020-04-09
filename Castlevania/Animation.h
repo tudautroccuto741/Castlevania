@@ -1,6 +1,10 @@
 #pragma once
+#include <Windows.h>
+#include <d3dx9.h>
+#include <vector>
+#include "Sprite.h"
+#include "Sprites.h"
 #include"AnimationFrame.h"
-#include<vector>
 
 using namespace std;
 
@@ -10,11 +14,20 @@ class CAnimation
 	int defaultTime;
 	int currentFrame;
 	vector<LPANIMATION_FRAME> frames;
+
 public:
+	CAnimation();
 	CAnimation(int defaultTime);
-	//void Reset();
+	
 	void Add(int spriteId, DWORD time = 0);
-	void Render(float x, float y);
+	void Render(float x, float y, int alpha = 255);
+
+	void SetCurrentFrame(int index) { this->currentFrame = index; }
+	int GetCurrentFrame() { return currentFrame; };
+
+	void ResetFrameStartTime();
+
+
 };
 
 typedef CAnimation *LPANIMATION;

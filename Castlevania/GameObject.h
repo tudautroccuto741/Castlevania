@@ -4,53 +4,95 @@
 #include <d3dx9.h>
 #include <vector>
 #include "Animation.h"
-//#define ID_TEX_BBOX -100		// special texture to draw object bounding box
+#include <algorithm>
+#include"Animations.h"
+
+#define ID_TEX_BBOX -100		// special texture to draw object bounding box
 
 using namespace std;
 
-//class CGameObject;
-//typedef CGameObject * LPGAMEOBJECT;
+class CGameObject;
+typedef CGameObject * LPGAMEOBJECT;
 
-/*struct CCollisionEvent;
+struct CCollisionEvent;
 typedef CCollisionEvent * LPCOLLISIONEVENT;
 struct CCollisionEvent
 {
 	LPGAMEOBJECT obj;
 	float t, nx, ny;
-	CCollisionEvent(float t, float nx, float ny, LPGAMEOBJECT obj = NULL) { this->t = t; this->nx = nx; this->ny = ny; this->obj = obj; }
+	CCollisionEvent(float t, float nx, float ny, LPGAMEOBJECT obj = NULL) 
+	{ 
+		this->t = t;
+		this->nx = nx;
+		this->ny = ny;
+		this->obj = obj; 
+	}
 
 	static bool compare(const LPCOLLISIONEVENT &a, LPCOLLISIONEVENT &b)
 	{
 		return a->t < b->t;
 	}
-};*/
+};
 
 class CGameObject
 {
-protected:
+public:
 	float x;
 	float y;
 
 	float vx;
 	float vy;
-	//float dx;	// dx = vx*dt
-	//float dy;	// dy = vy*dt
+
+	bool visible;
+	float dx;	// dx = vx*dt
+	float dy;	// dy = vy*dt
 	int nx;
+
+	CAnimations* animations;
+
 	DWORD dt;
 
 	int currentState;
 
+	int currentAniID;
+	int lastAniID;
+
 
 public:
+	//position
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
+
+	//speed
+	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
-	
-	//void RenderBoundingBox();
+	//nx
+	void SetDirection(int nx) { this->nx = nx; }
+	int GetDirection() { return this->nx; }
 
-	//LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);	//xet 2 doi tuong dang di chuyen
-	/*void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents); // va cham giua doi tuong hien tai 
-																									//	va ds cac doi tuong
+	//state
+	void SetState(int state) { this->currentState = state; }
+	int GetState() { return this->currentState; }
+
+	//currentAni
+	void SetCurrentAniID(int aniID) { this->currentAniID = aniID; }
+	int GetCurrentAniID() { return this->currentAniID; }
+
+	//Visible
+	virtual void SetVisible(bool visible) { this->visible = visible; }
+	bool GetVisible() { return this->visible; }
+
+	
+	void RenderBoundingBox();
+
+	//2 object moving
+	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
+
+	// va cham giua doi tuong hien tai 
+	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents); 
+	
+	//cac doi tuong dung dau tien theo truc x va truc y																						//	voi ds cac doi tuong
 	void FilterCollision(
 		vector<LPCOLLISIONEVENT> &coEvents,
 		vector<LPCOLLISIONEVENT> &coEventsResult,
@@ -58,18 +100,14 @@ public:
 		float &min_ty,
 		float &nx,
 		float &ny);
-		*/
+		
+	void ResetAnimationTimer(int aniID);
 
-	void SetState(int state) { this->currentState = state; }
-	int GetState() { return this->currentState; }
+
+	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
+	virtual void Render();
 
 	CGameObject();
-
-	virtual void Update(DWORD dt);
-	virtual void Render();
-	//virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
-	//virtual 
-	
-
 	~CGameObject();
 };

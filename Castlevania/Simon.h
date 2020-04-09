@@ -2,20 +2,35 @@
 #include "GameObject.h"
 #include "Animations.h"
 #include "Whip.h"
-#define SIMON_WALKING_SPEED		0.15f
-#define SIMON_JUMP_SPEED_Y		0.4f
-#define SIMON_GRAVITY			0.1f
+
+#define SIMON_IDLE_BBOX_WIDTH				32.0f
+#define SIMON_IDLE_BBOX_HEIGHT				62.0f
+#define SIMON_SIT_BBOX_WIDTH				32.0f
+#define SIMON_SIT_BBOX_HEIGHT				46.0f
+#define SIMON_JUMP_CROUCH_DISTANCE			54.0f
+
+
+#define SIMON_WALKING_SPEED					0.12f
+#define SIMON_JUMP_SPEED_Y					0.4f
+#define SIMON_GRAVITY						0.012f
+#define SIMON_GRAVITY_ONGROUND				0.2f
+#define SIMON_FALL_GRAVITY					0.012f
+#define SIMON_MAX_SPEED_JUMP_GRAVITY		-0.26f
+#define SIMON_MAX_SPEED_Y					1.8f
+
 #define DEFAULT_TIME_VALUE 1000
+#define SIMON_UNTOUCHABLE_TIME 5000
+
 enum class SimonAniId
 {
 	idleGoRight,
 	idleGoLeft,
 	walkRight,
 	walkLeft,
-	IDJumpRight,
-	IDJumpLeft,
-	IDWhipRight,
-	IDWhipLeft
+	IDSitRight,
+	IDSitLeft,
+	IDWhippingRight,
+	IDWhippingLeft
 	
 };
 enum class SimonStateID
@@ -31,38 +46,42 @@ enum class SimonStateID
 
 class CSimon : public CGameObject
 {
-	float x;
-	float y;
-
-	float vx;
-	float vy;
-
-	int nx;
-	//int untouchable;
+	int untouchable;
 	
 	bool isJumping;
 	bool isAttacking;
 	bool isUsingweapon;
+	bool isSitting;
+	
 
-	DWORD start;
-	DWORD time;
-	//DWORD untouchable_start;
+	DWORD startTimeAttack;
+	DWORD untouchable_start;
 
 	CWhip *whip;
+
+	//vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
+	//vector<LPGAMEOBJECT>* coObjects;	// for saving the coObjects at the current frame to manipulate easily
 
 	static CSimon * __instance;
 public:
 
-	//virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
-	void Update(DWORD dt);
-	void Render();
+	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL) override;
+	void Render() override;
+	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
+
 	void SetState(int state);	
-	//void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
-	//virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	int GetDirection() { return nx; }
-	float GetX() { return x; }
-	float GetY() { return y; }
-	DWORD GetTimeStar() { return start; }
+	void SetVisible(bool visible);
+
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+
+	void Attacking();
+	void Sitting();
+	void Jumping();
+	void StandUp();
+	void ChoiceAnimation();
+
+
+	DWORD GetTimeStar() { return startTimeAttack; }
 	CSimon();
 	~CSimon();
 	static CSimon * GetInstance();

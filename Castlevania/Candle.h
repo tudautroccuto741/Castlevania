@@ -1,21 +1,19 @@
 #pragma once
 #include "GameObject.h"
 #include "Animations.h"
+#define CANDLE_BBOX_WIDTH 32
+#define CANDLE_BBOX_HEIGHT 64
 
 enum class CandleAniID 
 {
-	IDTexCandle = 200,
-	idleCandle = 201
+	IDTexCandle = 400,
+	idleCandle = 401
 };
 
 class CCandle : public CGameObject
 {
-	float x = 0;
-	float y = 0;
-
-	vector<LPANIMATION> animations;
+	
 public:
-
-	void Update(DWORD dt);
-	void Render();
+	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
+	CCandle();
 };

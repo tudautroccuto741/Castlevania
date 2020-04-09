@@ -1,14 +1,14 @@
 #include "Candle.h"
 
-void CCandle::Update(DWORD dt)
+void CCandle::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
-
+	l = x;
+	t = y;
+	r = x + CANDLE_BBOX_WIDTH;
+	b = y + CANDLE_BBOX_HEIGHT;
 }
-
-void CCandle::Render()
+CCandle::CCandle()
 {
-	LPANIMATION ani;
-
-	ani = CAnimations::GetInstance()->Get((int)CandleAniID::idleCandle);
-	ani->Render(x, y);
+	this->currentAniID = (int)CandleAniID::idleCandle;
+	visible = true;
 }

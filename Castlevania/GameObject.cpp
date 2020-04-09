@@ -8,25 +8,28 @@
 #include "Animations.h"
 #include "Textures.h"
 
-
 CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
 	nx = 1;
+
+	visible = false;
+	animations = CAnimations::GetInstance();
+	currentAniID = -1;
+	lastAniID = -1;
 }
 
-void CGameObject::Update(DWORD dt)
+void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	this->dt = dt;
-}
-
-void CGameObject::Render()
-{
-	
+	dx = vx * dt;
+	dy = vy * dt;
 }
 
 /*
+	Extension of original SweptAABB to deal with two moving objects
+*/
 LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO) // 2 obj dang di chuyen
 {
 	float sl, st, sr, sb;		// static object bbox
@@ -37,7 +40,7 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO) // 2 obj dang di chu
 
 	// deal with moving object: m speed = original m speed - collide object speed
 	float svx, svy;
-	coO->GetSpeed(svx, svy);
+	coO->GetSpeed(svx, svy); // lay v cua doi tuong kia
 
 	float sdx = svx * dt;
 	float sdy = svy * dt;
@@ -56,7 +59,7 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO) // 2 obj dang di chu
 
 	CCollisionEvent * e = new CCollisionEvent(t, nx, ny, coO);
 	return e;
-}*/
+}
 
 /*
 	Calculate potential collisions with the list of colliable objects
@@ -64,7 +67,7 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO) // 2 obj dang di chu
 	coObjects: the list of colliable objects
 	coEvents: list of potential collisions
 */
-/*void CGameObject::CalcPotentialCollisions(
+void CGameObject::CalcPotentialCollisions(
 	vector<LPGAMEOBJECT> *coObjects,  //danh sach cac doi tuong va cham
 	vector<LPCOLLISIONEVENT> &coEvents) //danh sach cac su kien va cham
 {
@@ -113,9 +116,9 @@ void CGameObject::FilterCollision( //chon t nho nhat tren tung truc de chon doi 
 	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
 	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
 }
-*/
 
-/*void CGameObject::RenderBoundingBox()
+
+void CGameObject::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);
 	RECT rect;
@@ -131,8 +134,33 @@ void CGameObject::FilterCollision( //chon t nho nhat tren tung truc de chon doi 
 	rect.bottom = (int)b - (int)t;
 
 	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 32);
-}*/
+}
 
+// sap xep lai cac frame
+void CGameObject::ResetAnimationTimer(int aniID)
+{
+	animations->GetInstance()->Get(aniID)->SetCurrentFrame(-1);
+}
+
+void CGameObject::Render()
+{
+	/*if (GetVisible())
+	{
+		animations->GetInstance()->Get(currentAniID)->Render(x, y);
+	}*/
+
+	// Check if stop using an animation
+	// If yes, put the frames of the animation in order (again)
+
+	if (currentAniID != lastAniID)
+		if (lastAniID != -1)
+			this->ResetAnimationTimer(lastAniID);
+	
+	lastAniID = currentAniID;
+
+	//if (GetVisible()) animations->GetInstance()->Get(currentAniID)->Render(x, y, 255);
+	animations->Get(currentAniID)->Render(x, y, 255);
+}
 
 CGameObject::~CGameObject()
 {
