@@ -15,11 +15,11 @@
 #define SIMON_GRAVITY						0.012f
 #define SIMON_GRAVITY_ONGROUND				0.2f
 #define SIMON_FALL_GRAVITY					0.012f
-#define SIMON_MAX_SPEED_JUMP_GRAVITY		-0.26f
+#define SIMON_MAX_SPEED_JUMP_GRAVITY		0.26f
 #define SIMON_MAX_SPEED_Y					1.8f
-
-#define DEFAULT_TIME_VALUE 1000
-#define SIMON_UNTOUCHABLE_TIME 5000
+#define SiMON_JUMP_DEFLECT_SPEED			0.2f
+#define DEFAULT_TIME_VALUE					1000
+#define SIMON_UNTOUCHABLE_TIME				5000
 
 enum class SimonAniId
 {
@@ -52,6 +52,7 @@ class CSimon : public CGameObject
 	bool isAttacking;
 	bool isUsingweapon;
 	bool isSitting;
+	bool isMovable;
 	
 
 	DWORD startTimeAttack;

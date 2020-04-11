@@ -21,11 +21,11 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 void CSampleKeyHander::OnKeyUp(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
-	switch (KeyCode)
+	/*switch (KeyCode)
 	{
 	case DIK_S:
 		CSimon::GetInstance()->SetState((int)SimonStateID::stateIdle);
-	}
+	}*/
 }
 
 void CSampleKeyHander::KeyState(BYTE *states)

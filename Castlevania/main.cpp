@@ -100,7 +100,7 @@ void LoadResources()
 	animations->Add((int)SimonAniId::walkLeft, ani);
 	
 	//simon sit right
-	sprites->Add(10020, 196, 18, 228, 62, texsimon);		
+	sprites->Add(10020, 196, 18, 228, 64, texsimon);		
 
 	ani = new CAnimation(100);
 	ani->Add(10020);
@@ -137,23 +137,33 @@ void LoadResources()
 
 	CSimon::GetInstance()->SetPosition(50.0f, 0);
 
-
 	//brick
 	textures->Add((int)BrickAniID::IDTexBrick, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	LPDIRECT3DTEXTURE9 texbrick = textures->Get((int)BrickAniID::IDTexBrick);
 	
-	sprites->Add(30001, 129, 67, 161, 99, texbrick);
-	
+	/*sprites->Add(30000, 129, 67, 161, 99, texbrick);
+	CBrick *brick = new CBrick();
+	ani = new CAnimation(100);
+	ani->Add(30000);
+	animations->Add((int)BrickAniID::idleBrick, ani);
+	defaultObjects.push_back(brick);
+	brick->SetPosition(0, 168);*/
+
 	for (int i = 0; i < 30; i++)
 	{
 		CBrick *brick = new CBrick();
-		ani = new CAnimation(100);
-		ani->Add(30001);
 		animations->Add((int)BrickAniID::idleBrick, ani);
-		brick->SetPosition(0 + i*32, 150);
+		brick->SetPosition(0 + i * 32.0f, 150);
 		defaultObjects.push_back(brick);
 	}
 
+	sprites->Add(30000, 129, 67, 161, 99, texbrick);
+	CBrick *brick = new CBrick();
+	ani = new CAnimation(100);
+	ani->Add(30000);
+	animations->Add((int)BrickAniID::idleBrick, ani);
+	defaultObjects.push_back(brick);
+	brick->SetPosition(0, 168);
 
 	// candle
 	textures->Add((int)CandleAniID::IDTexCandle, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -204,8 +214,8 @@ void LoadResources()
 	animations->Add((int)WhipAniID::idleWhippingRight, ani);
 
 	//weapon: Whipping left
-	sprites->Add(10043, 2, 6, 34, 64, texweapon);
-	sprites->Add(10044, 63, 6, 95, 64, texweapon);
+	sprites->Add(10043, 2, 2, 34, 64, texweapon);
+	sprites->Add(10044, 63, 2, 95, 64, texweapon);
 	sprites->Add(10045, 135, 4, 191, 38, texweapon);
 
 	ani = new CAnimation(150);
@@ -234,7 +244,6 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-
 	vector<LPGAMEOBJECT> coObjects;
 	for (int i = 1; i < defaultObjects.size(); i++)
 	{
@@ -249,8 +258,8 @@ void Update(DWORD dt)
 	float cx, cy;
 	CSimon::GetInstance()->GetPosition(cx, cy);
 	
-	cx -= SCREEN_WIDTH / 2;
-	cy -= SCREEN_HEIGHT / 2;
+	cx -= SCREEN_WIDTH / 4;
+	cy -= SCREEN_HEIGHT / 4;
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }

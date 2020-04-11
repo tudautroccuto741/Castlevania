@@ -25,42 +25,7 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float min_tx, min_ty, nx = 0, ny;
 
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-	/*if(animations->Get(currentAniID)->GetCurrentFrame()==2)
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CCandle *>(e->obj)) // if e->obj is candle 
-			{
-				CCandle *candle = dynamic_cast<CCandle *>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
-					if (goomba->GetState() != GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -MARIO_JUMP_DEFLECT_SPEED;
-					}
-				}
-				else if (e->nx != 0)
-				{
-					if (untouchable == 0)
-					{
-						if (goomba->GetState() != GOOMBA_STATE_DIE)
-						{
-							if (level > MARIO_LEVEL_SMALL)
-							{
-								level = MARIO_LEVEL_SMALL;
-								StartUntouchable();
-							}
-							else
-								SetState(MARIO_STATE_DIE);
-						}
-					}
-				}
-			}
-		}*/
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		delete coEvents[i];

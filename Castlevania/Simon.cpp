@@ -13,6 +13,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	//jumping
 
+	if (vx > 0 && x > 290) x = 290;
+	if (vx < 0 && x < 0) x = 0;
+
 	if (isJumping)
 	{
 		if (vy > SIMON_MAX_SPEED_JUMP_GRAVITY)
@@ -27,7 +30,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			vy += SIMON_GRAVITY * this->dt;
 		}
-		isJumping = false;
 	}
 	// Attacking
 	// check attack state
@@ -74,7 +76,23 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (ny != 0) vy = 0;
 
 	}
-		
+	// collision with brick
+	for (UINT i = 0; i < coEventsResult.size(); i++)
+	{
+		LPCOLLISIONEVENT e = coEventsResult[i];
+		if (dynamic_cast<CBrick *>(e->obj))
+		{
+			if (e->ny < 0)
+			{
+				if (isJumping)
+				{
+					this->StandUp();
+					isJumping = false;
+					vy = -SiMON_JUMP_DEFLECT_SPEED;
+				}
+			}
+		}
+	}
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
@@ -176,7 +194,7 @@ void CSimon::StandUp()
 		if (isSitting)
 		{
 			isSitting = false;
-			y -= SIMON_IDLE_BBOX_HEIGHT - 54;
+			y -= SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
 		};
 	}
 }
@@ -189,16 +207,19 @@ void CSimon::SetVisible(bool isVisble)
 void CSimon::SetState(int state)
 {
 	if (isAttacking) return;
+	if (isJumping) return;
 	CGameObject::SetState(state);
 	switch (state)
 	{
 	case (int)SimonStateID::stateWalkingRight:
-		vx = SIMON_WALKING_SPEED;
 		nx = 1;
+		if (isSitting) return;
+		vx = SIMON_WALKING_SPEED;
 		break;
 	case (int)SimonStateID::stateWalkingLeft:
-		vx = -SIMON_WALKING_SPEED;
 		nx = -1;
+		if (isSitting) return;
+		vx = -SIMON_WALKING_SPEED;
 		break;
 	case (int)SimonStateID::stateJump:
 		Jumping();

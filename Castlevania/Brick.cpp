@@ -1,16 +1,18 @@
 #include "Brick.h"
 
-void CBrick::Update(DWORD dt)
+/*void CBrick::Update(DWORD dt)
 {
-	x = x + x*dt + 32;
-}
+	//x = x + x*dt + 32;
+}*/
 
 void CBrick::Render()
 {
 	LPANIMATION ani;
-
 	ani = CAnimations::GetInstance()->Get((int)BrickAniID::idleBrick);
-	ani->Render(x, y);
+	for (int i = 0; i < 30; i++)
+	{
+		ani->Render(x + i*32, y);
+	}
 	
 }
 
