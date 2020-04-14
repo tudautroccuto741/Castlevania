@@ -7,30 +7,48 @@ CWhip * CWhip::__instance = NULL;
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	int nnx = CSimon::GetInstance()->GetDirection();
+	currentAniID = (nnx > 0) ? ((int)WhipAniID::idleWhippingRight) : ((int)WhipAniID::idleWhippingLeft);
 	if (visible)
 	{
 		CGameObject::Update(dt);
-
-		int nnx = CSimon::GetInstance()->GetDirection();
-		currentAniID = (nnx > 0) ? ((int)WhipAniID::idleWhippingRight) : ((int)WhipAniID::idleWhippingLeft);
 		UpdatePosition(currentAniID);
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		float min_tx, min_ty, nx = 0, ny;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+		if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
+		{
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+
+				if (dynamic_cast<CCandle *>(e->obj))
+				{
+					CCandle *candle = dynamic_cast<CCandle *>(e->obj);
+					if (e->nx != 0)
+					{
+						candle->Destroy();
+					}
+				}
+			}
+		}
+
+		for (UINT i = 0; i < coEvents.size(); i++)
+		{
+			delete coEvents[i];
+			// empty now
+		}
 	}
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
 
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	float min_tx, min_ty, nx = 0, ny;
-
-	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-
-	for (UINT i = 0; i < coEvents.size(); i++)
-	{
-		delete coEvents[i];
-		// empty now
-	}
+	
 }
 
 void CWhip::GetBoundingBox(float & left, float & top, float & right, float & bottom)
@@ -79,7 +97,6 @@ void CWhip::UpdatePosition(int aniID)
 void CWhip::Render()
 {
 	CGameObject::Render();
-	
 }
 
 void CWhip::SetVisible(bool visible)

@@ -113,6 +113,28 @@ void LoadResources()
 	ani->Add(10021);
 	animations->Add((int)SimonAniId::IDSitLeft, ani);
 
+	//simon sit and whipping right
+	sprites->Add(10022, 16, 67, 48, 113, texsimon);
+	sprites->Add(10023, 437, 133, 469, 179, texsimon);
+	sprites->Add(10024, 375, 133, 407, 179, texsimon);
+
+	ani = new CAnimation(150);
+	ani->Add(10022);
+	ani->Add(10023);
+	ani->Add(10024);
+	animations->Add((int)SimonAniId::IDSitAndWhippingRight, ani);
+
+	//simon sit and whipping left
+	sprites->Add(10025, 432, 265, 464, 311, texsimon);
+	sprites->Add(10026, 11, 331, 43, 377, texsimon);
+	sprites->Add(10027, 73, 331, 105, 377, texsimon);
+
+	ani = new CAnimation(150);
+	ani->Add(10025);
+	ani->Add(10026);
+	ani->Add(10027);
+	animations->Add((int)SimonAniId::IDSitAndWhippingLeft, ani);
+
 	//simon whipping right
 	sprites->Add(10031, 136, 2, 168, 64, texsimon);		
 	sprites->Add(10032, 75, 2, 107, 64, texsimon);
@@ -177,8 +199,9 @@ void LoadResources()
 	ani->Add(40002);
 
 	animations->Add((int)CandleAniID::idleCandle, ani);
-	//CCandle *candle = new CCandle();
-	//candle->SetPosition(200.0f, 86);
+	gameObject = new CCandle();
+	gameObject->SetPosition(200.0f, 86);
+	defaultObjects.push_back(gameObject);
 
 
 	// Flame

@@ -12,12 +12,10 @@
 
 #define SIMON_WALKING_SPEED					0.12f
 #define SIMON_JUMP_SPEED_Y					0.4f
-#define SIMON_GRAVITY						0.012f
+#define SIMON_GRAVITY						0.0012f
 #define SIMON_GRAVITY_ONGROUND				0.2f
 #define SIMON_FALL_GRAVITY					0.012f
-#define SIMON_MAX_SPEED_JUMP_GRAVITY		0.26f
 #define SIMON_MAX_SPEED_Y					1.8f
-#define SiMON_JUMP_DEFLECT_SPEED			0.2f
 #define DEFAULT_TIME_VALUE					1000
 #define SIMON_UNTOUCHABLE_TIME				5000
 
@@ -29,6 +27,8 @@ enum class SimonAniId
 	walkLeft,
 	IDSitRight,
 	IDSitLeft,
+	IDSitAndWhippingRight,
+	IDSitAndWhippingLeft,
 	IDWhippingRight,
 	IDWhippingLeft
 	

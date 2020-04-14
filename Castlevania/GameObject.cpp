@@ -133,13 +133,18 @@ void CGameObject::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;
 
-	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 32);
+	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 200);
 }
 
 // sap xep lai cac frame
 void CGameObject::ResetAnimationTimer(int aniID)
 {
 	animations->GetInstance()->Get(aniID)->SetCurrentFrame(-1);
+}
+
+void CGameObject::Destroy()
+{
+	this->SetVisible(false);
 }
 
 void CGameObject::Render()
@@ -160,6 +165,8 @@ void CGameObject::Render()
 
 	//if (GetVisible()) animations->GetInstance()->Get(currentAniID)->Render(x, y, 255);
 	animations->Get(currentAniID)->Render(x, y, 255);
+
+	this->RenderBoundingBox();
 }
 
 CGameObject::~CGameObject()

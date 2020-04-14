@@ -48,15 +48,13 @@ public:
 	float dy;	// dy = vy*dt
 	int nx;
 
-	CAnimations* animations;
+	CAnimations* animations; //to get animations
+	int currentAniID;
+	int lastAniID;
 
 	DWORD dt;
 
 	int currentState;
-
-	int currentAniID;
-	int lastAniID;
-
 
 public:
 	//position
@@ -107,6 +105,7 @@ public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render();
+	virtual void Destroy();
 
 	CGameObject();
 	~CGameObject();

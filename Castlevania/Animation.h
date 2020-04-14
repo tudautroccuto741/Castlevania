@@ -22,12 +22,10 @@ public:
 	void Add(int spriteId, DWORD time = 0);
 	void Render(float x, float y, int alpha = 255);
 
-	void SetCurrentFrame(int index) { this->currentFrame = index; }
 	int GetCurrentFrame() { return currentFrame; };
-
+	void SetCurrentFrame(int index) { this->currentFrame = index; }
+	
 	void ResetFrameStartTime();
-
-
 };
 
 typedef CAnimation *LPANIMATION;

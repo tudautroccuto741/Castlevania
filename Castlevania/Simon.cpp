@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "Game.h"
 #include "Brick.h"
+#include "Candle.h"
 
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -18,18 +19,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (isJumping)
 	{
-		if (vy > SIMON_MAX_SPEED_JUMP_GRAVITY)
-		{
-			vy += SIMON_FALL_GRAVITY * this->dt;
-			if (isSitting)
-			{
-				this->StandUp();
-			}
-		}
-		else
-		{
-			vy += SIMON_GRAVITY * this->dt;
-		}
+		vy += SIMON_GRAVITY * this->dt;
 	}
 	// Attacking
 	// check attack state
@@ -55,6 +45,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
+	float min_tx, min_ty, nx = 0, ny;
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -64,10 +56,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else
 	{
-		float min_tx, min_ty, nx = 0, ny;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-
 		// block 
 		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 		y += min_ty * dy + ny * 0.4f;
@@ -76,10 +64,12 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (ny != 0) vy = 0;
 
 	}
-	// collision with brick
+	// collision
 	for (UINT i = 0; i < coEventsResult.size(); i++)
 	{
 		LPCOLLISIONEVENT e = coEventsResult[i];
+		// collision with brick
+
 		if (dynamic_cast<CBrick *>(e->obj))
 		{
 			if (e->ny < 0)
@@ -88,9 +78,17 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					this->StandUp();
 					isJumping = false;
-					vy = -SiMON_JUMP_DEFLECT_SPEED;
+					vy = 0;
 				}
 			}
+		}
+		// collision with candle
+
+		if (dynamic_cast<CCandle *>(e->obj))
+		{
+			// Ignore other collisions
+			if (e->nx != 0)	x += (1 - min_tx) * dx;
+			if (e->ny != 0)	y += (1 - min_ty) * dy;
 		}
 	}
 	// clean up collision events
@@ -102,31 +100,31 @@ void CSimon::Render()
 {
 	ChoiceAnimation();
 	CGameObject::Render();
-	CGameObject::RenderBoundingBox();
+	// CGameObject::RenderBoundingBox();
 }
 
 void CSimon::ChoiceAnimation()
 {
 	if (isJumping)
 	{
-		if (isSitting)
+		currentAniID = (nx > 0) ?
+			(int)SimonAniId::IDSitRight :
+			(int)SimonAniId::IDSitLeft;
+	}
+	else if (isSitting)
+	{
+		if (isAttacking)
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::IDSitAndWhippingRight :
+				(int)SimonAniId::IDSitAndWhippingLeft;
+		}
+		else
 		{
 			currentAniID = (nx > 0) ?
 				(int)SimonAniId::IDSitRight :
 				(int)SimonAniId::IDSitLeft;
 		}
-		else
-		{
-			currentAniID = (nx > 0) ?
-				(int)SimonAniId::idleGoRight :
-				(int)SimonAniId::idleGoLeft;
-		}
-	}
-	else if (isSitting)
-	{
-		currentAniID = (nx > 0) ?
-			(int)SimonAniId::IDSitRight :
-			(int)SimonAniId::IDSitLeft;
 	}
 	else if (isAttacking)
 	{
@@ -166,7 +164,6 @@ void CSimon::Sitting()
 		this->vx = 0;
 		this->y += SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
 	}
-
 }
 
 void CSimon::Jumping()
@@ -174,7 +171,7 @@ void CSimon::Jumping()
 	if (vy < SIMON_GRAVITY && !isJumping && !isSitting && !isAttacking)
 	{
 		isJumping = true;
-		isSitting = true;
+		// isSitting = true;
 		this->vy = -SIMON_JUMP_SPEED_Y;
 	}
 }
@@ -234,8 +231,8 @@ void CSimon::SetState(int state)
 		break;
 	case (int)SimonStateID::stateIdle:
 		vx = 0;
-		this->StandUp();
 		isAttacking = false;
+		this->StandUp();
 		break;
 	}
 }
@@ -246,16 +243,16 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	top = y;
 	if (isSitting)
 	{
-		if (isJumping)
+		/*if (isJumping)
 		{
 			right = x + SIMON_SIT_BBOX_WIDTH;
 			bottom = y + SIMON_SIT_BBOX_HEIGHT;
 		}
 		else
-		{
+		{*/
 			right = x + SIMON_SIT_BBOX_WIDTH;
 			bottom = y + SIMON_SIT_BBOX_HEIGHT;
-		}
+		//}
 	}
 	else
 	{
