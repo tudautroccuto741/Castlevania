@@ -6,6 +6,7 @@
 
 void CSampleKeyHander::OnKeyDown(int KeyCode)
 {
+
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
@@ -30,6 +31,7 @@ void CSampleKeyHander::OnKeyUp(int KeyCode)
 
 void CSampleKeyHander::KeyState(BYTE *states)
 {
+	
 	if (CGame::GetInstance()->IsKeyDown(DIK_D))
 		CSimon::GetInstance()->SetState((int)SimonStateID::stateWalkingRight);
 	else if (CGame::GetInstance()->IsKeyDown(DIK_A))

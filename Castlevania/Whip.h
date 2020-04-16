@@ -2,6 +2,7 @@
 #include "Weapons.h"
 #include "Animations.h"
 #include "GameObject.h"
+
 #define FRONT_WHIP_BBOX_WIDTH	56.0f
 #define FRONT_WHIP_BBOX_HEIGHT	34.0f
 #define BACK_WHIP_BBOX_WIDTH	32
@@ -28,7 +29,7 @@ public:
 	void Render() override;
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 	void SetVisible(bool visible) override;
-
+	bool IsOverlapping(LPGAMEOBJECT obj) override;
 	void UpdatePosition(int aniID);
 
 	static CWhip * GetInstance();

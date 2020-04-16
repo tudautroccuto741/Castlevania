@@ -1,5 +1,4 @@
 /* =============================================================
-
 ================================================================ */
 
 #include <windows.h>
@@ -66,7 +65,7 @@ void LoadResources()
 
 	// Simon action
 	// idle simon go right
-	sprites->Add(10001, 436, 2, 468, 64, texsimon);		
+	sprites->Add(10001, 436, 2, 468, 64, texsimon);
 	sprites->Add(10002, 374, 2, 406, 64, texsimon);
 	sprites->Add(10003, 313, 2, 345, 64, texsimon);
 	sprites->Add(10004, 256, 2, 288, 64, texsimon);
@@ -83,7 +82,7 @@ void LoadResources()
 	animations->Add((int)SimonAniId::walkRight, ani);
 
 	//idle simon go left
-	sprites->Add(10011, 12, 200, 44, 262, texsimon);		
+	sprites->Add(10011, 12, 200, 44, 262, texsimon);
 	sprites->Add(10012, 74, 200, 106, 262, texsimon);
 	sprites->Add(10013, 135, 200, 167, 262, texsimon);
 	sprites->Add(10014, 192, 200, 224, 262, texsimon);
@@ -98,17 +97,17 @@ void LoadResources()
 	ani->Add(10013);
 	ani->Add(10014);
 	animations->Add((int)SimonAniId::walkLeft, ani);
-	
+
 	//simon sit right
-	sprites->Add(10020, 196, 18, 228, 64, texsimon);		
+	sprites->Add(10020, 196, 18, 228, 64, texsimon);
 
 	ani = new CAnimation(100);
 	ani->Add(10020);
 	animations->Add((int)SimonAniId::IDSitRight, ani);
 
 	//simon sit left
-	sprites->Add(10021, 252, 216, 284, 262, texsimon);		
-	
+	sprites->Add(10021, 252, 216, 284, 262, texsimon);
+
 	ani = new CAnimation(100);
 	ani->Add(10021);
 	animations->Add((int)SimonAniId::IDSitLeft, ani);
@@ -136,7 +135,7 @@ void LoadResources()
 	animations->Add((int)SimonAniId::IDSitAndWhippingLeft, ani);
 
 	//simon whipping right
-	sprites->Add(10031, 136, 2, 168, 64, texsimon);		
+	sprites->Add(10031, 136, 2, 168, 64, texsimon);
 	sprites->Add(10032, 75, 2, 107, 64, texsimon);
 	sprites->Add(10033, 16, 2, 48, 64, texsimon);
 
@@ -162,7 +161,7 @@ void LoadResources()
 	//brick
 	textures->Add((int)BrickAniID::IDTexBrick, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	LPDIRECT3DTEXTURE9 texbrick = textures->Get((int)BrickAniID::IDTexBrick);
-	
+
 	/*sprites->Add(30000, 129, 67, 161, 99, texbrick);
 	CBrick *brick = new CBrick();
 	ani = new CAnimation(100);
@@ -190,7 +189,7 @@ void LoadResources()
 	// candle
 	textures->Add((int)CandleAniID::IDTexCandle, L"textures\\3.png", D3DCOLOR_XRGB(255, 0, 255));
 	LPDIRECT3DTEXTURE9 texCandle = textures->Get((int)CandleAniID::IDTexCandle);
-	
+
 	sprites->Add(40001, 0, 0, 32, 64, texCandle);
 	sprites->Add(40002, 32, 0, 64, 64, texCandle);
 
@@ -219,11 +218,11 @@ void LoadResources()
 	ani->Add(50003);
 	ani->Add(50004);
 	animations->Add((int)FlameAniID::idleFlame, ani);
-	
-	
+
+
 	// whipping
 	textures->Add((int)WhipAniID::IDTexWhip, L"textures\\2.png", D3DCOLOR_XRGB(255, 0, 255));
-	LPDIRECT3DTEXTURE9 texweapon = textures->Get((int)WhipAniID::IDTexWhip);	
+	LPDIRECT3DTEXTURE9 texweapon = textures->Get((int)WhipAniID::IDTexWhip);
 
 	//weapon: Whipping right
 	sprites->Add(10040, 420, 2, 452, 64, texweapon);
@@ -246,7 +245,7 @@ void LoadResources()
 	ani->Add(10044);
 	ani->Add(10045);
 	animations->Add((int)WhipAniID::idleWhippingLeft, ani);
-	
+
 	// sprite - sprite - sprite 
 // (---100---)(---100---)(---100---)
 
@@ -280,7 +279,7 @@ void Update(DWORD dt)
 
 	float cx, cy;
 	CSimon::GetInstance()->GetPosition(cx, cy);
-	
+
 	cx -= SCREEN_WIDTH / 4;
 	cy -= SCREEN_HEIGHT / 4;
 
@@ -304,11 +303,11 @@ void Render()
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		
+
 		for (int i = 0; i < defaultObjects.size(); i++)
-			if (defaultObjects[i]->GetVisible()) 
+			if (defaultObjects[i]->GetVisible())
 				defaultObjects[i]->Render();
-		
+
 		spriteHandler->End();
 		d3ddv->EndScene();
 	}

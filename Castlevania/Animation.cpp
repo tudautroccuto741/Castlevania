@@ -19,7 +19,7 @@ CAnimation::CAnimation(int defaultTime)
 void CAnimation::Add(int spriteId, DWORD time)
 {
 	int t = time;
-	if (time == 0) 
+	if (time == 0)
 		t = this->defaultTime;
 
 	LPSPRITE sprite = CSprites::GetInstance()->Get(spriteId);
@@ -29,7 +29,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 
 void CAnimation::Render(float x, float y, int alpha)
 {
- 	DWORD now = GetTickCount();
+	DWORD now = GetTickCount();
 	if (currentFrame == -1)
 	{
 		frames[0]->GetSprite()->Draw(x, y, 255);
@@ -45,7 +45,7 @@ void CAnimation::Render(float x, float y, int alpha)
 		{
 			currentFrame++;
 			lastFrameTime = now;
-			if (currentFrame == frames.size()) 
+			if (currentFrame == frames.size())
 				currentFrame = 0;
 		}
 

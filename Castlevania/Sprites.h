@@ -18,4 +18,3 @@ public:
 	static CSprites * GetInstance();
 };
 
-

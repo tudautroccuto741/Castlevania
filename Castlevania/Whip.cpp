@@ -7,48 +7,45 @@ CWhip * CWhip::__instance = NULL;
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	int nnx = CSimon::GetInstance()->GetDirection();
-	currentAniID = (nnx > 0) ? ((int)WhipAniID::idleWhippingRight) : ((int)WhipAniID::idleWhippingLeft);
 	if (visible)
 	{
+		int nnx = CSimon::GetInstance()->GetDirection();
+		currentAniID = (nnx > 0) ? ((int)WhipAniID::idleWhippingRight) : ((int)WhipAniID::idleWhippingLeft);
 		CGameObject::Update(dt);
 		UpdatePosition(currentAniID);
+
 		vector<LPCOLLISIONEVENT> coEvents;
-		vector<LPCOLLISIONEVENT> coEventsResult;
-
 		coEvents.clear();
-
 		CalcPotentialCollisions(coObjects, coEvents);
+		
+		vector<LPCOLLISIONEVENT> coEventsResult;
+		
+		
+			float min_tx, min_ty, nx = 0, ny;
 
-		float min_tx, min_ty, nx = 0, ny;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-
-		if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
-		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
+			if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
 			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-
-				if (dynamic_cast<CCandle *>(e->obj))
+				for (UINT i = 0; i < coObjects->size(); i++)
 				{
-					CCandle *candle = dynamic_cast<CCandle *>(e->obj);
-					if (e->nx != 0)
+					if (this->IsOverlapping(coObjects->at(i)))
 					{
-						candle->Destroy();
+						
+						if (dynamic_cast<CCandle *>(coObjects->at(i)))
+						{
+							coObjects->at(i)->Destroy();
+						}
 					}
 				}
 			}
-		}
 
-		for (UINT i = 0; i < coEvents.size(); i++)
-		{
-			delete coEvents[i];
-			// empty now
-		}
+			
+		
+		
+		// clean up collision events
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
-
-	
 }
 
 void CWhip::GetBoundingBox(float & left, float & top, float & right, float & bottom)
@@ -67,7 +64,6 @@ void CWhip::GetBoundingBox(float & left, float & top, float & right, float & bot
 	}
 	
 }
-
 
 void CWhip::UpdatePosition(int aniID)
 {
@@ -107,7 +103,17 @@ void CWhip::SetVisible(bool visible)
 			this->ResetAnimationTimer(currentAniID);
 }
 
+bool CWhip::IsOverlapping(LPGAMEOBJECT obj)
+{
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
 
+	// When the rope is at the back of Simon, ignore it
+	if ((nx > 0 && x < xS) || (nx < 0 && x > xS))
+		return false;
+
+	return CGameObject::IsOverlapping(obj);
+}
 
 CWhip * CWhip::GetInstance()
 {

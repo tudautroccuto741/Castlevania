@@ -3,7 +3,7 @@
 #include "Animations.h"
 #define BRICK_BBOX_WIDTH  32
 #define BRICK_BBOX_HEIGHT 32
-enum class BrickAniID 
+enum class BrickAniID
 {
 	IDTexBrick = 300,
 	idleBrick = 301

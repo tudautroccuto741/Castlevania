@@ -4,7 +4,7 @@
 #define CANDLE_BBOX_WIDTH 32
 #define CANDLE_BBOX_HEIGHT 64
 
-enum class CandleAniID 
+enum class CandleAniID
 {
 	IDTexCandle = 400,
 	idleCandle = 401
@@ -12,7 +12,7 @@ enum class CandleAniID
 
 class CCandle : public CGameObject
 {
-	
+
 public:
 
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;

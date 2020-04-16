@@ -71,7 +71,7 @@ int CGame::IsKeyDown(int KeyCode)
 	return (keyStates[KeyCode] & 0x80) > 0;
 }
 
-void CGame::InitKeyboard(LPKEYEVENTHANDLER handler) 
+void CGame::InitKeyboard(LPKEYEVENTHANDLER handler)
 {
 	HRESULT
 		hr = DirectInput8Create
@@ -212,7 +212,7 @@ void CGame::SweptAABB(
 
 	float dx_entry, dx_exit, tx_entry, tx_exit;
 	float dy_entry, dy_exit, ty_entry, ty_exit;
-	 
+
 	float t_entry;
 	float t_exit;
 

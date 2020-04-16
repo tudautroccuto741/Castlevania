@@ -63,7 +63,6 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO) // 2 obj dang di chu
 
 /*
 	Calculate potential collisions with the list of colliable objects
-
 	coObjects: the list of colliable objects
 	coEvents: list of potential collisions
 */
@@ -147,6 +146,21 @@ void CGameObject::Destroy()
 	this->SetVisible(false);
 }
 
+bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
+{
+	float left, top, right, bottom;
+	float leftObj, topObj, rightObj, bottomObj;
+
+	obj->GetBoundingBox(leftObj, topObj, rightObj, bottomObj);
+	GetBoundingBox(left, top, right, bottom);
+
+	if (left < rightObj && right > leftObj &&
+		top < bottomObj && bottom > topObj)
+		return true;
+
+	return false;
+}
+
 void CGameObject::Render()
 {
 	/*if (GetVisible())
@@ -160,7 +174,7 @@ void CGameObject::Render()
 	if (currentAniID != lastAniID)
 		if (lastAniID != -1)
 			this->ResetAnimationTimer(lastAniID);
-	
+
 	lastAniID = currentAniID;
 
 	//if (GetVisible()) animations->GetInstance()->Get(currentAniID)->Render(x, y, 255);

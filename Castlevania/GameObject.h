@@ -20,12 +20,12 @@ struct CCollisionEvent
 {
 	LPGAMEOBJECT obj;
 	float t, nx, ny;
-	CCollisionEvent(float t, float nx, float ny, LPGAMEOBJECT obj = NULL) 
-	{ 
+	CCollisionEvent(float t, float nx, float ny, LPGAMEOBJECT obj = NULL)
+	{
 		this->t = t;
 		this->nx = nx;
 		this->ny = ny;
-		this->obj = obj; 
+		this->obj = obj;
 	}
 
 	static bool compare(const LPCOLLISIONEVENT &a, LPCOLLISIONEVENT &b)
@@ -81,15 +81,15 @@ public:
 	virtual void SetVisible(bool visible) { this->visible = visible; }
 	bool GetVisible() { return this->visible; }
 
-	
+
 	void RenderBoundingBox();
 
 	//2 object moving
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 
 	// va cham giua doi tuong hien tai 
-	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents); 
-	
+	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);
+
 	//cac doi tuong dung dau tien theo truc x va truc y																						//	voi ds cac doi tuong
 	void FilterCollision(
 		vector<LPCOLLISIONEVENT> &coEvents,
@@ -98,7 +98,7 @@ public:
 		float &min_ty,
 		float &nx,
 		float &ny);
-		
+
 	void ResetAnimationTimer(int aniID);
 
 
@@ -106,6 +106,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render();
 	virtual void Destroy();
+	virtual bool IsOverlapping(LPGAMEOBJECT obj);
 
 	CGameObject();
 	~CGameObject();
