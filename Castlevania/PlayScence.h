@@ -5,19 +5,25 @@
 #include "GameObject.h"
 #include "Brick.h"
 #include "Simon.h"
+#include "Tile.h"
 
 class CPlayScene : public CScene //dai dien 1 canh choi
 {
 protected:
 	CSimon *player;					// A play scene has to have player, right? 
+	int tileMapLineY = 0;
+	int tileMapWidth = 0;
+	int tileMapHeight = 0;
 
 	vector<LPGAMEOBJECT> objects;
+	vector<LPTILE> tileMap;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void __ParseSection_TILE_MAP(string line);
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 

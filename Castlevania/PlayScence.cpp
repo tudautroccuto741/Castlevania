@@ -7,6 +7,8 @@
 #include "Portal.h"
 #include "Debug.h"
 #include "Candle.h"
+#include "Tile.h"
+#include "TileMap.h"
 
 
 using namespace std;
@@ -28,6 +30,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ANIMATIONS		4
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS			6
+#define SCENE_SECTION_TILEMAP			7
+
 
 #define OBJECT_TYPE_SIMON				0
 #define OBJECT_TYPE_WHIP				1
@@ -37,19 +41,23 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 #define MAX_SCENE_LINE 1024
 
-
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);//cat chuoi
 
-	if (tokens.size() < 5) return; // skip invalid lines
-
+	if (tokens.size() < 3) return; // skip invalid lines
+	
 	int texID = atoi(tokens[0].c_str());
 	wstring path = ToWSTR(tokens[1]);
 	int R = atoi(tokens[2].c_str());
 	int G = atoi(tokens[3].c_str());
 	int B = atoi(tokens[4].c_str());
 
+	if (texID == TEXTURE_ID_TILE_MAP) {
+		this->tileMapWidth = atoi(tokens[5].c_str());
+		this->tileMapHeight = atoi(tokens[6].c_str());
+	}
+	
 	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 }
 
@@ -120,12 +128,37 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
 }
 
+void CPlayScene::__ParseSection_TILE_MAP(string line)
+{
+	vector<string> tokens = split(line, ",");//cat chuoi  
+
+	int numberOfTilesInARow = this->tileMapWidth/TILE_WIDTH;
+		for (int i = 0; i < tokens.size(); i++)  
+		{
+			int tileId = atoi(tokens[i].c_str()) - 1;
+			int left = (tileId % numberOfTilesInARow) * TILE_WIDTH;
+			int top = (tileId / numberOfTilesInARow) * TILE_HEIGHT;
+			int right = left + TILE_WIDTH;
+			int bottom = top + TILE_HEIGHT;
+			int x, y;
+			x = i * TILE_WIDTH;
+			y = this->tileMapLineY;
+
+			CTile * tile = new CTile(x, y, left, top, right, bottom);
+			tileMap.push_back(tile);
+		}
+
+		this->tileMapLineY += TILE_HEIGHT;
+}
+
+
 /*
 	Parse a line in section [OBJECTS]
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
+	
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
@@ -207,6 +240,10 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
+		//TODO: if TILEMAP
+		if (line == "[TILEMAP]") {
+			section = SCENE_SECTION_TILEMAP; continue;
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -219,6 +256,9 @@ void CPlayScene::Load()
 		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_TILEMAP: __ParseSection_TILE_MAP(line); break;
+			// case TITLEMAP: 
+			// func ParseTileMap
 		}
 	}
 
@@ -260,11 +300,13 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	//for (int i = 0; i < objects.size(); i++)
-	//	objects[i]->Render();
+	for (int i = 0; i < tileMap.size(); i++)
+		tileMap[i]->Render();
+
 	for (int i = 0; i < objects.size(); i++)
 		if (this->objects[i]->GetVisible())
 			objects[i]->Render();
+
 }
 
 /*

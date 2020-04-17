@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="27">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="50" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="40">
  <editorsettings>
-  <export target="file.txt" format="csv"/>
+  <export format="csv"/>
  </editorsettings>
  <tileset firstgid="1" source="0.tsx"/>
  <tileset firstgid="154" name="0" tilewidth="32" tileheight="32" tilecount="153" columns="17">
@@ -29,22 +29,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Simon">
-  <object id="11" gid="335" x="64" y="288.333" width="32" height="32"/>
-  <object id="12" gid="336" x="95.6667" y="288" width="32" height="32"/>
-  <object id="13" gid="320" x="64" y="256.333" width="32" height="32"/>
-  <object id="14" gid="321" x="96" y="256.333" width="32" height="32"/>
+ <objectgroup id="4" name="object">
+  <object id="37" name="simon" x="1375" y="225" width="32" height="64"/>
+  <object id="38" x="1" y="292" width="32" height="32"/>
+  <object id="39" x="1200" y="225" width="32" height="64"/>
  </objectgroup>
- <objectgroup id="5" name="Candle">
-  <object id="15" gid="494" x="168" y="288.5" width="30" height="30"/>
-  <object id="16" gid="487" x="167.5" y="257" width="30" height="30"/>
-  <object id="17" gid="494" x="435.5" y="288.5" width="30" height="30"/>
-  <object id="18" gid="487" x="436" y="256.5" width="30" height="30"/>
-  <object id="19" gid="494" x="685.5" y="288.5" width="30" height="30"/>
-  <object id="20" gid="487" x="685" y="257.5" width="30" height="30"/>
-  <object id="21" gid="494" x="819" y="287.5" width="30" height="30"/>
-  <object id="22" gid="487" x="820" y="256.5" width="30" height="30"/>
-  <object id="23" gid="494" x="1203" y="288.5" width="30" height="30"/>
-  <object id="25" gid="487" x="1203" y="256" width="30" height="30"/>
- </objectgroup>
+ <objectgroup id="5" name="Candle" visible="0"/>
 </map>

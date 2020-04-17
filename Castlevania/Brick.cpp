@@ -7,9 +7,9 @@
 
 void CBrick::Render()
 {
-	LPANIMATION ani;
+	/*LPANIMATION ani;
 	ani = CAnimations::GetInstance()->Get((int)BrickAniID::idleBrick);
-	ani->Render(x, y);
+	ani->Render(x, y);*/
 }
 
 void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)

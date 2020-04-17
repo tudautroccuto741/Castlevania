@@ -2,6 +2,8 @@
 #include <unordered_map>
 #include <d3dx9.h>
 
+#define	TEXTURE_ID_TILE_MAP	123
+
 using namespace std;
 
 /*
