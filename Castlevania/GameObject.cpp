@@ -177,7 +177,6 @@ void CGameObject::Render()
 
 	lastAniID = currentAniID;
 
-	//if (GetVisible()) animations->GetInstance()->Get(currentAniID)->Render(x, y, 255);
 	animations->Get(currentAniID)->Render(x, y, 255);
 
 	this->RenderBoundingBox();

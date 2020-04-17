@@ -20,3 +20,14 @@ CSprites *CSprites::GetInstance()
 		__instance = new CSprites();
 	return __instance;
 }
+
+void CSprites::Clear()
+{
+	for (auto x : sprites)
+	{
+		LPSPRITE s = x.second;
+		delete s;
+	}
+
+	sprites.clear();
+}

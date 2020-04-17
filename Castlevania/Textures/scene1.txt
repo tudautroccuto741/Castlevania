@@ -1,67 +1,58 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-100	textures\\1.png	255	0	255
-0	textures\\2.png	255	0	255
-400	textures\\3.png	255	0	255
+100	textures\1.png	255	0	255
+0	textures\2.png	255	0	255
+400	textures\3.png	255	0	255
+300	textures\3.png	255	0	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # SIMON
 # idle right
 10001	436	2	468	64	100
-
 # idle left
 10011	12	200	44	262	100
-
 # walk right
 10002	374	2	406	64	100	
 10003	313	2	345	64	100
 10004	256	2	288	64	100
-
 # walk left
 10012	74	200	106	262	100
-10013	125	200	167	262	100
-10013	125	200	224	262	100
-
+10013	135	200	167	262	100
+10014	192	200	224	262	100
 # sit right
 10021	196	18	228	64	100
-
 # sit left
 10031	252	216	284	262	100
-
 # sit and whipping right
 10022	16	67	48	113	100
 10023	437	133	469	179	100
 10024	375	133	407	179	100
-
 # sit and whipping left
 10032	432	265	464	311	100
 10033	11	331	43	377	100
 10034	73	331	105	377	100
-
 # simon whipping right
 10041	136	2	168	64	100
 10042	75	2	107	64	100
 10043	16	2	48	64	100
-
 # simon whipping left
 10051	312	200	344	262	100
 10052	373	200	405	262	100
 10053	432	200	464	262	100
-
 # Whipping right
 20001	420	2	452	64	0
 20002	358	2	390	64	0
 20003	262	2	318	36	0
-
 # whipping left
 20011	2	2	34	64	0
 20012	63	2	95	64	0
 20013	135	4	191	38	0
-
 # Candle
 30001	0	0	32	64	400		
 30002	32	0	64	64	400	
+# Brick
+40000	129	67	161	99	300
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -97,6 +88,9 @@
 # ==== CANDLE =========
 401	30001	100	30002	100
 
+# ==== BRICK ========
+301	40000	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -104,22 +98,38 @@
 # SIMON
 100	0	1	2	3	4	5	6	7	8	9
 # WHIP 
-1	10	9999	9998
+0	9999	9998
 # CANDLE 
-2	401
+400	401
+# BRICK
+300	301
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = SIMON , 1 = Whip, 2 = Candle
+# type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick
 # SIMON
-0	50.0	0	0
-
+0	50.0	0	100
 # WHIP
-
-
+1	82.0	0	0
 # CANDLE 
-2	200	150	2
-
+2	200	90	400
+# BRICK
+# --- platform (hint: I created the list using Excel!) ----
+3	0	150	300
+3	32	150	300
+3	64	150	300
+3	96	150	300
+3	128	150	300
+3	160	150	300
+3	192	150	300
+3	224	150	300
+3	256	150	300
+3	288	150	300
+3	320	150	300
+3	352	150	300
+3	384	150	300
+3	416	150	300
+3	448	150	300
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	300	98	0	316	150	2

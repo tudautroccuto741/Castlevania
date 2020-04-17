@@ -5,7 +5,8 @@
 #include <vector>
 #include "Animation.h"
 #include <algorithm>
-#include"Animations.h"
+#include "Animations.h"
+#include "AnimationSet.h"
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 
@@ -51,6 +52,7 @@ public:
 	CAnimations* animations; //to get animations
 	int currentAniID;
 	int lastAniID;
+	LPANIMATION_SET animation_set;
 
 	DWORD dt;
 
@@ -80,7 +82,9 @@ public:
 	//Visible
 	virtual void SetVisible(bool visible) { this->visible = visible; }
 	bool GetVisible() { return this->visible; }
-
+	
+	// animationsSet
+	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 
 	void RenderBoundingBox();
 

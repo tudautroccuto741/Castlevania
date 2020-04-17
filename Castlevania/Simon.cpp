@@ -14,8 +14,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	//jumping
 
-	if (vx > 0 && x > 290) x = 290;
-	if (vx < 0 && x < 0) x = 0;
+//	if (vx > 0 && x > 290) x = 290;
+//	if (vx < 0 && x < 0) x = 0;
 
 	if (isJumping)
 	{
@@ -98,6 +98,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSimon::Render()
 {
+	whip->GetVisible();
 	ChoiceAnimation();
 	CGameObject::Render();
 	// CGameObject::RenderBoundingBox();
@@ -227,7 +228,7 @@ void CSimon::SetState(int state)
 	case (int)SimonStateID::stateWhip:
 		isAttacking = true;
 		startTimeAttack = GetTickCount();
-		whip->SetVisible(true);
+		this->whip->SetVisible(true);
 		break;
 	case (int)SimonStateID::stateIdle:
 		vx = 0;
@@ -276,6 +277,7 @@ CSimon::CSimon()
 	whip = CWhip::GetInstance();
 	isJumping = false;
 	isSitting = false;
+	//isAttacking = false;
 }
 
 CSimon::~CSimon()
