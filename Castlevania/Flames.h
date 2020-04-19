@@ -1,20 +1,22 @@
 #pragma once
 #include "Flame.h"
 #include "GameObject.h"
+
 /*
-	Manager flame
+	The class helps managing the Flame:
 */
 class CFlames
 {
-	vector<LPFLAME> flames;
+	vector<CFlame *> flames;
+
 	static CFlames * __instance;
 	CFlames() = default;
 
 public:
-	void Add(CFlame*flame);
-	void ShowFlame(LPGAMEOBJECT obj);
+
+	void Add(CFlame * flame);
+	void ShowAFlame(LPGAMEOBJECT obj);
 
 	static CFlames * GetInstance();
-
 };
 

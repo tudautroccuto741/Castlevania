@@ -53,7 +53,6 @@ public:
 	int currentAniID;
 	int lastAniID;
 	LPANIMATION_SET animation_set;
-
 	DWORD dt;
 
 	int currentState;

@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Animations.h"
 #include "Textures.h"
+#include "Flames.h"
 
 CGameObject::CGameObject()
 {
@@ -143,6 +144,7 @@ void CGameObject::ResetAnimationTimer(int aniID)
 
 void CGameObject::Destroy()
 {
+	CFlames::GetInstance()->ShowAFlame(this);
 	this->SetVisible(false);
 }
 

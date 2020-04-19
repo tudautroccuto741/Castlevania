@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Simon.h"
 #include "Candle.h"
+#include "Flame.h"
 
 CWhip * CWhip::__instance = NULL;
 
@@ -9,8 +10,8 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (visible)
 	{
-		int nnx = CSimon::GetInstance()->GetDirection();
-		currentAniID = (nnx > 0) ? ((int)WhipAniID::idleWhippingRight) : ((int)WhipAniID::idleWhippingLeft);
+		nx = CSimon::GetInstance()->GetDirection();
+		currentAniID = (nx > 0) ? ((int)WhipAniID::idleWhippingRight) : ((int)WhipAniID::idleWhippingLeft);
 		CGameObject::Update(dt);
 		UpdatePosition(currentAniID);
 
@@ -108,7 +109,7 @@ bool CWhip::IsOverlapping(LPGAMEOBJECT obj)
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
 
-	// When the rope is at the back of Simon, ignore it
+	// When the whip is at the back of Simon, ignore it
 	if ((nx > 0 && x < xS) || (nx < 0 && x > xS))
 		return false;
 

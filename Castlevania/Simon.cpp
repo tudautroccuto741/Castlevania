@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Brick.h"
 #include "Candle.h"
+#include "Flame.h"
 
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -85,6 +86,12 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// collision with candle
 
 		if (dynamic_cast<CCandle *>(e->obj))
+		{
+			// Ignore other collisions
+			if (e->nx != 0)	x += (1 - min_tx) * dx;
+			if (e->ny != 0)	y += (1 - min_ty) * dy;
+		}
+		if (dynamic_cast<CFlame *>(e->obj))
 		{
 			// Ignore other collisions
 			if (e->nx != 0)	x += (1 - min_tx) * dx;

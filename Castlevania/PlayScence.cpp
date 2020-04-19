@@ -8,7 +8,8 @@
 #include "Debug.h"
 #include "Candle.h"
 #include "Tile.h"
-#include "TileMap.h"
+#include "Flame.h"
+#include "Flames.h"
 
 
 using namespace std;
@@ -37,6 +38,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_WHIP				1
 #define OBJECT_TYPE_CANDLE				2
 #define OBJECT_TYPE_BRICK				3
+#define OBJECT_TYPE_FLAMES				4
 #define OBJECT_TYPE_PORTAL				50
 
 #define MAX_SCENE_LINE 1024
@@ -159,7 +161,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 	
-
+	CFlames * flames = CFlames::GetInstance();
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
@@ -187,7 +189,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_WHIP: obj = CWhip::GetInstance(); break;
 	case OBJECT_TYPE_CANDLE: obj = new CCandle(); break;
-	case OBJECT_TYPE_BRICK:obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_FLAMES: 
+		obj = new CFlame(); 
+		flames->Add((CFlame*)obj);
+		break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -216,7 +222,7 @@ void CPlayScene::Load()
 	
 	ifstream f;
 	f.open(sceneFilePath);
-
+	
 	// current resource section flag
 	int section = SCENE_SECTION_UNKNOWN;
 

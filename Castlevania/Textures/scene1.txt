@@ -4,6 +4,7 @@
 0	textures\2.png	255	0	255
 400	textures\3.png	255	0	255
 300	textures\3.png	255	0	255
+500	textures\3.png	255	0	255
 
 # id	file_path	r	g	b	width	height 
 # width, height only available for tilemap texture  
@@ -57,6 +58,10 @@
 30002	32	0	64	64	400	
 # Brick
 40000	129	67	161	99	300
+# Flames
+50002	113	7	129	37	500
+50003	156	7	172	37	500
+50004	198	7	214	37	500
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -95,6 +100,9 @@
 # ==== BRICK ========
 301	40000	100
 
+# ==== FLAMES ========
+501	50002	100	50003	100	50004	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -107,10 +115,12 @@
 400	401
 # BRICK
 300	301
+# FLAMES
+500	501
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick
+# type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames
 # SIMON
 0	80	225	100
 # WHIP
@@ -121,6 +131,12 @@
 2	678	225	400
 2	945	225	400
 2	1200	225	400
+# Flames
+4	175	257	500
+#4	444	257	500
+#4	686	257	500
+#4	953	257	500
+#4	1208	257	500
 # BRICK
 # --- platform (hint: I created the list using Excel!) ----
 3	0	292	300
@@ -174,6 +190,7 @@
 3	1536	292	300
 3	1568	292	300
 3	1600	292	300
+
 
 
 # --- SCENE PORTAL ----

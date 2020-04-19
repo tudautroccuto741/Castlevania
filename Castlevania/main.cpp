@@ -16,7 +16,6 @@
 #include "Candle.h"
 #include "SampleKeyHander.h"
 #include "Whip.h"
-#include "Flame.h"
 
 #define WINDOW_CLASS_NAME L"Castlevania"
 #define MAIN_WINDOW_TITLE L"Castlevania"

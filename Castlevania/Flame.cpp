@@ -8,27 +8,33 @@ void CFlame::GetBoundingBox(float & left, float & top, float & right, float & bo
 	bottom = top + FLAME_BBOX_HEIGHT;
 }
 
-void CFlame::StartToBurn()
-{
-	startBurnTime = GetTickCount();
-}
-
 void CFlame::Render()
 {
-	if (GetVisible())
+	if (GetVisible()==true)
 	{
-		if (GetTickCount() - startBurnTime > BURNING_TIME)
+		if (GetTickCount() - burnStartTime > BURNING_TIME)
 		{
-			this->SetVisible(false);
+			this->Destroy();
 			ResetAnimationTimer(currentAniID);
 		}
-		else			
+		else
 			CGameObject::Render();
 	}
 }
 
+void CFlame::Destroy()
+{
+	SetVisible(false);
+}
+
+void CFlame::StartToBurn()
+{
+	burnStartTime = GetTickCount();
+}
+
 CFlame::CFlame()
 {
-	this->currentAniID = (int)FlameAniID::idleFlame;
-	visible = true;
+	currentAniID = (int)FlameAniID::IDLE;
 }
+
+

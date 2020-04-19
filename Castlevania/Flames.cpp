@@ -1,20 +1,19 @@
 #include "Flames.h"
-#include "Candle.h"
+
+#include "debug.h"
 
 CFlames * CFlames::__instance = NULL;
 
 void CFlames::Add(CFlame * flame)
 {
-	flame->SetVisible(true);
+	flame->SetVisible(false);
 	flames.push_back(flame);
 }
-
-
 
 /*
 	Show a flame at the center position of the destroyed object given.
 */
-void CFlames::ShowFlame(LPGAMEOBJECT obj)
+void CFlames::ShowAFlame(LPGAMEOBJECT obj)
 {
 	// Show at the central position of the object
 	float l, t, r, b;
@@ -31,10 +30,6 @@ void CFlames::ShowFlame(LPGAMEOBJECT obj)
 		{
 			flame->SetVisible(true);
 			flame->StartToBurn();
-
-			// Pass the item the object is holding to flame, if has
-			// To drop it when flame runs out of burning time
-			//flame->SetHoldingItem(obj->GetHoldingItem());
 
 			// Calibrate the flame position to appear at the central of the objects
 			flame->SetPosition(
