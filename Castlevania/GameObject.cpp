@@ -133,7 +133,7 @@ void CGameObject::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;
 
-	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 200);
+	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 32);
 }
 
 // sap xep lai cac frame
@@ -144,7 +144,7 @@ void CGameObject::ResetAnimationTimer(int aniID)
 
 void CGameObject::Destroy()
 {
-	CFlames::GetInstance()->ShowAFlame(this);
+	CFlames::GetInstance()->ShowFlame(this);
 	this->SetVisible(false);
 }
 
@@ -156,10 +156,12 @@ bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
 	obj->GetBoundingBox(leftObj, topObj, rightObj, bottomObj);
 	GetBoundingBox(left, top, right, bottom);
 
-	if (left < rightObj && right > leftObj &&
-		top < bottomObj && bottom > topObj)
-		return true;
-
+	if (obj->GetVisible()) 
+	{
+		if (left < rightObj && right > leftObj &&
+			top < bottomObj && bottom > topObj)
+			return true;
+	}
 	return false;
 }
 

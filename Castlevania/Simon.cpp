@@ -5,6 +5,9 @@
 #include "Brick.h"
 #include "Candle.h"
 #include "Flame.h"
+#include "Heart.h"
+#include "WhipItem.h"
+#include "Knife.h"
 
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -14,10 +17,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += SIMON_GRAVITY * dt;
 
 	//jumping
-
-//	if (vx > 0 && x > 290) x = 290;
-//	if (vx < 0 && x < 0) x = 0;
-
 	if (isJumping)
 	{
 		vy += SIMON_GRAVITY * this->dt;
@@ -83,20 +82,33 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 			}
 		}
-		// collision with candle
 
+		// collision with candle								
 		if (dynamic_cast<CCandle *>(e->obj))
 		{
 			// Ignore other collisions
 			if (e->nx != 0)	x += (1 - min_tx) * dx;
 			if (e->ny != 0)	y += (1 - min_ty) * dy;
 		}
-		if (dynamic_cast<CFlame *>(e->obj))
+		else if (dynamic_cast<CFlame *>(e->obj))
 		{
 			// Ignore other collisions
 			if (e->nx != 0)	x += (1 - min_tx) * dx;
 			if (e->ny != 0)	y += (1 - min_ty) * dy;
 		}
+		else if (dynamic_cast<CWhipItem *>(e->obj))
+		{
+			if (e->obj->GetVisible())
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					this->whip->LvUp();
+					e->obj->SetVisible(false);
+				}
+				if (e->ny != 0)	whip->LvUp();
+			}
+		}
+
 	}
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];	
@@ -213,7 +225,7 @@ void CSimon::SetState(int state)
 {
 	if (isAttacking) return;
 	if (isJumping) return;
-	CGameObject::SetState(state);
+	//CGameObject::SetState(state);
 	switch (state)
 	{
 	case (int)SimonStateID::stateWalkingRight:
@@ -268,7 +280,6 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		bottom = y + SIMON_IDLE_BBOX_HEIGHT;
 	}
 }
-
 
 CSimon * CSimon::__instance = NULL;
 CSimon* CSimon::GetInstance()

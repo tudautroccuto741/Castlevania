@@ -13,7 +13,7 @@ void CFlames::Add(CFlame * flame)
 /*
 	Show a flame at the center position of the destroyed object given.
 */
-void CFlames::ShowAFlame(LPGAMEOBJECT obj)
+void CFlames::ShowFlame(LPGAMEOBJECT obj)
 {
 	// Show at the central position of the object
 	float l, t, r, b;
@@ -31,6 +31,7 @@ void CFlames::ShowAFlame(LPGAMEOBJECT obj)
 			flame->SetVisible(true);
 			flame->StartToBurn();
 
+			flame->SetHoldingItem(obj->GetHoldingItem());
 			// Calibrate the flame position to appear at the central of the objects
 			flame->SetPosition(
 				xCentral - FLAME_BBOX_WIDTH / 2,

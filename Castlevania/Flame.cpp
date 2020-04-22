@@ -1,4 +1,5 @@
 #include "Flame.h"
+#include "Items.h"
 
 void CFlame::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
@@ -24,6 +25,7 @@ void CFlame::Render()
 
 void CFlame::Destroy()
 {
+	CItems::GetInstance()->CheckAndDrop(this);
 	SetVisible(false);
 }
 
@@ -34,7 +36,7 @@ void CFlame::StartToBurn()
 
 CFlame::CFlame()
 {
-	currentAniID = (int)FlameAniID::IDLE;
+	currentAniID = (int)FlameAniID::idleFlame;
 }
 
 

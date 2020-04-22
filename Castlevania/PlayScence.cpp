@@ -10,8 +10,10 @@
 #include "Tile.h"
 #include "Flame.h"
 #include "Flames.h"
-
-
+#include "Items.h"
+#include "WhipItem.h"
+#include "Heart.h"
+#include "Knife.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -39,6 +41,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_CANDLE				2
 #define OBJECT_TYPE_BRICK				3
 #define OBJECT_TYPE_FLAMES				4
+#define OBJECT_TYPE_HEART				6
+#define OBJECT_TYPE_WHIPITEM			7
+#define OBJECT_TYPE_KNIFE				8
 #define OBJECT_TYPE_PORTAL				50
 
 #define MAX_SCENE_LINE 1024
@@ -161,7 +166,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 	
-	CFlames * flames = CFlames::GetInstance();
+
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
@@ -188,11 +193,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CSimon*)obj;
 		break;
 	case OBJECT_TYPE_WHIP: obj = CWhip::GetInstance(); break;
-	case OBJECT_TYPE_CANDLE: obj = new CCandle(); break;
+	case OBJECT_TYPE_HEART:
+		obj = new CHeart();
+		CItems::GetInstance()->Add(Item::HEART, obj);
+		break;
+	case OBJECT_TYPE_CANDLE: 
+		obj = new CCandle(); 
+		obj->SetHoldingItem(Item::WHIP_ITEM);
+		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_FLAMES: 
-		obj = new CFlame(); 
-		flames->Add((CFlame*)obj);
+	case OBJECT_TYPE_FLAMES:
+		obj = new CFlame();
+		CFlames::GetInstance()->Add((CFlame*)obj);
+		break;
+	case OBJECT_TYPE_WHIPITEM: 
+		obj = new CWhipItem();
+		CItems::GetInstance()->Add(Item::WHIP_ITEM, obj);
+		break;
+	case OBJECT_TYPE_KNIFE:
+		obj = new CKnife(); 
+		CItems::GetInstance()->Add(Item::KNIFE, obj);
 		break;
 	case OBJECT_TYPE_PORTAL:
 	{

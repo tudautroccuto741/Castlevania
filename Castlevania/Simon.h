@@ -32,7 +32,6 @@ enum class SimonAniId
 };
 enum class SimonStateID
 {
-	IDTex = 100,
 	stateIdle = 101,
 	stateWalkingRight = 102,
 	stateWalkingLeft = 103,

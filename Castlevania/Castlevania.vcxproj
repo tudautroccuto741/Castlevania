@@ -153,11 +153,13 @@
     <ClCompile Include="Flames.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Heart.cpp" />
+    <ClCompile Include="Items.cpp" />
     <ClCompile Include="KeyEventHandler.cpp" />
+    <ClCompile Include="Knife.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
-    <ClCompile Include="SampleKeyHander.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -167,6 +169,7 @@
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Weapons.cpp" />
     <ClCompile Include="Whip.cpp" />
+    <ClCompile Include="WhipItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -180,10 +183,12 @@
     <ClInclude Include="Flames.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Heart.h" />
+    <ClInclude Include="Items.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Knife.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
-    <ClInclude Include="SampleKeyHander.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Sprite.h" />
@@ -193,6 +198,7 @@
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Weapons.h" />
     <ClInclude Include="Whip.h" />
+    <ClInclude Include="WhipItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

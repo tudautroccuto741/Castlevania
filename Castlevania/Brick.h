@@ -5,7 +5,6 @@
 #define BRICK_BBOX_HEIGHT 32
 enum class BrickAniID
 {
-	IDTexBrick = 300,
 	idleBrick = 301
 };
 

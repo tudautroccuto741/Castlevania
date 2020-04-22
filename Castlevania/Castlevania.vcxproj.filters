@@ -51,9 +51,6 @@
     <ClCompile Include="KeyEventHandler.cpp">
       <Filter>Source Files\Frameworks</Filter>
     </ClCompile>
-    <ClCompile Include="SampleKeyHander.cpp">
-      <Filter>Source Files\Frameworks</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files\Frameworks</Filter>
     </ClCompile>
@@ -96,10 +93,22 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Frameworks</Filter>
     </ClCompile>
-    <ClCompile Include="Flame.cpp">
+    <ClCompile Include="Items.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Heart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Flames.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Flame.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Knife.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WhipItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -123,9 +132,6 @@
       <Filter>Header Files\Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
-      <Filter>Header Files\Frameworks</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleKeyHander.h">
       <Filter>Header Files\Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="Sprites.h">
@@ -170,10 +176,22 @@
     <ClInclude Include="Tile.h">
       <Filter>Header Files\Frameworks</Filter>
     </ClInclude>
-    <ClInclude Include="Flame.h">
+    <ClInclude Include="Items.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Heart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Flames.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Flame.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Knife.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WhipItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

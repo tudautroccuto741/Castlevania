@@ -10,13 +10,14 @@ class CFlames
 	vector<CFlame *> flames;
 
 	static CFlames * __instance;
-	CFlames() = default;
+
 
 public:
 
 	void Add(CFlame * flame);
-	void ShowAFlame(LPGAMEOBJECT obj);
+	void ShowFlame(LPGAMEOBJECT obj);
 
+	CFlames() { ; }
 	static CFlames * GetInstance();
 };
 

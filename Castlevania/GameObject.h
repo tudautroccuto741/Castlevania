@@ -9,6 +9,7 @@
 #include "AnimationSet.h"
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
+#define GAME_GRAVITY 0.002
 
 using namespace std;
 
@@ -35,6 +36,14 @@ struct CCollisionEvent
 	}
 };
 
+enum class Item
+{
+	NONE,
+	HEART,
+	WHIP_ITEM,
+	KNIFE
+};
+
 class CGameObject
 {
 public:
@@ -47,7 +56,9 @@ public:
 	bool visible;
 	float dx;	// dx = vx*dt
 	float dy;	// dy = vy*dt
-	int nx;
+	int nx, ny;
+
+	Item item;
 
 	CAnimations* animations; //to get animations
 	int currentAniID;
@@ -55,7 +66,7 @@ public:
 	LPANIMATION_SET animation_set;
 	DWORD dt;
 
-	int currentState;
+	//int currentState;
 
 public:
 	//position
@@ -70,9 +81,9 @@ public:
 	void SetDirection(int nx) { this->nx = nx; }
 	int GetDirection() { return this->nx; }
 
-	//state
-	void SetState(int state) { this->currentState = state; }
-	int GetState() { return this->currentState; }
+	////state
+	//void SetState(int state) { this->currentState = state; }
+	//int GetState() { return this->currentState; }
 
 	//currentAni
 	void SetCurrentAniID(int aniID) { this->currentAniID = aniID; }
@@ -82,6 +93,10 @@ public:
 	virtual void SetVisible(bool visible) { this->visible = visible; }
 	bool GetVisible() { return this->visible; }
 	
+	//Item
+	void SetHoldingItem(Item item) { this->item = item; }
+	Item GetHoldingItem() { return this->item; }
+
 	// animationsSet
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 
