@@ -1,4 +1,5 @@
 #include "WhipItem.h"
+#include "Brick.h"
 
 void CWhipItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -12,9 +13,6 @@ void CWhipItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CalcPotentialCollisions(coObjects, coEvents);
 
 
-	float min_tx, min_ty, nx = 0, ny;
-	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-
 	if (coEvents.size() == 0)
 	{
 		y += dy;
@@ -22,8 +20,10 @@ void CWhipItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
+		float min_tx, min_ty, nx = 0, ny;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 		// block 
-		//x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+		// x+= min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
 		y += min_ty * dy + ny * 0.4f;
 	}
 
@@ -42,7 +42,7 @@ void CWhipItem::GetBoundingBox(float & left, float & top, float & right, float &
 
 CWhipItem::CWhipItem()
 {
-	// Pick animation
+	// Choice animation
 	this->currentAniID = (int)WhipItemAniID::idleWhipItem;
 	visible = false;
 }

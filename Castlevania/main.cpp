@@ -51,25 +51,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 */
 void Update(DWORD dt)
 {
-	//vector<LPGAMEOBJECT> coObjects;
-	//for (int i = 1; i < defaultObjects.size(); i++)
-	//{
-	//	coObjects.push_back(defaultObjects[i]);
-	//}
 	CGame::GetInstance()->GetCurrentScene()->Update(dt);
-
-	//for (int i = 0; i < defaultObjects.size(); i++)
-	//{
-	//	defaultObjects[i]->Update(dt, &coObjects);
-	//}
-
-	//float cx, cy;
-	//CSimon::GetInstance()->GetPosition(cx, cy);
-
-	//cx -= SCREEN_WIDTH / 4;
-	//cy -= SCREEN_HEIGHT / 4;
-
-	//CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
 
 

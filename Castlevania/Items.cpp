@@ -6,7 +6,7 @@ CItems * CItems::__instance = NULL;
 /*
 	Add the given item to the collection according to item name
 */
-void CItems::Add(Item itemName, LPGAMEOBJECT item)
+void CItems::Add(int itemName, LPGAMEOBJECT item)
 {
 	item->SetVisible(false);
 	items[itemName].push_back(item);
@@ -17,8 +17,8 @@ void CItems::Add(Item itemName, LPGAMEOBJECT item)
 */
 void CItems::CheckAndDrop(LPGAMEOBJECT object)
 {
-	Item item = object->GetHoldingItem();
-	if (item != Item::NONE)
+	int item = object->GetHoldingItem();
+	if (item != (int)Item::NONE)
 	{
 		float x, y;
 		object->GetPosition(x, y);
@@ -29,7 +29,7 @@ void CItems::CheckAndDrop(LPGAMEOBJECT object)
 /*
 	Get the item according to the given name and set it the gien position
 */
-void CItems::Drop(Item itemName, float x, float y)
+void CItems::Drop(int itemName, float x, float y)
 {
 	if (items[itemName].empty())
 		DebugOut(L"\n[ERROR] No items with the given name found (Item enum: %d)", (int)itemName);

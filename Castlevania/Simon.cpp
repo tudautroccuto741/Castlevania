@@ -39,14 +39,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
-	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
+	//// reset untouchable timer if untouchable time has passed
+	//if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
+	//{
+	//	untouchable_start = 0;
+	//	untouchable = 0;
+	//}
 	float min_tx, min_ty, nx = 0, ny;
-	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -56,60 +55,47 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else
 	{
-		// block 
-		x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-		y += min_ty * dy + ny * 0.4f;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+		x += min_tx * dx;
 
-		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
-
-	}
-	// collision
-	for (UINT i = 0; i < coEventsResult.size(); i++)
-	{
-		LPCOLLISIONEVENT e = coEventsResult[i];
-		// collision with brick
-
-		if (dynamic_cast<CBrick *>(e->obj))
+		// collision
+		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
-			if (e->ny < 0)
+			LPCOLLISIONEVENT e = coEventsResult[i];
+			// collision with brick
+			if (e->obj->GetVisible()) 
 			{
-				if (isJumping)
+				if (dynamic_cast<CBrick *>(e->obj))
 				{
-					this->StandUp();
-					isJumping = false;
-					vy = 0;
+					if (e->ny != 0)
+					{
+						if (isJumping)
+						{
+							/*this->StandUp()*/
+							isJumping = false;
+							vy = 0;
+			
+						}
+						y += min_ty * dy + ny * 0.4f;
+					}
 				}
+				else if (dynamic_cast<CWhipItem *>(e->obj))
+				{
+
+					if (e->nx != 0 || e->ny != 0)
+					{
+						this->whip->LvUp();
+						e->obj->SetVisible(false);
+					}
+					if (e->ny != 0)	whip->LvUp();
+
+				}
+
 			}
 		}
-
-		// collision with candle								
-		if (dynamic_cast<CCandle *>(e->obj))
-		{
-			// Ignore other collisions
-			if (e->nx != 0)	x += (1 - min_tx) * dx;
-			if (e->ny != 0)	y += (1 - min_ty) * dy;
-		}
-		else if (dynamic_cast<CFlame *>(e->obj))
-		{
-			// Ignore other collisions
-			if (e->nx != 0)	x += (1 - min_tx) * dx;
-			if (e->ny != 0)	y += (1 - min_ty) * dy;
-		}
-		else if (dynamic_cast<CWhipItem *>(e->obj))
-		{
-			if (e->obj->GetVisible())
-			{
-				if (e->nx != 0 || e->ny != 0)
-				{
-					this->whip->LvUp();
-					e->obj->SetVisible(false);
-				}
-				if (e->ny != 0)	whip->LvUp();
-			}
-		}
-
 	}
+	
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];	
 	
@@ -198,22 +184,22 @@ void CSimon::Jumping()
 
 void CSimon::StandUp()
 {
-	if (!isJumping)
+	//if (!isJumping)
+	//{
+	if (isSitting)
 	{
-		if (isSitting)
-		{
-			isSitting = false;
-			y -= SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
-		}
+		isSitting = false;
+		y -= SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
 	}
-	else
-	{
-		if (isSitting)
-		{
-			isSitting = false;
-			y -= SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
-		};
-	}
+	//}
+	//else
+	//{
+	//	if (isSitting)
+	//	{
+	//		isSitting = false;
+	//		y -= SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
+	//	};
+	//}
 }
 
 void CSimon::SetVisible(bool isVisble)

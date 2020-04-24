@@ -1,6 +1,5 @@
 #include "Tile.h"
 
-
 void CTile::Render()
 {
 	LPDIRECT3DTEXTURE9 texture = CTextures::GetInstance()->Get(TEXTURE_ID_TILE_MAP);

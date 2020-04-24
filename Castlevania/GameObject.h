@@ -39,9 +39,9 @@ struct CCollisionEvent
 enum class Item
 {
 	NONE,
-	HEART,
-	WHIP_ITEM,
-	KNIFE
+	HEART = 6,
+	WHIP_ITEM = 7,
+	KNIFE = 8
 };
 
 class CGameObject
@@ -57,8 +57,9 @@ public:
 	float dx;	// dx = vx*dt
 	float dy;	// dy = vy*dt
 	int nx, ny;
+	int width, height;
 
-	Item item;
+	int item;
 
 	CAnimations* animations; //to get animations
 	int currentAniID;
@@ -94,12 +95,17 @@ public:
 	bool GetVisible() { return this->visible; }
 	
 	//Item
-	void SetHoldingItem(Item item) { this->item = item; }
-	Item GetHoldingItem() { return this->item; }
+	void SetHoldingItem(int item) { this->item = item; }
+	int GetHoldingItem() { return this->item; }
 
 	// animationsSet
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
-
+	
+	// width height
+	void SetWidth(int w) { this->width = w; }
+	int GetWidth() { return this->width; }
+	void SetHeight(int h) { this->height = h; }
+	int GetHeight() { return this->height; }
 	void RenderBoundingBox();
 
 	//2 object moving

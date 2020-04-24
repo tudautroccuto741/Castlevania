@@ -10,6 +10,7 @@ enum class BrickAniID
 
 class CBrick : public CGameObject
 {
+	
 public:
 	//void Update(DWORD dt);
 	virtual void Render();

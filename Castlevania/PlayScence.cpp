@@ -195,25 +195,37 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WHIP: obj = CWhip::GetInstance(); break;
 	case OBJECT_TYPE_HEART:
 		obj = new CHeart();
-		CItems::GetInstance()->Add(Item::HEART, obj);
+		CItems::GetInstance()->Add((int)Item::HEART, obj);
 		break;
-	case OBJECT_TYPE_CANDLE: 
-		obj = new CCandle(); 
-		obj->SetHoldingItem(Item::WHIP_ITEM);
+	case OBJECT_TYPE_BRICK: 
+	{
+		int width = atoi(tokens[4].c_str());
+		int height = atoi(tokens[5].c_str());
+
+		obj = new CBrick();
+		obj->SetWidth(width);
+		obj->SetHeight(height);
 		break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	}
 	case OBJECT_TYPE_FLAMES:
 		obj = new CFlame();
 		CFlames::GetInstance()->Add((CFlame*)obj);
 		break;
 	case OBJECT_TYPE_WHIPITEM: 
 		obj = new CWhipItem();
-		CItems::GetInstance()->Add(Item::WHIP_ITEM, obj);
+		CItems::GetInstance()->Add((int)Item::WHIP_ITEM, obj);
 		break;
 	case OBJECT_TYPE_KNIFE:
 		obj = new CKnife(); 
-		CItems::GetInstance()->Add(Item::KNIFE, obj);
+		CItems::GetInstance()->Add((int)Item::KNIFE, obj);
 		break;
+	case OBJECT_TYPE_CANDLE:
+	{
+		int typeObj = atoi(tokens[4].c_str());
+		obj = new CCandle();
+		obj->SetHoldingItem(typeObj);
+		break;
+	}
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -290,7 +302,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\0.png", D3DCOLOR_XRGB(255, 0, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }

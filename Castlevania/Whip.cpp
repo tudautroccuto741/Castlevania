@@ -182,5 +182,5 @@ CWhip * CWhip::GetInstance()
 CWhip::CWhip()
 {
 	visible = false;
-	lv = WHIP_LV3;
+	lv = WHIP_LV1;
 }
