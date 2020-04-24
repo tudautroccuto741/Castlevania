@@ -30,6 +30,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			Attacking();
 			isAttacking = false;
 			whip->SetVisible(false);
+			if (isUsingweapon)
+			{
+				knife->SetVisible(false);
+				/*knife->Attack();*/
+			}
 		}
 	}
 
@@ -57,41 +62,50 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 		x += min_tx * dx;
+		y += min_ty * dy;
 
-		if (ny != 0) vy = 0;
+		
 		// collision
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			// collision with brick
-			if (e->obj->GetVisible()) 
+
+			if (dynamic_cast<CBrick *>(e->obj))
 			{
-				if (dynamic_cast<CBrick *>(e->obj))
+				if (e->ny != 0)
 				{
-					if (e->ny != 0)
+					if (isJumping)
 					{
-						if (isJumping)
-						{
-							/*this->StandUp()*/
-							isJumping = false;
-							vy = 0;
-			
-						}
-						y += min_ty * dy + ny * 0.4f;
+						isJumping = false;
 					}
+					y += ny * 0.4f;
+					vy = 0;
 				}
-				else if (dynamic_cast<CWhipItem *>(e->obj))
+			}
+			else if (dynamic_cast<CWhipItem *>(e->obj))
+			{
+
+				if (e->nx != 0 || e->ny != 0)
 				{
-
-					if (e->nx != 0 || e->ny != 0)
-					{
-						this->whip->LvUp();
-						e->obj->SetVisible(false);
-					}
-					if (e->ny != 0)	whip->LvUp();
-
+					this->whip->LvUp();
+					e->obj->SetVisible(false);
 				}
-
+				if (e->ny != 0)	whip->LvUp();
+			}
+			else if (dynamic_cast<CHeart *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+				}
+			}
+			else if (dynamic_cast<CKnife *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+				}
 			}
 		}
 	}
@@ -103,7 +117,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSimon::Render()
 {
-	whip->GetVisible();
+	//whip->GetVisible();
 	ChoiceAnimation();
 	CGameObject::Render();
 	// CGameObject::RenderBoundingBox();
@@ -158,7 +172,7 @@ void CSimon::Attacking()
 	if (startTimeAttack == 0)
 	{
 		startTimeAttack = GetTickCount();
-		whip->SetDirection(nx);
+		//whip->SetDirection(nx);
 	}
 }
 
@@ -211,6 +225,7 @@ void CSimon::SetState(int state)
 {
 	if (isAttacking) return;
 	if (isJumping) return;
+	if (isUsingweapon)return;
 	//CGameObject::SetState(state);
 	switch (state)
 	{
@@ -230,14 +245,21 @@ void CSimon::SetState(int state)
 	case (int)SimonStateID::stateSit:
 		Sitting();
 		break;
-	case (int)SimonStateID::stateWhip:
+	case (int)SimonStateID::stateWhipping:
 		isAttacking = true;
 		startTimeAttack = GetTickCount();
 		this->whip->SetVisible(true);
 		break;
+	case (int)SimonStateID::stateUseWeapon:
+		isAttacking = true;
+		isUsingweapon = true;
+		startTimeAttack = GetTickCount();
+		this->knife->SetVisible(true);
+		break;
 	case (int)SimonStateID::stateIdle:
 		vx = 0;
 		isAttacking = false;
+		isUsingweapon = false;
 		this->StandUp();
 		break;
 	}
@@ -279,6 +301,7 @@ CSimon::CSimon()
 	SetState((int)SimonStateID::stateIdle);
 	visible = true;
 	whip = CWhip::GetInstance();
+	knife = CWeaponKnife::GetInstance();
 	isJumping = false;
 	isSitting = false;
 	//isAttacking = false;

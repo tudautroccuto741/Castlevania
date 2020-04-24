@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Animations.h"
 #include "Whip.h"
+#include "WeaponKnife.h"
 
 #define SIMON_IDLE_BBOX_WIDTH				32.0f
 #define SIMON_IDLE_BBOX_HEIGHT				62.0f
@@ -37,7 +38,8 @@ enum class SimonStateID
 	stateWalkingLeft = 103,
 	stateJump = 104, 
 	stateSit = 105,
-	stateWhip = 106
+	stateWhipping = 106,
+	stateUseWeapon = 107
 };
 
 class CSimon : public CGameObject
@@ -55,6 +57,8 @@ class CSimon : public CGameObject
 	DWORD untouchable_start;
 
 	CWhip *whip;
+	CWeaponKnife *knife;
+
 
 	//vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
 	//vector<LPGAMEOBJECT>* coObjects;	// for saving the coObjects at the current frame to manipulate easily

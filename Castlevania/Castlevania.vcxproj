@@ -167,6 +167,8 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="WeaponKnife.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="WhipItem.cpp" />
   </ItemGroup>
@@ -195,6 +197,8 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="Weapon.h" />
+    <ClInclude Include="WeaponKnife.h" />
     <ClInclude Include="Whip.h" />
     <ClInclude Include="WhipItem.h" />
   </ItemGroup>

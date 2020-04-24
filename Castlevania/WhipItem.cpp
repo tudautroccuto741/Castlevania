@@ -22,9 +22,24 @@ void CWhipItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		float min_tx, min_ty, nx = 0, ny;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		// block 
-		// x+= min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-		y += min_ty * dy + ny * 0.4f;
+		
+		x += min_tx * dx;
+		y += min_ty * dy;
+
+		for (UINT i = 0; i < coEventsResult.size(); ++i)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBrick *>(e->obj))
+			{
+				// Block brick
+				if (e->ny < 0)
+				{
+					y += 0.4f * e->ny;
+					vy = 0;
+				}
+			}
+		}
 	}
 
 	// clean up collision events

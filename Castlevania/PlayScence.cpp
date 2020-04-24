@@ -14,6 +14,7 @@
 #include "WhipItem.h"
 #include "Heart.h"
 #include "Knife.h"
+#include "WeaponKnife.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -217,6 +218,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_KNIFE:
 		obj = new CKnife(); 
+		CWeaponKnife::GetInstance();
 		CItems::GetInstance()->Add((int)Item::KNIFE, obj);
 		break;
 	case OBJECT_TYPE_CANDLE:
@@ -315,7 +317,8 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		if(objects[i]->GetVisible())
+			coObjects.push_back(objects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
@@ -370,7 +373,10 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState((int)SimonStateID::stateJump);
 		break;
 	case DIK_L:
-		simon->SetState((int)SimonStateID::stateWhip);
+		simon->SetState((int)SimonStateID::stateWhipping);
+		break;
+	case DIK_W:
+		simon->SetState((int)SimonStateID::stateUseWeapon);
 		break;
 	/*case DIK_A: // reset
 		simon->SetState((int)SimonStateID::stateIdle);
@@ -394,5 +400,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		simon->SetState((int)SimonStateID::stateWalkingLeft);
 	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
 		simon->SetState((int)SimonStateID::stateSit);
+	//else if (CGame::GetInstance()->IsKeyDown(DIK_W))
+	//	simon->SetState((int)SimonStateID::stateUseWeapon);
 	else simon->SetState((int)SimonStateID::stateIdle);
 }

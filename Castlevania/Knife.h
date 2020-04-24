@@ -6,7 +6,8 @@
 
 enum class KnifeAniID
 {
-	idleKnife = 801
+	knifeRight = 801,
+	knifeLeft = 802
 };
 class CKnife : public CGameObject
 {
