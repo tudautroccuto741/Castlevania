@@ -12,9 +12,10 @@
 #include "Flames.h"
 #include "Items.h"
 #include "WhipItem.h"
-#include "Heart.h"
+#include "HeartItem.h"
 #include "Knife.h"
-#include "WeaponKnife.h"
+#include "KnifeItem.h"
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -44,7 +45,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_FLAMES				4
 #define OBJECT_TYPE_HEART				6
 #define OBJECT_TYPE_WHIPITEM			7
-#define OBJECT_TYPE_KNIFE				8
+#define OBJECT_TYPE_KNIFE_ITEM			8
+#define OBJECT_TYPE_KNIFE				9
 #define OBJECT_TYPE_PORTAL				50
 
 #define MAX_SCENE_LINE 1024
@@ -195,10 +197,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_WHIP: obj = CWhip::GetInstance(); break;
 	case OBJECT_TYPE_HEART:
-		obj = new CHeart();
+		obj = new CHeartItem();
 		CItems::GetInstance()->Add((int)Item::HEART, obj);
 		break;
-	case OBJECT_TYPE_BRICK: 
+	case OBJECT_TYPE_BRICK:
 	{
 		int width = atoi(tokens[4].c_str());
 		int height = atoi(tokens[5].c_str());
@@ -212,14 +214,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CFlame();
 		CFlames::GetInstance()->Add((CFlame*)obj);
 		break;
-	case OBJECT_TYPE_WHIPITEM: 
+	case OBJECT_TYPE_WHIPITEM:
 		obj = new CWhipItem();
 		CItems::GetInstance()->Add((int)Item::WHIP_ITEM, obj);
 		break;
-	case OBJECT_TYPE_KNIFE:
-		obj = new CKnife(); 
-		CWeaponKnife::GetInstance();
+	case OBJECT_TYPE_KNIFE_ITEM:
+		obj = new CKnifeItem();
 		CItems::GetInstance()->Add((int)Item::KNIFE, obj);
+		break;
+	case OBJECT_TYPE_KNIFE:
+		obj = CKnife::GetInstance();
 		break;
 	case OBJECT_TYPE_CANDLE:
 	{
@@ -373,11 +377,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState((int)SimonStateID::stateJump);
 		break;
 	case DIK_L:
-		simon->SetState((int)SimonStateID::stateWhipping);
-		break;
-	case DIK_W:
-		simon->SetState((int)SimonStateID::stateUseWeapon);
-		break;
+		if (CGame::GetInstance()->IsKeyDown(DIK_W))
+		{
+			simon->SetState((int)SimonStateID::stateUseWeapon);
+			break;
+		}
+		else
+		{
+			simon->SetState((int)SimonStateID::stateWhipping);
+			break;
+		}
 	/*case DIK_A: // reset
 		simon->SetState((int)SimonStateID::stateIdle);
 		simon->SetLevel(SIMON_LEVEL_BIG);
@@ -393,14 +402,11 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CSimon *simon = ((CPlayScene*)scence)->player;
-
 	if (CGame::GetInstance()->IsKeyDown(DIK_D))
 		simon->SetState((int)SimonStateID::stateWalkingRight);
 	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
 		simon->SetState((int)SimonStateID::stateWalkingLeft);
 	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
 		simon->SetState((int)SimonStateID::stateSit);
-	//else if (CGame::GetInstance()->IsKeyDown(DIK_W))
-	//	simon->SetState((int)SimonStateID::stateUseWeapon);
 	else simon->SetState((int)SimonStateID::stateIdle);
 }

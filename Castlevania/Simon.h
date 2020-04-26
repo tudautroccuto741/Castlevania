@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Animations.h"
 #include "Whip.h"
-#include "WeaponKnife.h"
+#include "Knife.h"
 
 #define SIMON_IDLE_BBOX_WIDTH				32.0f
 #define SIMON_IDLE_BBOX_HEIGHT				62.0f
@@ -57,7 +57,7 @@ class CSimon : public CGameObject
 	DWORD untouchable_start;
 
 	CWhip *whip;
-	CWeaponKnife *knife;
+	CKnife *knife;
 
 
 	//vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
@@ -75,7 +75,6 @@ public:
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
-	void Attacking();
 	void Sitting();
 	void Jumping();
 	void StandUp();

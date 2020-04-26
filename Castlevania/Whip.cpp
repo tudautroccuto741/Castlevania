@@ -99,7 +99,7 @@ void CWhip::UpdatePosition(int aniID)
 
 	if (ani->GetCurrentFrame() == 2)
 	{
-		x = (nxw > 0) ? 
+		x = (nxw > 0) ?
 			xS + SIMON_IDLE_BBOX_WIDTH :
 			xS - whipTexWidth;
 	}

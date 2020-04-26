@@ -5,9 +5,9 @@
 #include "Brick.h"
 #include "Candle.h"
 #include "Flame.h"
-#include "Heart.h"
+#include "HeartItem.h"
 #include "WhipItem.h"
-#include "Knife.h"
+#include "KnifeItem.h"
 
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -27,15 +27,15 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		if (isAttacking && GetTickCount() - startTimeAttack > 450)
 		{
-			Attacking();
 			isAttacking = false;
 			whip->SetVisible(false);
-			if (isUsingweapon)
-			{
-				knife->SetVisible(false);
-				/*knife->Attack();*/
-			}
+				if (isUsingweapon)
+				{
+					knife->SetVisible(false);
+					isUsingweapon = false;
+				}
 		}
+		
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -44,12 +44,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
-	//// reset untouchable timer if untouchable time has passed
-	//if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
-	//{
-	//	untouchable_start = 0;
-	//	untouchable = 0;
-	//}
+
 	float min_tx, min_ty, nx = 0, ny;
 
 	// No collision occured, proceed normally
@@ -93,14 +88,14 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				if (e->ny != 0)	whip->LvUp();
 			}
-			else if (dynamic_cast<CHeart *>(e->obj))
+			else if (dynamic_cast<CHeartItem *>(e->obj))
 			{
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);
 				}
 			}
-			else if (dynamic_cast<CKnife *>(e->obj))
+			else if (dynamic_cast<CKnifeItem *>(e->obj))
 			{
 				if (e->nx != 0 || e->ny != 0)
 				{
@@ -117,10 +112,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSimon::Render()
 {
-	//whip->GetVisible();
 	ChoiceAnimation();
 	CGameObject::Render();
-	// CGameObject::RenderBoundingBox();
 }
 
 void CSimon::ChoiceAnimation()
@@ -167,15 +160,6 @@ void CSimon::ChoiceAnimation()
 	}
 }
 
-void CSimon::Attacking()
-{
-	if (startTimeAttack == 0)
-	{
-		startTimeAttack = GetTickCount();
-		//whip->SetDirection(nx);
-	}
-}
-
 void CSimon::Sitting()
 {
 	if (!isSitting)
@@ -188,32 +172,20 @@ void CSimon::Sitting()
 
 void CSimon::Jumping()
 {
-	if (vy < SIMON_GRAVITY && !isJumping && !isSitting && !isAttacking)
+	if (vy < SIMON_GRAVITY && !isJumping && !isSitting && !isAttacking && !isUsingweapon)
 	{
 		isJumping = true;
-		// isSitting = true;
 		this->vy = -SIMON_JUMP_SPEED_Y;
 	}
 }
 
 void CSimon::StandUp()
 {
-	//if (!isJumping)
-	//{
 	if (isSitting)
 	{
 		isSitting = false;
 		y -= SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
 	}
-	//}
-	//else
-	//{
-	//	if (isSitting)
-	//	{
-	//		isSitting = false;
-	//		y -= SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
-	//	};
-	//}
 }
 
 void CSimon::SetVisible(bool isVisble)
@@ -226,7 +198,6 @@ void CSimon::SetState(int state)
 	if (isAttacking) return;
 	if (isJumping) return;
 	if (isUsingweapon)return;
-	//CGameObject::SetState(state);
 	switch (state)
 	{
 	case (int)SimonStateID::stateWalkingRight:
@@ -271,16 +242,8 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	top = y;
 	if (isSitting)
 	{
-		/*if (isJumping)
-		{
-			right = x + SIMON_SIT_BBOX_WIDTH;
-			bottom = y + SIMON_SIT_BBOX_HEIGHT;
-		}
-		else
-		{*/
-			right = x + SIMON_SIT_BBOX_WIDTH;
-			bottom = y + SIMON_SIT_BBOX_HEIGHT;
-		//}
+		right = x + SIMON_SIT_BBOX_WIDTH;
+		bottom = y + SIMON_SIT_BBOX_HEIGHT;
 	}
 	else
 	{
@@ -301,10 +264,9 @@ CSimon::CSimon()
 	SetState((int)SimonStateID::stateIdle);
 	visible = true;
 	whip = CWhip::GetInstance();
-	knife = CWeaponKnife::GetInstance();
+	knife = CKnife::GetInstance();
 	isJumping = false;
 	isSitting = false;
-	//isAttacking = false;
 }
 
 CSimon::~CSimon()

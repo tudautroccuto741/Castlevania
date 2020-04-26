@@ -1,7 +1,15 @@
-#include "Heart.h"
+#include "KnifeItem.h"
 #include "Brick.h"
 
-void CHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CKnifeItem::GetBoundingBox(float &l, float &t, float &r, float &b)
+{
+	l = x;
+	t = y;
+	r = x + KNIFE_BBOX_WIDTH;
+	b = y + KNIFE_BBOX_HEIGHT;
+}
+
+void CKnifeItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
 	vy += GAME_GRAVITY * dt;				// simple fall down
@@ -47,16 +55,8 @@ void CHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 }
 
-void CHeart::GetBoundingBox(float &l, float &t, float &r, float &b)
+CKnifeItem::CKnifeItem()
 {
-	l = x;
-	t = y;
-	r = x + HEART_BBOX_WIDTH;
-	b = y + HEART_BBOX_HEIGHT;
-}
-
-CHeart::CHeart()
-{
-	this->currentAniID = (int)HeartAniID::idleHeart;
+	this->currentAniID = (int)KnifeAniID::knifeRight;
 	visible = false;
 }

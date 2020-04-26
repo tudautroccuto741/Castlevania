@@ -153,10 +153,10 @@
     <ClCompile Include="Flames.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Heart.cpp" />
+    <ClCompile Include="HeartItem.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="KeyEventHandler.cpp" />
-    <ClCompile Include="Knife.cpp" />
+    <ClCompile Include="KnifeItem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -167,8 +167,7 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Weapon.cpp" />
-    <ClCompile Include="WeaponKnife.cpp" />
+    <ClCompile Include="Knife.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="WhipItem.cpp" />
   </ItemGroup>
@@ -184,10 +183,10 @@
     <ClInclude Include="Flames.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Heart.h" />
+    <ClInclude Include="HeartItem.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="KeyEventHandler.h" />
-    <ClInclude Include="Knife.h" />
+    <ClInclude Include="KnifeItem.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scence.h" />
@@ -197,8 +196,7 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="Weapon.h" />
-    <ClInclude Include="WeaponKnife.h" />
+    <ClInclude Include="Knife.h" />
     <ClInclude Include="Whip.h" />
     <ClInclude Include="WhipItem.h" />
   </ItemGroup>
