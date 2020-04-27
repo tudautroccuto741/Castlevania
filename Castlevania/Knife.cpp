@@ -10,12 +10,12 @@ CKnife * CKnife::__instance = NULL;
 
 void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	x += x * dt;
 	if (visible)
 	{
-		ChoiceAnimation();
-		UpdatePosition();
+		nx = CSimon::GetInstance()->GetDirection();
 		CGameObject::Update(dt);
+		vx = (nx > 0) ? KNIFE_FLYING_SPEED : -KNIFE_FLYING_SPEED;
+		ChoiceAnimation();
 		vector<LPCOLLISIONEVENT> coEvents;
 		coEvents.clear();
 		CalcPotentialCollisions(coObjects, coEvents);
@@ -24,21 +24,33 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		float min_tx, min_ty, nx = 0, ny;
 		
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		x += min_tx * dx;
-		y += min_ty * dy;
-		
-		for (UINT i = 0; i < coObjects->size(); i++)
+		if (coEvents.size() == 0)
 		{
-			if (this->IsOverlapping(coObjects->at(i)))
+			y += dy;
+			x += dx;
+		}
+		else
+		{
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+			x += min_tx * dx;
+			y += min_ty * dy;
+			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				if (dynamic_cast<CCandle *>(coObjects->at(i)))
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				// collision with candle
+				if (dynamic_cast<CCandle *>(e->obj))
 				{
-					coObjects->at(i)->Destroy();
+					if (e->nx != 0 || e->ny != 0)
+					{
+						vx = 0;
+						e->obj->Destroy();
+						this->SetVisible(false);
+					}
 				}
+
 			}
 		}
-		
+			
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
@@ -46,8 +58,10 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKnife::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	CKnifeItem * knife = new CKnifeItem();
-	knife->GetBoundingBox(left, top, right, bottom);
+	left = x;
+	top = y;
+	right = left + KNIFE_BBOX_WIDTH;
+	bottom = top + KNIFE_BBOX_HEIGHT;
 }
 
 void CKnife::ChoiceAnimation()
@@ -62,33 +76,6 @@ void CKnife::ChoiceAnimation()
 void CKnife::Render()
 {
 	CGameObject::Render();
-}
-
-void CKnife::SetVisible(bool visible)
-{
-	CGameObject::SetVisible(visible);
-	if (this->visible)
-		if (currentAniID > 0)
-			this->ResetAnimationTimer(currentAniID);
-}
-
-bool CKnife::IsOverlapping(LPGAMEOBJECT obj)
-{
-	float xS, yS;
-	CSimon::GetInstance()->GetPosition(xS, yS);
-	return CGameObject::IsOverlapping(obj);
-}
-
-void CKnife::UpdatePosition()
-{
-	int nxKn;
-	this->SetVisible(true);
-	nxKn = CSimon::GetInstance()->GetDirection();
-	float xS, yS;
-	CSimon::GetInstance()->GetPosition(xS, yS);
-	float xK = xS;
-	float yK = yS + 6;
-	SetPosition(xK, yK);
 }
 
 CKnife * CKnife::GetInstance()

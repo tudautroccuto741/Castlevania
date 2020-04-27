@@ -44,6 +44,12 @@ enum class Item
 	KNIFE = 8
 };
 
+enum class Weapon
+{
+	NONE,
+	KNIFE
+};
+
 class CGameObject
 {
 public:

@@ -29,11 +29,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			isAttacking = false;
 			whip->SetVisible(false);
-				if (isUsingweapon)
-				{
-					knife->SetVisible(false);
-					isUsingweapon = false;
-				}
+			if (isUsingweapon)
+			{
+				isUsingweapon = false;
+			}
 		}
 		
 	}
@@ -100,6 +99,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);
+					secondWeapon = (int)Weapon::KNIFE;
 				}
 			}
 		}
@@ -188,6 +188,11 @@ void CSimon::StandUp()
 	}
 }
 
+void CSimon::UseWeapon()
+{
+	this->weapon->UseWeapon(secondWeapon, this);
+}
+
 void CSimon::SetVisible(bool isVisble)
 {
 	CGameObject::SetVisible(visible);
@@ -225,7 +230,7 @@ void CSimon::SetState(int state)
 		isAttacking = true;
 		isUsingweapon = true;
 		startTimeAttack = GetTickCount();
-		this->knife->SetVisible(true);
+		UseWeapon();
 		break;
 	case (int)SimonStateID::stateIdle:
 		vx = 0;
@@ -264,7 +269,7 @@ CSimon::CSimon()
 	SetState((int)SimonStateID::stateIdle);
 	visible = true;
 	whip = CWhip::GetInstance();
-	knife = CKnife::GetInstance();
+	weapon = CWeapons::GetInstance();
 	isJumping = false;
 	isSitting = false;
 }

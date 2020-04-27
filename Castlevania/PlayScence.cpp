@@ -15,6 +15,7 @@
 #include "HeartItem.h"
 #include "Knife.h"
 #include "KnifeItem.h"
+#include "Weapons.h"
 
 using namespace std;
 
@@ -224,6 +225,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_KNIFE:
 		obj = CKnife::GetInstance();
+		CWeapons::GetInstance()->Add((int)Weapon::KNIFE, obj);
 		break;
 	case OBJECT_TYPE_CANDLE:
 	{
@@ -377,7 +379,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState((int)SimonStateID::stateJump);
 		break;
 	case DIK_L:
-		if (CGame::GetInstance()->IsKeyDown(DIK_W))
+		if (CGame::GetInstance()->IsKeyDown(DIK_W)&&CSimon::GetInstance()->GetSecondWeapons()!=(int)Weapon::NONE)
 		{
 			simon->SetState((int)SimonStateID::stateUseWeapon);
 			break;
