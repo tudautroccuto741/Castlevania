@@ -54,7 +54,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
-	vector<string> tokens = split(line);//cat chuoi
+	vector<string> tokens = split(line);
 
 	if (tokens.size() < 3) return; // skip invalid lines
 	
@@ -106,7 +106,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	LPANIMATION ani = new CAnimation();
 
 	int ani_id = atoi(tokens[0].c_str());
-	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  ->(sprite_id | frame_time)  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i + 1].c_str());
@@ -170,8 +170,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 	
-
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+	DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
@@ -205,7 +204,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int width = atoi(tokens[4].c_str());
 		int height = atoi(tokens[5].c_str());
-
 		obj = new CBrick();
 		obj->SetWidth(width);
 		obj->SetHeight(height);
@@ -286,7 +284,6 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
-		//TODO: if TILEMAP
 		if (line == "[TILEMAP]") {
 			section = SCENE_SECTION_TILEMAP; continue;
 		}
@@ -303,8 +300,6 @@ void CPlayScene::Load()
 		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		case SCENE_SECTION_TILEMAP: __ParseSection_TILE_MAP(line); break;
-			// case TITLEMAP: 
-			// func ParseTileMap
 		}
 	}
 
@@ -332,6 +327,8 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
+	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
 
 	// Update camera to follow SIMON
 	float cx, cy;
@@ -366,6 +363,8 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
+
+	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)

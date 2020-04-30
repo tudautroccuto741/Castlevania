@@ -3,18 +3,15 @@
 
 CItems * CItems::__instance = NULL;
 
-/*
-	Add the given item to the collection according to item name
-*/
+//	Add the corresponding item with the item name
 void CItems::Add(int itemName, LPGAMEOBJECT item)
 {
-	item->SetVisible(false);
 	items[itemName].push_back(item);
 }	
 
-/*
-	Check if the gameobject is holding item, drop it if has
-*/
+
+//	Check if the object is holding item, drop it if has
+
 void CItems::CheckAndDrop(LPGAMEOBJECT object)
 {
 	int item = object->GetHoldingItem();
@@ -26,9 +23,8 @@ void CItems::CheckAndDrop(LPGAMEOBJECT object)
 	}
 }
 
-/*
-	Get the item according to the given name and set it the gien position
-*/
+//	Get the item according to the given name and set it the gien position
+
 void CItems::Drop(int itemName, float x, float y)
 {
 	if (items[itemName].empty())
@@ -36,12 +32,12 @@ void CItems::Drop(int itemName, float x, float y)
 
 	else
 	{
-		for (auto it = items[itemName].begin(); it != items[itemName].end(); ++it)
+		for (auto i = items[itemName].begin(); i != items[itemName].end(); ++i)
 		{
-			if ((*it)->GetVisible()==false)
+			if ((*i)->GetVisible()==false)
 			{
-				(*it)->SetPosition(x, y);
-				(*it)->SetVisible(true);
+				(*i)->SetPosition(x, y);
+				(*i)->SetVisible(true);
 				break;
 			}
 		}

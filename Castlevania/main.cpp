@@ -71,11 +71,6 @@ void Render()
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-
-		/*for (int i = 0; i < defaultObjects.size(); i++)
-			if (defaultObjects[i]->GetVisible())
-				defaultObjects[i]->Render();*/
-
 		CGame::GetInstance()->GetCurrentScene()->Render();
 
 		spriteHandler->End();

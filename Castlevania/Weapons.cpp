@@ -5,15 +5,13 @@
 
 CWeapons * CWeapons::__instance = NULL;
 
-/*
-	Add the given item to the collection according to item name
-*/
+//	Add the corresponding weapon with the weapon name
+
 void CWeapons::Add(int weaponName, LPGAMEOBJECT weapon)
 {
-	weapon->SetVisible(false);
 	weapons[weaponName].push_back(weapon);
 }
-void CWeapons::UseWeapon(int weaponName, LPGAMEOBJECT obj)
+void CWeapons::ChoiceWeapon(int weaponName)
 {
 	switch (weaponName)
 	{
@@ -25,20 +23,18 @@ void CWeapons::UseWeapon(int weaponName, LPGAMEOBJECT obj)
 	}
 }
 
-
+// Get weapon and return the weapon object
 LPGAMEOBJECT CWeapons::GetWeapon(int weapon)
 {
-	
 	if (weapons[weapon].empty())
 		DebugOut(L"\n[ERROR] No weapons");
 	else
 	{
-		for (auto it = weapons[weapon].begin(); it != weapons[weapon].end(); ++it)
-		{
-			if ((*it)->GetVisible() == false)
+		for (auto i = weapons[weapon].begin(); i != weapons[weapon].end(); ++i)
+		{	
+			if ((*i)->GetVisible() == false)
 			{
-				//(*it)->SetVisible(true);
-				return (*it);
+				return (*i);
 				break;
 			}
 		}
@@ -58,7 +54,6 @@ void CWeapons::UseKnife()
 	knife->SetPosition(xK, yK);
 
 }
-
 
 CWeapons * CWeapons::GetInstance()
 {

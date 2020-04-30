@@ -122,7 +122,7 @@ void CWhip::SetVisible(bool visible)
 	CGameObject::SetVisible(visible);
 	if (this->visible)
 		if (currentAniID > 0)
-			this->ResetAnimationTimer(currentAniID);
+			this->ResetAnimation(currentAniID);
 }
 
 bool CWhip::IsOverlapping(LPGAMEOBJECT obj)

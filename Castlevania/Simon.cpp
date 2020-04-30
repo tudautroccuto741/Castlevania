@@ -8,6 +8,7 @@
 #include "HeartItem.h"
 #include "WhipItem.h"
 #include "KnifeItem.h"
+#include "Portal.h"
 
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -25,7 +26,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// check attack state
 	if (startTimeAttack != 0)
 	{
-		if (isAttacking && GetTickCount() - startTimeAttack > 450)
+		if (isAttacking && GetTickCount() - startTimeAttack > SIMON_ATTACK_TIME)
 		{
 			isAttacking = false;
 			whip->SetVisible(false);
@@ -34,6 +35,15 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isUsingweapon = false;
 			}
 		}
+	
+		/*if (isUsingweapon)
+		{
+			if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
+			{
+				this->weapon->ChoiceWeapon(secondWeapon);
+			}
+		}*/
+		
 		
 	}
 
@@ -43,9 +53,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
-
-	float min_tx, min_ty, nx = 0, ny;
-
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -54,12 +61,14 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else
 	{
+		float min_tx, min_ty, nx = 0, ny;
+
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 		x += min_tx * dx;
 		y += min_ty * dy;
 
 		
-		// collision
+		// collision logic with other objects
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -101,6 +110,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					e->obj->SetVisible(false);
 					secondWeapon = (int)Weapon::KNIFE;
 				}
+			}
+			else if (dynamic_cast<CPortal *>(e->obj))
+			{
+				CPortal *p = dynamic_cast<CPortal *>(e->obj);
+				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
 		}
 	}
@@ -190,7 +204,10 @@ void CSimon::StandUp()
 
 void CSimon::UseWeapon()
 {
-	this->weapon->UseWeapon(secondWeapon, this);
+	isAttacking = true;
+	isUsingweapon = true;
+	startTimeAttack = GetTickCount();
+	this->weapon->ChoiceWeapon(secondWeapon);
 }
 
 void CSimon::SetVisible(bool isVisble)
@@ -227,9 +244,6 @@ void CSimon::SetState(int state)
 		this->whip->SetVisible(true);
 		break;
 	case (int)SimonStateID::stateUseWeapon:
-		isAttacking = true;
-		isUsingweapon = true;
-		startTimeAttack = GetTickCount();
 		UseWeapon();
 		break;
 	case (int)SimonStateID::stateIdle:

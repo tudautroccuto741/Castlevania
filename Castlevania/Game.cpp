@@ -5,12 +5,6 @@
 #include "Utils.h"
 
 #include "PlayScence.h"
-#define MAX_GAME_LINE 1024
-
-
-#define GAME_FILE_SECTION_UNKNOWN -1
-#define GAME_FILE_SECTION_SETTINGS 1
-#define GAME_FILE_SECTION_SCENES 2
 
 CGame * CGame::__instance = NULL;
 
@@ -318,7 +312,12 @@ CGame *CGame::GetInstance()
 	return __instance;
 }
 
+#define MAX_GAME_LINE 1024
 
+
+#define GAME_FILE_SECTION_UNKNOWN -1
+#define GAME_FILE_SECTION_SETTINGS 1
+#define GAME_FILE_SECTION_SCENES 2
 
 void CGame::_ParseSection_SETTINGS(string line)
 {
@@ -338,7 +337,7 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
-	
+
 	LPSCENE scene = new CPlayScene(id, path);
 	scenes[id] = scene;
 }
@@ -377,12 +376,6 @@ void CGame::Load(LPCWSTR gameFile)
 	}
 	f.close();
 
-
-	//LPSCENE scene = new CPlayScene(1, L"scene1.txt");
-	//scenes[1] = scene;
-	//scene = new CPlayScene(2, L"scene2.txt");
-	//scenes[2] = scene;
-
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n", gameFile);
 
 	SwitchScene(current_scene);
@@ -390,15 +383,16 @@ void CGame::Load(LPCWSTR gameFile)
 
 void CGame::SwitchScene(int scene_id)
 {
-	// IMPORTANT: has to implement "unload" previous scene assets to avoid duplicate resources
+	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 
-	LPSCENE s = scenes[current_scene];
-	s->Unload();
+	scenes[current_scene]->Unload();;
 
 	CTextures::GetInstance()->Clear();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
+
 	current_scene = scene_id;
+	LPSCENE s = scenes[scene_id];
 	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
 }

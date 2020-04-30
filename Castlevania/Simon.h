@@ -9,13 +9,11 @@
 #define SIMON_SIT_BBOX_WIDTH				32.0f
 #define SIMON_SIT_BBOX_HEIGHT				46.0f
 
-
-#define SIMON_WALKING_SPEED					0.12f
+#define SIMON_WALKING_SPEED					0.15f
 #define SIMON_JUMP_SPEED_Y					0.4f
-#define SIMON_GRAVITY						0.0012f
-#define SIMON_FALL_GRAVITY					0.012f
-#define DEFAULT_TIME_VALUE					1000
+#define SIMON_GRAVITY						0.001f
 #define SIMON_UNTOUCHABLE_TIME				5000
+#define SIMON_ATTACK_TIME					450
 
 enum class SimonAniId
 {
@@ -29,7 +27,6 @@ enum class SimonAniId
 	IDSitAndWhippingLeft,
 	IDWhippingRight,
 	IDWhippingLeft
-	
 };
 enum class SimonStateID
 {
@@ -60,9 +57,6 @@ class CSimon : public CGameObject
 	CWhip *whip;
 	CWeapons *weapon;
 
-
-	//vector<LPGAMEOBJECT> ovObjects;		// overlapping objects
-	//vector<LPGAMEOBJECT>* coObjects;	// for saving the coObjects at the current frame to manipulate easily
 
 	static CSimon * __instance;
 public:

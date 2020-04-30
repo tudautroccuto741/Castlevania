@@ -68,8 +68,8 @@ LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO) // 2 obj dang di chu
 	coEvents: list of potential collisions
 */
 void CGameObject::CalcPotentialCollisions(
-	vector<LPGAMEOBJECT> *coObjects,  //danh sach cac doi tuong va cham
-	vector<LPCOLLISIONEVENT> &coEvents) //danh sach cac su kien va cham
+	vector<LPGAMEOBJECT> *coObjects,  
+	vector<LPCOLLISIONEVENT> &coEvents)
 {
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
@@ -84,7 +84,8 @@ void CGameObject::CalcPotentialCollisions(
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
 
-void CGameObject::FilterCollision( //chon t nho nhat tren tung truc de chon doi tuong va cham tuong ung
+// Choose the smallest t on each axis to select the corresponding collision object
+void CGameObject::FilterCollision( 
 	vector<LPCOLLISIONEVENT> &coEvents,
 	vector<LPCOLLISIONEVENT> &coEventsResult,
 	float &min_tx, float &min_ty,
@@ -136,8 +137,8 @@ void CGameObject::RenderBoundingBox()
 	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 100);
 }
 
-// sap xep lai cac frame
-void CGameObject::ResetAnimationTimer(int aniID)
+// rearrange the frames
+void CGameObject::ResetAnimation(int aniID)
 {
 	animations->GetInstance()->Get(aniID)->SetCurrentFrame(-1);
 }
@@ -167,20 +168,6 @@ bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
 
 void CGameObject::Render()
 {
-	/*if (GetVisible())
-	{
-		animations->GetInstance()->Get(currentAniID)->Render(x, y);
-	}*/
-
-	// Check if stop using an animation
-	// If yes, put the frames of the animation in order (again)
-
-	if (currentAniID != lastAniID)
-		if (lastAniID != -1)
-			this->ResetAnimationTimer(lastAniID);
-
-	lastAniID = currentAniID;
-
 	animations->Get(currentAniID)->Render(x, y, 255);
 
 	this->RenderBoundingBox();

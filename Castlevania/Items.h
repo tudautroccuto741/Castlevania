@@ -13,7 +13,7 @@ class CItems
 public:
 
 	void Add(int itemName, LPGAMEOBJECT item);
-	void CheckAndDrop(LPGAMEOBJECT gameObject);			// Check if the given object is holding item, drop it if yes
+	void CheckAndDrop(LPGAMEOBJECT gameObject);			// Check and the drop item
 	void Drop(int iteamName, float x, float y);
 	CItems() { ; }
 	static CItems * GetInstance();

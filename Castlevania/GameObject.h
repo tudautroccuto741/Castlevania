@@ -129,7 +129,7 @@ public:
 		float &nx,
 		float &ny);
 
-	void ResetAnimationTimer(int aniID);
+	void ResetAnimation(int aniID);
 
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;

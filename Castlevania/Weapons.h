@@ -10,7 +10,7 @@ class CWeapons
 	static CWeapons * __instance;
 
 public:
-	void UseWeapon(int weaponName, LPGAMEOBJECT obj);
+	void ChoiceWeapon(int weaponName);
 	void UseKnife();
 	LPGAMEOBJECT GetWeapon(int weapon);
 	void Add(int weaponName, LPGAMEOBJECT weapon);
