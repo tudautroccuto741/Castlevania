@@ -10,7 +10,7 @@
 #define SIMON_SIT_BBOX_HEIGHT				46.0f
 
 #define SIMON_WALKING_SPEED					0.15f
-#define SIMON_JUMP_SPEED_Y					0.4f
+#define SIMON_JUMP_SPEED_Y					0.5f
 #define SIMON_GRAVITY						0.001f
 #define SIMON_UNTOUCHABLE_TIME				5000
 #define SIMON_ATTACK_TIME					450

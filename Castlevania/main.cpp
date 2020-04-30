@@ -54,7 +54,6 @@ void Update(DWORD dt)
 	CGame::GetInstance()->GetCurrentScene()->Update(dt);
 }
 
-
 /*
 	Render a frame
 */

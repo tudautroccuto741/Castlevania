@@ -11,6 +11,7 @@ void CWeapons::Add(int weaponName, LPGAMEOBJECT weapon)
 {
 	weapons[weaponName].push_back(weapon);
 }
+
 void CWeapons::ChoiceWeapon(int weaponName)
 {
 	switch (weaponName)

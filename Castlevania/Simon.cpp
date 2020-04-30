@@ -17,6 +17,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	vy += SIMON_GRAVITY * dt;
 
+	if (vx < 0 && x < 0) x = 0;
+
 	//jumping
 	if (isJumping)
 	{
@@ -76,7 +78,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CBrick *>(e->obj))
 			{
-				if (e->ny != 0)
+				if (e->ny < 0)
 				{
 					if (isJumping)
 					{

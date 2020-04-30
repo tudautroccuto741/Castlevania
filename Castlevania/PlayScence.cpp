@@ -333,12 +333,13 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow SIMON
 	float cx, cy;
 	player->GetPosition(cx, cy);
-
+	
 
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
+	if (cx < 0) cx = 0;
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
 

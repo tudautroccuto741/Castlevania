@@ -9,7 +9,6 @@ void CItems::Add(int itemName, LPGAMEOBJECT item)
 	items[itemName].push_back(item);
 }	
 
-
 //	Check if the object is holding item, drop it if has
 
 void CItems::CheckAndDrop(LPGAMEOBJECT object)
