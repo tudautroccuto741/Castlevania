@@ -360,7 +360,8 @@ void CPlayScene::Render()
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+		if (!dynamic_cast<CSimon *>(objects[i])||!dynamic_cast<CWhip *>(objects[i]))
+			delete objects[i];
 
 	objects.clear();
 	player = NULL;

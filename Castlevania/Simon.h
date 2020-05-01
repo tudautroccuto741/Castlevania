@@ -55,7 +55,7 @@ class CSimon : public CGameObject
 	DWORD untouchable_start;
 
 	CWhip *whip;
-	CWeapons *weapon;
+	CWeapons *weapons;
 
 
 	static CSimon * __instance;

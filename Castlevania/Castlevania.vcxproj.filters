@@ -96,9 +96,6 @@
     <ClCompile Include="Flame.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Knife.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HeartItem.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -111,8 +108,11 @@
     <ClCompile Include="KnifeItem.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Knife.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
     <ClCompile Include="Weapons.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +182,6 @@
     <ClInclude Include="Flame.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Knife.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HeartItem.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -197,8 +194,11 @@
     <ClInclude Include="WhipItem.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Knife.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
     <ClInclude Include="Weapons.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
