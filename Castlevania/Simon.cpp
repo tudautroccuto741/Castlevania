@@ -32,13 +32,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			isAttacking = false;
 			whip->SetVisible(false);
-			if (isUsingweapon)
-			{
-				isUsingweapon = false;
-			}
 		}
-		// 150 - 150 - 150 (2) Update nhieu lan => trong vong 150 tick => Goi lien tuc update
-		// => Goi lien tuc ham` this->weapon->ChoiceWeapon(secondWeapon);
+
 		if (isUsingweapon)
 		{
 			if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
@@ -47,8 +42,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isUsingweapon = false;
 			}
 		}
-		
-		
 	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -212,7 +205,6 @@ void CSimon::UseWeapon()
 	isAttacking = true;
 	isUsingweapon = true;
 	startTimeAttack = GetTickCount();
-	/*this->weapon->ChoiceWeapon(secondWeapon);*/
 }
 
 void CSimon::SetVisible(bool isVisble)
