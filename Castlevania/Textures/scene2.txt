@@ -124,12 +124,12 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
+# BRICK	width	height
+3	0	351	300	510	32
 # SIMON
 0	108	288	100
 # WHIP
 1	108	288	200
-# BRICK	width	height
-3	0	351	300	510	32
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	288	0	0	320	32	1

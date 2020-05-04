@@ -48,7 +48,6 @@ class CSimon : public CGameObject
 	bool isAttacking;
 	bool isUsingweapon;
 	bool isSitting;
-	bool isMovable;
 	
 
 	DWORD startTimeAttack;

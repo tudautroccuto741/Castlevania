@@ -305,7 +305,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
@@ -360,8 +360,14 @@ void CPlayScene::Render()
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
-		if (!dynamic_cast<CSimon *>(objects[i])||!dynamic_cast<CWhip *>(objects[i]))
-			delete objects[i];
+	{
+		if (dynamic_cast<CSimon *>(objects[i]) || dynamic_cast<CWhip *>(objects[i])) 
+		{ ; }
+		
+		else 
+		{ delete objects[i]; }
+	}
+		
 
 	objects.clear();
 	player = NULL;
