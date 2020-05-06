@@ -166,6 +166,18 @@ bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
 	return false;
 }
 
+//bool CGameObject::IsInScreen()
+//{
+//	CSimon * player
+//	float cx, cy;
+//	GetPosition(cx, cy);
+//
+//
+//	CGame *game = CGame::GetInstance();
+//	cx -= game->GetScreenWidth() / 2;
+//	cy -= game->GetScreenHeight() / 2;
+//}
+
 void CGameObject::Render()
 {
 	animations->Get(currentAniID)->Render(x, y, 255);

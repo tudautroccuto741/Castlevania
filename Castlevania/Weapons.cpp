@@ -53,7 +53,6 @@ void CWeapons::UseKnife()
 	float xK = xS;
 	float yK = yS + DISTANCE_OF_KNIFE_AND_SIMON;
 	knife->SetPosition(xK, yK);
-
 }
 
 CWeapons * CWeapons::GetInstance()

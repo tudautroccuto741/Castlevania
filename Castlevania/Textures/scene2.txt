@@ -3,6 +3,7 @@
 100	textures\1.png	255	0	255
 200	textures\2.png	255	0	255
 300	textures\3.png	255	0	255
+1000	textures\4.png	255	0	255
 # id	file_path	r	g	b	width	height 
 # width, height only available for tilemap texture  
 123	textures\6666.png	255	0	255	256	352
@@ -69,6 +70,17 @@
 20019	103	138	192	172	200
 # Brick
 40000	129	67	161	99	300
+# Knight
+# walk Right
+20	10	246	42	310	1000
+21	42	246	74	310	1000
+22	74	246	106	310	1000
+23	106	246	138	310	1000
+# walk Left
+10	284	66	316	130	1000
+11	252	66	284	130	1000
+12	220	66	252	130	1000
+13	188	66	220	130	1000
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 # ==== SIMON =========
@@ -111,6 +123,13 @@
 
 # ==== BRICK ========
 301	40000	100
+
+# ==== Knight =========
+#walk right
+10001	20	200	21	200	22	200	23	200
+#walk left
+10011	10	200	11	200	12	200	13	200
+
 #
 # id	ani1	ani2	ani3
 #
@@ -121,15 +140,22 @@
 200	9994	9995	9996	9997	9998
 # BRICK
 300	301
+# Knight
+10	10000	10001	10011
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
-# BRICK	width	height
-3	0	351	300	510	32
 # SIMON
 0	108	288	100
 # WHIP
 1	108	288	200
+# Knight
+1000	286	95	10
+# BRICK	width	height
+3	0	351	300	510	32
+3	0	0	300	32	350
+3	447	0	300	32	350
+3	32	160	300	290	32
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	288	0	0	320	32	1

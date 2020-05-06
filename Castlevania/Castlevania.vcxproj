@@ -157,6 +157,7 @@
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="KeyEventHandler.cpp" />
     <ClCompile Include="KnifeItem.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Items.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="KnifeItem.h" />
+    <ClInclude Include="Knight.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scence.h" />

@@ -19,11 +19,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (vx < 0 && x < 0) x = 0;
 
-	//jumping
-	if (isJumping)
-	{
-		vy += SIMON_GRAVITY * this->dt;
-	}
 	// Attacking
 	// check attack state
 	if (startTimeAttack != 0)
@@ -82,10 +77,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += ny * 0.4f;
 					vy = 0;
 				}
+				if (e->nx != 0)
+				{
+					x += nx * 0.4f;
+				}
 			}
 			else if (dynamic_cast<CWhipItem *>(e->obj))
 			{
-
 				if (e->nx != 0 || e->ny != 0)
 				{
 					this->whip->LvUp();
@@ -118,8 +116,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	
 	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];	
-	
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void CSimon::Render()
@@ -132,9 +129,18 @@ void CSimon::ChoiceAnimation()
 {
 	if (isJumping)
 	{
-		currentAniID = (nx > 0) ?
-			(int)SimonAniId::IDSitRight :
-			(int)SimonAniId::IDSitLeft;
+		if (isAttacking)
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::IDWhippingRight :
+				(int)SimonAniId::IDWhippingLeft;
+		}
+		else
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::IDSitRight :
+				(int)SimonAniId::IDSitLeft;
+		}
 	}
 	else if (isSitting)
 	{
@@ -184,7 +190,7 @@ void CSimon::Sitting()
 
 void CSimon::Jumping()
 {
-	if (vy < SIMON_GRAVITY && !isJumping && !isSitting && !isAttacking && !isUsingweapon)
+	if (vy < SIMON_GRAVITY && !isJumping && !isSitting)
 	{
 		isJumping = true;
 		this->vy = -SIMON_JUMP_SPEED_Y;
@@ -215,7 +221,6 @@ void CSimon::SetVisible(bool isVisble)
 void CSimon::SetState(int state)
 {
 	if (isAttacking) return;
-	if (isJumping) return;
 	if (isUsingweapon)return;
 	switch (state)
 	{

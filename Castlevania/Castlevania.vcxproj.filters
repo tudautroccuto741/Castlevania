@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{8392aa5d-58a2-44ce-8044-604cf6738909}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Objects\Enemies">
+      <UniqueIdentifier>{214f1597-04c6-414b-948f-fb3e0006a583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Enemies">
+      <UniqueIdentifier>{5adb35d2-63e9-4d9a-8da6-2ba82af31d12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -114,6 +120,9 @@
     <ClCompile Include="Weapons.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Knight.cpp">
+      <Filter>Source Files\Objects\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -199,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Weapons.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Knight.h">
+      <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

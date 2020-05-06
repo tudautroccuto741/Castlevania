@@ -15,7 +15,6 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		nx = CSimon::GetInstance()->GetDirection();
 		CGameObject::Update(dt);
 		vx = (nx > 0) ? KNIFE_FLYING_SPEED : -KNIFE_FLYING_SPEED;
-		ChoiceAnimation();
 		vector<LPCOLLISIONEVENT> coEvents;
 		coEvents.clear();
 		CalcPotentialCollisions(coObjects, coEvents);
@@ -23,7 +22,10 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
 		float min_tx, min_ty, nx = 0, ny;
-		
+		if(x<0||x>1504)
+		{
+			this->SetVisible(false);
+		}
 		if (coEvents.size() == 0)
 		{
 			y += dy;
@@ -40,24 +42,22 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				// collision with candle
 				if (dynamic_cast<CCandle *>(e->obj))
 				{
-					if (e->nx != 0 || e->ny != 0)
+					if (e->nx != 0)
 					{
 						vx = 0;
 						e->obj->Destroy();
 						this->SetVisible(false);
 					}
 				}
-
 			}
 		}
-			
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
 }
 
 void CKnife::GetBoundingBox(float & left, float & top, float & right, float & bottom)
-{
+{	
 	left = x;
 	top = y;
 	right = left + KNIFE_BBOX_WIDTH;
@@ -66,15 +66,23 @@ void CKnife::GetBoundingBox(float & left, float & top, float & right, float & bo
 
 void CKnife::ChoiceAnimation()
 {
-	int nxKn;
+	int nxKn, ani;
 	nxKn = CSimon::GetInstance()->GetDirection();
-	currentAniID = (nxKn > 0) ?
-		(int)KnifeAniID::knifeRight :
-		(int)KnifeAniID::knifeLeft;
+	if (nxKn > 0)
+	{
+		currentAniID = (int)KnifeAniID::knifeRight;
+		return;
+	}
+	else
+	{
+		currentAniID = (int)KnifeAniID::knifeLeft;
+		return;
+	}		
 }
 
 void CKnife::Render()
 {
+	ChoiceAnimation();
 	CGameObject::Render();
 }
 

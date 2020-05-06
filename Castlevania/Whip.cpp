@@ -14,14 +14,11 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		ChoiceAnimation();
 		UpdatePosition(currentAniID);
 		vector<LPCOLLISIONEVENT> coEvents;
+		//vector<LPCOLLISIONEVENT> coEventsResult;
 		coEvents.clear();
 		CalcPotentialCollisions(coObjects, coEvents);
-		
-		vector<LPCOLLISIONEVENT> coEventsResult;
-		
-			float min_tx, min_ty, nx = 0, ny;
-
-			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+		float min_tx, min_ty, nx = 0, ny;
+		//FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
 			if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
 			{
@@ -129,7 +126,6 @@ bool CWhip::IsOverlapping(LPGAMEOBJECT obj)
 {
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-
 	// When the whip is at the back of Simon, ignore it
 	if ((nx > 0 && x < xS) || (nx < 0 && x > xS))
 		return false;

@@ -88,9 +88,7 @@ public:
 	void SetDirection(int nx) { this->nx = nx; }
 	int GetDirection() { return this->nx; }
 
-	////state
-	//void SetState(int state) { this->currentState = state; }
-	//int GetState() { return this->currentState; }
+	//bool IsInScreen();
 
 	//currentAni
 	void SetCurrentAniID(int aniID) { this->currentAniID = aniID; }

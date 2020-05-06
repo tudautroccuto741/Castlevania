@@ -16,6 +16,7 @@
 #include "Knife.h"
 #include "KnifeItem.h"
 #include "Weapons.h"
+#include "Knight.h"
 
 using namespace std;
 
@@ -49,6 +50,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_KNIFE_ITEM			8
 #define OBJECT_TYPE_KNIFE				9
 #define OBJECT_TYPE_PORTAL				50
+#define OBJECT_TYPE_KNIGHT				1000
 
 #define MAX_SCENE_LINE 1024
 
@@ -162,7 +164,6 @@ void CPlayScene::__ParseSection_TILE_MAP(string line)
 		this->tileMapLineY += TILE_HEIGHT;
 }
 
-
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -232,6 +233,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetHoldingItem(typeObj);
 		break;
 	}
+	case OBJECT_TYPE_KNIGHT:
+		obj = new CKnight();
+		break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -318,7 +322,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
-		if(objects[i]->GetVisible())
+		if (objects[i]->GetVisible())
 			coObjects.push_back(objects[i]);
 	}
 
@@ -333,12 +337,11 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow SIMON
 	float cx, cy;
 	player->GetPosition(cx, cy);
-	
 
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-
+	
 	if (cx < 0) cx = 0;
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
@@ -361,7 +364,7 @@ void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CSimon *>(objects[i]) || dynamic_cast<CWhip *>(objects[i])) 
+		if (dynamic_cast<CSimon *>(objects[i]) || dynamic_cast<CWhip *>(objects[i])|| dynamic_cast<CKnife *>(objects[i])) 
 		{ ; }
 		
 		else 
