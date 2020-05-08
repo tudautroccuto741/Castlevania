@@ -45,6 +45,60 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
+	// is overlapping
+	for (UINT i = 0; i < coObjects->size(); ++i)
+	{
+		float xS, yS;
+		if (this->IsOverlapping(coObjects->at(i)))
+		{
+			if (dynamic_cast<CWhipItem *>(coObjects->at(i)))
+			{
+				coObjects->at(i)->Destroy();
+			}
+			else if (dynamic_cast<CHeartItem *>(coObjects->at(i)))
+			{
+				coObjects->at(i)->Destroy();
+			}
+			else if (dynamic_cast<CKnifeItem *>(coObjects->at(i)))
+			{
+				coObjects->at(i)->Destroy();
+				secondWeapon = (int)Weapon::KNIFE;
+			}
+			else if (dynamic_cast<CStairsUp *>(coObjects->at(i)))
+			{
+				coObjects->at(i)->GetPosition(xS, yS);
+				canGoingUp = true;
+				if (GetState()==(int)SimonStateID::stateGoingUpStairsRight)
+				{
+					SetOnStairs(1);
+					SetPosition(xS + 16, y);
+				}
+				if (IsOnStairs() == -1 && canGoingDown == true && (y + SIMON_IDLE_BBOX_HEIGHT > yS + STAIRS_DOWN_BBOX_HEIGHT))
+				{
+					SetOnStairs(0);
+					canGoingDown = false;
+				}
+			}
+			else if (dynamic_cast<CStairsDown *>(coObjects->at(i)))
+			{
+				canGoingDown = true;
+				if (GetState() == (int)SimonStateID::stateGoingDownStairsLeft)
+				{
+					SetOnStairs(-1);
+				}
+				coObjects->at(i)->GetPosition(xS, yS);
+				if (IsOnStairs()==1 && canGoingUp == true && (y + SIMON_IDLE_BBOX_HEIGHT < yS + STAIRS_DOWN_BBOX_HEIGHT))
+				{
+					SetOnStairs(0);
+					canGoingUp = false;
+				}
+			}
+		}
+	}
+	if (IsOnStairs() == 1|| IsOnStairs() == -1)
+	{
+		vy = 0;
+	}
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -163,7 +217,21 @@ void CSimon::ChoiceAnimation()
 			(int)SimonAniId::IDWhippingRight :
 			(int)SimonAniId::IDWhippingLeft;
 	}
-
+	else if (IsOnStairs() != 0)
+	{
+		if (canGoingUp && vx!=0)
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::IDGoingUpStairsRight :
+				(int)SimonAniId::IDGoingDownStairsLeft;
+		}
+		else
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::idleGoingUpStairsRight :
+				(int)SimonAniId::idleGoingDownStairsLeft;
+		}
+	}
 	else if (vx != 0)
 	{
 		currentAniID = (nx > 0) ?
@@ -176,6 +244,20 @@ void CSimon::ChoiceAnimation()
 			(int)SimonAniId::idleGoRight :
 			(int)SimonAniId::idleGoLeft;
 	}
+}
+
+void CSimon::WalkingRight()
+{
+	nx = 1;
+	if (isSitting) return;
+	vx = SIMON_WALKING_SPEED;
+}
+
+void CSimon::WalkingLeft()
+{
+	nx = -1;
+	if (isSitting) return;
+	vx = -SIMON_WALKING_SPEED;
 }
 
 void CSimon::Sitting()
@@ -206,11 +288,38 @@ void CSimon::StandUp()
 	}
 }
 
+void CSimon::Whipping()
+{
+	isAttacking = true;
+	startTimeAttack = GetTickCount();
+	this->whip->SetVisible(true);
+}
+
 void CSimon::UseWeapon()
 {
 	isAttacking = true;
 	isUsingweapon = true;
 	startTimeAttack = GetTickCount();
+}
+
+void CSimon::GoingUpStairs()
+{
+	if (nx = 1)
+	{
+		vx = SIMON_WALKING_SPEED;
+		vy = -0.15;
+		isJumping = false;
+		isSitting = false;
+	}
+}
+
+void CSimon::GoingDownStairs()
+{
+	nx = -1;
+	vx = -SIMON_WALKING_SPEED;
+	vy = 0.15;
+	isJumping = false;
+	isSitting = false;
 }
 
 void CSimon::SetVisible(bool isVisble)
@@ -225,14 +334,10 @@ void CSimon::SetState(int state)
 	switch (state)
 	{
 	case (int)SimonStateID::stateWalkingRight:
-		nx = 1;
-		if (isSitting) return;
-		vx = SIMON_WALKING_SPEED;
+		WalkingRight();
 		break;
 	case (int)SimonStateID::stateWalkingLeft:
-		nx = -1;
-		if (isSitting) return;
-		vx = -SIMON_WALKING_SPEED;
+		WalkingLeft();
 		break;
 	case (int)SimonStateID::stateJump:
 		Jumping();
@@ -241,13 +346,23 @@ void CSimon::SetState(int state)
 		Sitting();
 		break;
 	case (int)SimonStateID::stateWhipping:
-		isAttacking = true;
-		startTimeAttack = GetTickCount();
-		this->whip->SetVisible(true);
+		Whipping();
 		break;
 	case (int)SimonStateID::stateUseWeapon:
 		UseWeapon();
 		break;
+	case (int)SimonStateID::stateGoingUpStairsRight:
+		if (canGoingUp)
+		{
+			GoingUpStairs();
+			break;
+		}
+	case (int)SimonStateID::stateGoingDownStairsLeft:
+		if (canGoingDown)
+		{
+			GoingDownStairs();
+			break;
+		}
 	case (int)SimonStateID::stateIdle:
 		vx = 0;
 		isAttacking = false;
@@ -255,6 +370,7 @@ void CSimon::SetState(int state)
 		this->StandUp();
 		break;
 	}
+	states = state;
 }
 
 void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom)

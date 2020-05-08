@@ -8,6 +8,7 @@
 # width, height only available for tilemap texture  
 123	textures\6666.png	255	0	255	256	352
 # id	left	top	right	bottom	texture_id
+
 [SPRITES]
 # SIMON
 # idle right
@@ -42,6 +43,24 @@
 10051	312	200	344	262	100
 10052	373	200	405	262	100
 10053	432	200	464	262	100
+# simon go up the stairs idle right
+10060	190	68	222	130	100
+# simon go up the stairs right
+10061	190	68	222	130	100
+10062	262	68	294	130	100
+# simon go down the stairs idle left
+10070	130	266	162	328	100
+# simon go down the stairs left
+10071	130	266	162	328	100
+10072	186	266	218	328	100
+# simon go up the stairs and whipping right
+10081	129	134	161	196	100
+10082	68	134	101	196	100
+10083	9	134	41	196	100
+# simon go down the stairs and whipping left
+10091	130	332	162	394	100
+10092	190	332	222	394	100
+10093	250	332	282	394	100
 # Whipping right
 # level 1
 20001	420	2	452	64	200
@@ -70,6 +89,10 @@
 20019	103	138	192	172	200
 # Brick
 40000	129	67	161	99	300
+# Up Stairs
+40001	129	67	161	99	300
+# Down Stairs
+40002	129	67	161	99	300
 # Knight
 # walk Right
 20	10	246	42	310	1000
@@ -82,6 +105,7 @@
 12	220	66	252	130	1000
 13	188	66	220	130	1000
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
+
 [ANIMATIONS]
 # ==== SIMON =========
 # idle right
@@ -104,6 +128,18 @@
 8	10041	150	10042	150	10043	150
 # simon whipping left
 9	10051	150	10052	150	10053	150
+# simon go up stairs idle right
+10	10060	100
+# simon go up stairs right
+11	10061	100	10062	100
+# simon go down stairs idle left
+12	10070	100
+# simon go down stairs left
+13	10071	100	10072	100
+# simon go up stairs and whipping right
+14	10081	150	10082	150	10083	150
+# simon go down stairs and whipping left
+15	10091	150	10092	150	10093	150
 
 # ==== WHIP =========
 # whipping right
@@ -124,6 +160,12 @@
 # ==== BRICK ========
 301	40000	100
 
+# ==== UPSTAIRS ========
+302	40001	100
+
+# ==== DOWNSTAIRS ========
+303	40002	100
+
 # ==== Knight =========
 #walk right
 10001	20	200	21	200	22	200	23	200
@@ -135,11 +177,15 @@
 #
 [ANIMATION_SETS]
 # SIMON
-100	0	1	2	3	4	5	6	7	8	9
+100	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15
 # WHIP
 200	9994	9995	9996	9997	9998
 # BRICK
 300	301
+# UPSTAIRS
+301	302
+# DOWNSTAIRS
+302	303
 # Knight
 10	10000	10001	10011
 [OBJECTS]
@@ -153,9 +199,14 @@
 1000	286	95	10
 # BRICK	width	height
 3	0	351	300	510	32
+3	32	160	300	290	32
 3	0	0	300	32	350
 3	447	0	300	32	350
-3	32	160	300	290	32
+3	351	222	300	94	32
+# UPSTAIRS
+31	207	319	301
+# DOWNSTAIRS
+32	334	190	302
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	288	0	0	320	32	1

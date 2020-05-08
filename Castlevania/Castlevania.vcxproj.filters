@@ -123,6 +123,12 @@
     <ClCompile Include="Knight.cpp">
       <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="StairsUp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StairsDown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -211,6 +217,12 @@
     </ClInclude>
     <ClInclude Include="Knight.h">
       <Filter>Header Files\Objects\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="StairsUp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StairsDown.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

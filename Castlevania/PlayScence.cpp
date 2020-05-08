@@ -17,6 +17,8 @@
 #include "KnifeItem.h"
 #include "Weapons.h"
 #include "Knight.h"
+#include "StairsUp.h"
+#include "StairsDown.h"
 
 using namespace std;
 
@@ -44,6 +46,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_WHIP				1
 #define OBJECT_TYPE_CANDLE				2
 #define OBJECT_TYPE_BRICK				3
+#define OBJECT_TYPE_STAIRS_UP			31
+#define OBJECT_TYPE_STAIRS_DOWN			32
 #define OBJECT_TYPE_FLAMES				4
 #define OBJECT_TYPE_HEART				6
 #define OBJECT_TYPE_WHIPITEM			7
@@ -210,6 +214,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetHeight(height);
 		break;
 	}
+	case OBJECT_TYPE_STAIRS_UP:
+		obj = new CStairsUp();
+		break;
+	case OBJECT_TYPE_STAIRS_DOWN:
+		obj = new CStairsDown();
+		break;
 	case OBJECT_TYPE_FLAMES:
 		obj = new CFlame();
 		CFlames::GetInstance()->Add((CFlame*)obj);
@@ -309,7 +319,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
@@ -415,10 +425,44 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CSimon *simon = ((CPlayScene*)scence)->player;
 	if (CGame::GetInstance()->IsKeyDown(DIK_D))
-		simon->SetState((int)SimonStateID::stateWalkingRight);
+	{	
+		if (simon->IsOnStairs() == 1)
+		{
+			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
+		}
+		else
+		{
+			simon->SetState((int)SimonStateID::stateWalkingRight);
+		}
+	}
 	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
-		simon->SetState((int)SimonStateID::stateWalkingLeft);
+	{
+		if (simon->IsOnStairs() == -1)
+		{
+			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+		}
+		else
+		{
+			simon->SetState((int)SimonStateID::stateWalkingLeft);
+		}
+	}
 	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
-		simon->SetState((int)SimonStateID::stateSit);
+	{
+		if (simon->CanGoingDown())
+		{
+			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+		}
+		else
+		{
+			simon->SetState((int)SimonStateID::stateSit);
+		}
+	}
+	else if (CGame::GetInstance()->IsKeyDown(DIK_W))
+	{
+		if (simon->CanGoingUp())
+		{
+			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
+		}
+	}
 	else simon->SetState((int)SimonStateID::stateIdle);
 }

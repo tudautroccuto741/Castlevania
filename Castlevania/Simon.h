@@ -3,6 +3,8 @@
 #include "Animations.h"
 #include "Whip.h"
 #include "Weapons.h"
+#include "StairsUp.h"
+#include "StairsDown.h"
 
 #define SIMON_IDLE_BBOX_WIDTH				32.0f
 #define SIMON_IDLE_BBOX_HEIGHT				62.0f
@@ -26,7 +28,11 @@ enum class SimonAniId
 	IDSitAndWhippingRight,
 	IDSitAndWhippingLeft,
 	IDWhippingRight,
-	IDWhippingLeft
+	IDWhippingLeft,
+	idleGoingUpStairsRight,
+	IDGoingUpStairsRight,
+	idleGoingDownStairsLeft,
+	IDGoingDownStairsLeft
 };
 enum class SimonStateID
 {
@@ -37,18 +43,23 @@ enum class SimonStateID
 	stateSit = 105,
 	stateWhipping = 106,
 	stateUseWeapon = 107,
-	stateJumpingAndWhipping = 108
+	stateJumpingAndWhipping = 108,
+	stateGoingUpStairsRight = 109,
+	stateGoingDownStairsLeft = 110
 };
 
 class CSimon : public CGameObject
 {
 	int untouchable;
 	int secondWeapon;
-	
+	int states;
+	int stairs; // 1 going up stairs, -1 going down
 	bool isJumping;
 	bool isAttacking;
 	bool isUsingweapon;
 	bool isSitting;
+	bool canGoingUp;
+	bool canGoingDown;
 	
 
 	DWORD startTimeAttack;
@@ -65,16 +76,27 @@ public:
 	void Render() override;
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 
-	void SetState(int state);	
+	void SetState(int state);
+	int GetState() { return this->states; }
 	void SetVisible(bool visible);
+	
+	void SetOnStairs(int onStairs) { this->stairs = onStairs; }
+	int IsOnStairs(){ return this->stairs; }
+	bool CanGoingUp(){ return this->canGoingUp; }
+	bool CanGoingDown() { return this->canGoingDown; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
+	void WalkingRight();
+	void WalkingLeft();
 	void Sitting();
 	void Jumping();
 	void StandUp();
+	void Whipping();
 	void UseWeapon();
 	void ChoiceAnimation();
+	void GoingUpStairs();
+	void GoingDownStairs();
 
 	int GetSecondWeapons() { return this->secondWeapon; }
 
