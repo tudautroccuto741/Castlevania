@@ -54,6 +54,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CWhipItem *>(coObjects->at(i)))
 			{
 				coObjects->at(i)->Destroy();
+				this->whip->LvUp();
 			}
 			else if (dynamic_cast<CHeartItem *>(coObjects->at(i)))
 			{
@@ -143,7 +144,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					this->whip->LvUp();
 					e->obj->SetVisible(false);
 				}
-				if (e->ny != 0)	whip->LvUp();
 			}
 			else if (dynamic_cast<CHeartItem *>(e->obj))
 			{
