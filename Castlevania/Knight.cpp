@@ -87,10 +87,5 @@ CKnight::CKnight()
 {
 	this->currentAniID = (int)KnightAniId::walkRight;
 	visible = true;
+	health = KNIGHT_HEALTH;
 }
-
-//CKnight* CKnight::GetInstance()
-//{
-//	if (__instance == NULL) __instance = new CKnight();
-//	return __instance;
-//}

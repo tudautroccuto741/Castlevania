@@ -166,17 +166,15 @@ bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
 	return false;
 }
 
-//bool CGameObject::IsInScreen()
-//{
-//	CSimon * player
-//	float cx, cy;
-//	GetPosition(cx, cy);
-//
-//
-//	CGame *game = CGame::GetInstance();
-//	cx -= game->GetScreenWidth() / 2;
-//	cy -= game->GetScreenHeight() / 2;
-//}
+void CGameObject::Hitting(int damage)
+{
+	if (health > 0)
+		health -= damage;
+	if (health <= 0)
+	{
+		this->Destroy();
+	}
+}
 
 void CGameObject::Render()
 {

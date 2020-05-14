@@ -15,6 +15,8 @@
 #define WHIP_LV1					20001
 #define WHIP_LV2					20004
 #define WHIP_LV3					20007
+#define WHIP_DAMAGE_LV1				1
+#define WHIP_DAMAGE_LV2				2
 
 using namespace std;
 
@@ -42,6 +44,7 @@ public:
 	bool IsOverlapping(LPGAMEOBJECT obj) override;
 	void UpdatePosition(int aniID);
 	void ChoiceAnimation();
+	void PickDamage();
 	void LvUp();
 	CWhip();
 	static CWhip * GetInstance();

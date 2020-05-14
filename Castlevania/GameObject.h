@@ -67,6 +67,11 @@ public:
 
 	int item;
 
+	int point = 0;
+	int health = 0;
+	int damage = 0;
+
+
 	CAnimations* animations; //to get animations
 	int currentAniID;
 	int lastAniID;
@@ -112,6 +117,12 @@ public:
 	int GetHeight() { return this->height; }
 	void RenderBoundingBox();
 
+	// Points, Health, Damage
+	int GetPoint() { return this->point; }
+	int GetHealth() { return this->health; }
+	int GetDamage() { return this->damage; }
+	
+
 	//2 object moving
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 
@@ -134,6 +145,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render();
 	virtual void Destroy();
+	virtual void Hitting(int damage);
 	virtual bool IsOverlapping(LPGAMEOBJECT obj);
 
 	CGameObject();

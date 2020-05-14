@@ -19,6 +19,7 @@
 #include "Knight.h"
 #include "StairsUp.h"
 #include "StairsDown.h"
+#include "SmallCandle.h"
 
 using namespace std;
 
@@ -45,6 +46,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_SIMON				0
 #define OBJECT_TYPE_WHIP				1
 #define OBJECT_TYPE_CANDLE				2
+#define OBJECT_TYPE_SMALL_CANDLE		21
 #define OBJECT_TYPE_BRICK				3
 #define OBJECT_TYPE_STAIRS_UP			31
 #define OBJECT_TYPE_STAIRS_DOWN			32
@@ -243,6 +245,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetHoldingItem(typeObj);
 		break;
 	}
+	case OBJECT_TYPE_SMALL_CANDLE:
+	{
+		int typeObj = atoi(tokens[4].c_str());
+		obj = new CSmallCandle();
+		obj->SetHoldingItem(typeObj);
+		break;
+	}
 	case OBJECT_TYPE_KNIGHT:
 		obj = new CKnight();
 		break;
@@ -430,6 +439,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		{
 			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
 		}
+		else if (simon->IsOnStairs() == -1)
+		{
+			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
+		}
 		else
 		{
 			simon->SetState((int)SimonStateID::stateWalkingRight);
@@ -438,6 +451,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
 	{
 		if (simon->IsOnStairs() == -1)
+		{
+			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+		}
+		else if (simon->IsOnStairs() == 1)
 		{
 			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
 		}

@@ -10,9 +10,14 @@
 #define SIMON_IDLE_BBOX_HEIGHT				62.0f
 #define SIMON_SIT_BBOX_WIDTH				32.0f
 #define SIMON_SIT_BBOX_HEIGHT				46.0f
+#define SIMON_DIE_BBOX_WIDTH				64.0f
+#define SIMON_DIE_BBOX_HEIGHT				30.0f
+
 
 #define SIMON_WALKING_SPEED					0.15f
 #define SIMON_JUMP_SPEED_Y					0.4f
+#define SIMON_IS_PUSHED_Y					0.25f
+#define SIMON_IS_PUSHED_X					0.1f
 #define SIMON_GRAVITY						0.001f
 #define SIMON_UNTOUCHABLE_TIME				5000
 #define SIMON_ATTACK_TIME					450
@@ -32,8 +37,13 @@ enum class SimonAniId
 	idleGoingUpStairsRight,
 	IDGoingUpStairsRight,
 	idleGoingDownStairsLeft,
-	IDGoingDownStairsLeft
+	IDGoingDownStairsLeft,
+	IDAttackingOnStairsRight,
+	IDAttackingOnStairsLeft,
+	IDBeAttackingRight,
+	IDBeAttackingLeft
 };
+
 enum class SimonStateID
 {
 	stateIdle = 101,
@@ -45,7 +55,9 @@ enum class SimonStateID
 	stateUseWeapon = 107,
 	stateJumpingAndWhipping = 108,
 	stateGoingUpStairsRight = 109,
-	stateGoingDownStairsLeft = 110
+	stateGoingDownStairsLeft = 110,
+	stateBeHitRight = 111,
+	stateBeHitLeft = 112
 };
 
 class CSimon : public CGameObject
@@ -56,6 +68,7 @@ class CSimon : public CGameObject
 	int stairs; // 1 going up stairs, -1 going down
 	bool isJumping;
 	bool isAttacking;
+	bool beHit;
 	bool isUsingweapon;
 	bool isSitting;
 	bool canGoingUp;
@@ -64,6 +77,7 @@ class CSimon : public CGameObject
 
 	DWORD startTimeAttack;
 	DWORD untouchable_start;
+
 
 	CWhip *whip;
 	CWeapons *weapons;
@@ -97,6 +111,7 @@ public:
 	void ChoiceAnimation();
 	void GoingUpStairs();
 	void GoingDownStairs();
+	void BeHit();
 
 	int GetSecondWeapons() { return this->secondWeapon; }
 

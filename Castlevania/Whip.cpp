@@ -3,11 +3,13 @@
 #include "Simon.h"
 #include "Candle.h"
 #include "Flame.h"
-
+#include "Knight.h"
+#include "SmallCandle.h"
 CWhip * CWhip::__instance = NULL;
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	PickDamage();
 	if (visible)
 	{
 		CGameObject::Update(dt);
@@ -26,9 +28,14 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					if (this->IsOverlapping(coObjects->at(i)))
 					{
-						if (dynamic_cast<CCandle *>(coObjects->at(i)))
+						if (dynamic_cast<CCandle *>(coObjects->at(i))
+							|| dynamic_cast<CSmallCandle *>(coObjects->at(i)))
 						{
 							coObjects->at(i)->Destroy();
+						}
+						if (dynamic_cast<CKnight *>(coObjects->at(i)))
+						{
+							coObjects->at(i)->Hitting(this->damage);
 						}
 					}
 				}
@@ -168,6 +175,15 @@ void CWhip::LvUp()
 	}
 }
 
+void CWhip::PickDamage()
+{
+	if (lv == WHIP_LV1)
+	{
+		damage = WHIP_DAMAGE_LV1;
+	}
+	else damage = WHIP_DAMAGE_LV2;
+}
+
 CWhip * CWhip::GetInstance()
 {
 	if (__instance == NULL)__instance = new CWhip();
@@ -179,4 +195,5 @@ CWhip::CWhip()
 {
 	visible = false;
 	lv = WHIP_LV1;
+	damage = WHIP_DAMAGE_LV1;
 }

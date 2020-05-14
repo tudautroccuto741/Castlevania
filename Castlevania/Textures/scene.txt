@@ -1,7 +1,9 @@
 [SETTINGS]
-start	1
+start	2
 #scene list
 [SCENES]
 1	Textures/scene1.txt
 2	Textures/scene2.txt
-3	Textures/scene-test.txt
+21	Textures/scene21.txt
+3	Textures/scene3.txt
+31	Textures/scene31.txt

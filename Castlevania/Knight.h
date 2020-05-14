@@ -7,6 +7,7 @@
 
 #define KNIGHT_WALKING_SPEED				0.03f
 #define KNIGHT_GRAVITY						0.001f
+#define KNIGHT_HEALTH						3
 
 
 enum class KnightAniId
@@ -31,6 +32,4 @@ public:
 	void ChoiceAnimation();
 
 	CKnight();
-	//~CKnight();
-	//static CKnight * GetInstance();
 };
