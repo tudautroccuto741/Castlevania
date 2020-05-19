@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "Simon.h"
 #include "Knife.h"
+#include "Boomerang.h"
 
 CWeapons * CWeapons::__instance = NULL;
 
@@ -18,6 +19,9 @@ void CWeapons::ChoiceWeapon(int weaponName)
 	{
 	case (int)Weapon::KNIFE:
 		UseKnife();
+		break;
+	case (int)Weapon::BOOMERANG:
+		UseBoomerang();
 		break;
 	default:
 		break;
@@ -53,6 +57,19 @@ void CWeapons::UseKnife()
 	float xK = xS;
 	float yK = yS + DISTANCE_OF_KNIFE_AND_SIMON;
 	knife->SetPosition(xK, yK);
+}
+
+void CWeapons::UseBoomerang()
+{
+	LPGAMEOBJECT boom = GetWeapon((int)Weapon::BOOMERANG);
+	int nxKn;
+	boom->SetVisible(true);
+	nxKn = CSimon::GetInstance()->GetDirection();
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+	float xK = xS;
+	float yK = yS + DISTANCE_OF_BOOMERANG_AND_SIMON;
+	boom->SetPosition(xK, yK);
 }
 
 CWeapons * CWeapons::GetInstance()

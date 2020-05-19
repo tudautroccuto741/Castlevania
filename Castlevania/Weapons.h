@@ -12,6 +12,7 @@ class CWeapons
 public:
 	void ChoiceWeapon(int weaponName);
 	void UseKnife();
+	void UseBoomerang();
 	LPGAMEOBJECT GetWeapon(int weapon);
 	void Add(int weaponName, LPGAMEOBJECT weapon);
 	CWeapons() { ; }

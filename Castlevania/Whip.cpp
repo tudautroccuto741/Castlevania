@@ -9,10 +9,10 @@ CWhip * CWhip::__instance = NULL;
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	PickDamage();
 	if (visible)
 	{
 		CGameObject::Update(dt);
+		PickDamage();
 		ChoiceAnimation();
 		UpdatePosition(currentAniID);
 		vector<LPCOLLISIONEVENT> coEvents;
@@ -29,14 +29,12 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (this->IsOverlapping(coObjects->at(i)))
 					{
 						if (dynamic_cast<CCandle *>(coObjects->at(i))
-							|| dynamic_cast<CSmallCandle *>(coObjects->at(i)))
+							|| dynamic_cast<CSmallCandle *>(coObjects->at(i))
+							|| dynamic_cast<CKnight *>(coObjects->at(i)))
 						{
-							coObjects->at(i)->Destroy();
+							coObjects->at(i)->BeHit(this->damage);
 						}
-						if (dynamic_cast<CKnight *>(coObjects->at(i)))
-						{
-							coObjects->at(i)->Hitting(this->damage);
-						}
+				
 					}
 				}
 			}
@@ -195,5 +193,4 @@ CWhip::CWhip()
 {
 	visible = false;
 	lv = WHIP_LV1;
-	damage = WHIP_DAMAGE_LV1;
 }

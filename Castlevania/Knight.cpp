@@ -8,11 +8,11 @@ void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	x += dx;
 	vy += KNIGHT_GRAVITY * dt;
 	vx = (nx > 0) ? KNIGHT_WALKING_SPEED : -KNIGHT_WALKING_SPEED;
-	if (x > 288)
+	if (x > 738)
 	{
 		SetDirection(-1);
 	}
-	if (x < 72)
+	if (x < 512)
 	{
 		SetDirection(1);
 	}

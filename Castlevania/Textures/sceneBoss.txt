@@ -2,7 +2,7 @@
 [TEXTURES]
 # id	file_path	r	g	b	width	height 
 # width, height only available for tilemap texture  
-123	textures\tile_map32.png	255	0	255	544	288
+123	textures\0.png	255	0	255	544	288
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 [ANIMATIONS]

@@ -20,6 +20,9 @@
 #include "StairsUp.h"
 #include "StairsDown.h"
 #include "SmallCandle.h"
+#include "BoomerangItem.h"
+#include "Boomerang.h"
+#include "Bridge.h"
 
 using namespace std;
 
@@ -50,11 +53,14 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BRICK				3
 #define OBJECT_TYPE_STAIRS_UP			31
 #define OBJECT_TYPE_STAIRS_DOWN			32
+#define OBJECT_TYPE_BRIDGE				39
 #define OBJECT_TYPE_FLAMES				4
 #define OBJECT_TYPE_HEART				6
 #define OBJECT_TYPE_WHIPITEM			7
 #define OBJECT_TYPE_KNIFE_ITEM			8
 #define OBJECT_TYPE_KNIFE				9
+#define OBJECT_TYPE_BOOMERANG_ITEM		10
+#define OBJECT_TYPE_BOOMERANG			11
 #define OBJECT_TYPE_PORTAL				50
 #define OBJECT_TYPE_KNIGHT				1000
 
@@ -216,6 +222,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetHeight(height);
 		break;
 	}
+	case OBJECT_TYPE_BRIDGE:
+		obj = new CBridge();
+		break;
 	case OBJECT_TYPE_STAIRS_UP:
 		obj = new CStairsUp();
 		break;
@@ -234,9 +243,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CKnifeItem();
 		CItems::GetInstance()->Add((int)Item::KNIFE, obj);
 		break;
+	case OBJECT_TYPE_BOOMERANG_ITEM:
+		obj = new CBoomerangItem();
+		CItems::GetInstance()->Add((int)Item::BOOMERANG, obj);
+		break;
 	case OBJECT_TYPE_KNIFE:
 		obj = CKnife::GetInstance();
 		CWeapons::GetInstance()->Add((int)Weapon::KNIFE, obj);
+		break;
+	case OBJECT_TYPE_BOOMERANG:
+		obj = CBoomerang::GetInstance();
+		CWeapons::GetInstance()->Add((int)Weapon::BOOMERANG, obj);
 		break;
 	case OBJECT_TYPE_CANDLE:
 	{
@@ -328,7 +345,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
@@ -361,8 +378,11 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 	
-	if (cx < 0) cx = 0;
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	if (cx < 0) 
+		cx = 0;
+	if (cx > game->GetScreenWidth()) 
+		cx = game->GetScreenWidth();
+	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()
@@ -465,7 +485,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
 	{
-		if (simon->CanGoingDown())
+		if (simon->CanGoingDown()|| simon->IsOnStairs() != 0)
 		{
 			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
 		}
@@ -476,7 +496,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else if (CGame::GetInstance()->IsKeyDown(DIK_W))
 	{
-		if (simon->CanGoingUp())
+		if (simon->CanGoingUp()||simon->IsOnStairs()!=0)
 		{
 			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
 		}

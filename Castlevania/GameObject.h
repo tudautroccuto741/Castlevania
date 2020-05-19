@@ -41,13 +41,15 @@ enum class Item
 	NONE,
 	HEART = 6,
 	WHIP_ITEM = 7,
-	KNIFE = 8
+	KNIFE = 8,
+	BOOMERANG = 10
 };
 
 enum class Weapon
 {
 	NONE,
-	KNIFE
+	KNIFE,
+	BOOMERANG
 };
 
 class CGameObject
@@ -93,7 +95,8 @@ public:
 	void SetDirection(int nx) { this->nx = nx; }
 	int GetDirection() { return this->nx; }
 
-	//bool IsInScreen();
+	// ViewPort
+	bool IsInViewport();
 
 	//currentAni
 	void SetCurrentAniID(int aniID) { this->currentAniID = aniID; }
@@ -145,7 +148,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render();
 	virtual void Destroy();
-	virtual void Hitting(int damage);
+	virtual void BeHit(int damage);
 	virtual bool IsOverlapping(LPGAMEOBJECT obj);
 
 	CGameObject();

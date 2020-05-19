@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "Textures.h"
 #include "Flames.h"
+#include "Game.h"
 
 CGameObject::CGameObject()
 {
@@ -166,7 +167,29 @@ bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
 	return false;
 }
 
-void CGameObject::Hitting(int damage)
+bool CGameObject::IsInViewport()
+{
+	//float cx, cy;
+	//CGame *game = CGame::GetInstance();
+	//cx -= game->GetScreenWidth() / 2;
+	//cy -= game->GetScreenHeight() / 2;
+	//// The viewport bounding box
+	////float vpLeft, vpTop, vpRight, vpBottom;
+	////cameraInstance->GetBoundingBox(vpLeft, vpTop, vpRight, vpBottom);
+
+	//// The object bounding box
+	//float left, top, right, bottom;
+	//this->GetBoundingBox(left, top, right, bottom);
+
+	//if (cx > right || cy > bottom
+	//	|| cx < left || cy < top)
+	//	return false;
+
+	return true;
+}
+
+
+void CGameObject::BeHit(int damage)
 {
 	if (health > 0)
 		health -= damage;

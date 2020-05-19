@@ -57,7 +57,8 @@ enum class SimonStateID
 	stateGoingUpStairsRight = 109,
 	stateGoingDownStairsLeft = 110,
 	stateBeHitRight = 111,
-	stateBeHitLeft = 112
+	stateBeHitLeft = 112,
+	stateIdleInBridge = 113
 };
 
 class CSimon : public CGameObject
@@ -73,6 +74,8 @@ class CSimon : public CGameObject
 	bool isSitting;
 	bool canGoingUp;
 	bool canGoingDown;
+	bool IsInBridge;
+	bool flag;
 	
 
 	DWORD startTimeAttack;
@@ -101,6 +104,7 @@ public:
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
+	void Idle();
 	void WalkingRight();
 	void WalkingLeft();
 	void Sitting();
