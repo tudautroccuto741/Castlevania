@@ -5,6 +5,7 @@
 #include "Flame.h"
 #include "Knight.h"
 #include "SmallCandle.h"
+#include "SecretBrick.h"
 CWhip * CWhip::__instance = NULL;
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -30,7 +31,8 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (dynamic_cast<CCandle *>(coObjects->at(i))
 							|| dynamic_cast<CSmallCandle *>(coObjects->at(i))
-							|| dynamic_cast<CKnight *>(coObjects->at(i)))
+							|| dynamic_cast<CKnight *>(coObjects->at(i))
+							|| dynamic_cast<CSecretBrick *>(coObjects->at(i)))
 						{
 							coObjects->at(i)->BeHit(this->damage);
 						}

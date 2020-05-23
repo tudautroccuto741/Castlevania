@@ -47,81 +47,37 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
+	if (stairs != 0)
+	{
+		OnStairs();
+		vy = 0;
+	}
+		
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
+	
 	// overlapping
-	float xS, yS;
+	ovlObjects.clear();
+
 	for (UINT i = 0; i < coObjects->size(); ++i)
 	{
 		if (this->IsOverlapping(coObjects->at(i)))
 		{
-			coObjects->at(i)->GetPosition(xS, yS);
-			if (dynamic_cast<CWhipItem *>(coObjects->at(i)))
-			{
-				coObjects->at(i)->Destroy();
-				this->whip->LvUp();
-			}
-			else if (dynamic_cast<CHeartItem *>(coObjects->at(i)))
-			{
-				coObjects->at(i)->Destroy();
-			}
-			else if (dynamic_cast<CKnifeItem *>(coObjects->at(i)))
-			{
-				coObjects->at(i)->Destroy();
-				secondWeapon = (int)Weapon::KNIFE;
-			}
-			else if (dynamic_cast<CBoomerangItem *>(coObjects->at(i)))
-			{
-				coObjects->at(i)->Destroy();
-				secondWeapon = (int)Weapon::BOOMERANG;
-			}
-			else if (dynamic_cast<CStairsUp *>(coObjects->at(i)))
-			{
-				canGoingUp = true;
-				if (GetState() == (int)SimonStateID::stateGoingUpStairsRight)
-				{
-					SetOnStairs(1);
-				}
-				if (y > yS)
-				{
-					SetOnStairs(0);
-					/*canGoingDown = false;*/
-				}
-			}
-			else if (dynamic_cast<CStairsDown *>(coObjects->at(i)))
-			{
-				canGoingDown = true;
-				if (GetState() == (int)SimonStateID::stateGoingDownStairsLeft)
-				{
-					SetOnStairs(-1);
-					//SetPosition(xS, y);
-				}
-				if (y < yS)
-				{
-					SetOnStairs(0);
-				}
-			}
-			else if (dynamic_cast<CKnight *>(coObjects->at(i)))
-			{
-				if (untouchable == 0)
-				{
-					BeHit();
-				}
-			}
-
+			ovlObjects.push_back(coObjects->at(i));
 		}
 	}
-
-	if (IsOnStairs() == 1 || IsOnStairs() == -1)
+	
+	if (ovlObjects.size() != 0)
 	{
-		vy = 0;
-		canGoingUp = false;
-		canGoingDown = false;
+		Overlapping();
 	}
+
+
+
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -155,7 +111,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += ny * 0.4f;
 					vy = 0;
 				}
-				if (GetState() == (int)SimonStateID::stateGoingDownStairsLeft)
+				if (stairs!=0)
 				{
 					x += dx;
 				}
@@ -164,7 +120,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					x += nx * 0.4f;
 				}
-				IsInBridge = false;
+				isInBridge = false;
 				
 			}
 			else if (dynamic_cast<CWhipItem *>(e->obj))
@@ -218,18 +174,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->ny < 0)
 				{
-					isJumping = false;
-					beHit = false;
-
-					y += ny * 0.4f;
-					vy = 0;
-					/*vx = (e->obj->GetDirection() > 0) ? BRIDGE_SPEED* e->obj->GetDirection() : 
-						-BRIDGE_SPEED* e->obj->GetDirection();*/
-					/*float xB, yB;
-					e->obj->GetPosition(xB, yB);
-					SetPosition(xB, yB);*/
-					x += (e->obj->GetDirection() > 0) ? BRIDGE_SPEED * e->obj->GetDirection() :
-						-BRIDGE_SPEED * e->obj->GetDirection();
+					y += ny * 0.4;
+					SetState((int)SimonStateID::stateIdleInBridge);
 				}
 			}
 		}
@@ -270,11 +216,17 @@ void CSimon::ChoiceAnimation()
 	}
 	else if (isAttacking)
 	{
-		if (IsOnStairs() != 0)
+		if (stairs == 1)
 		{
 			currentAniID = (nx > 0) ?
-				(int)SimonAniId::IDAttackingOnStairsRight:
-				(int)SimonAniId::IDAttackingOnStairsLeft;
+				(int)SimonAniId::IDAttackingOnStairsUpRight:
+				(int)SimonAniId::IDAttackingOnStairsUpLeft;
+		}
+		else if (stairs == -1)
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::IDAttackingOnStairsDownRight :
+				(int)SimonAniId::IDAttackingOnStairsDownLeft;
 		}
 		else
 		{
@@ -284,24 +236,46 @@ void CSimon::ChoiceAnimation()
 
 		}
 	}
-	else if (IsOnStairs() != 0)
+	else if (stairs)
 	{
 		if (vx!=0)
 		{
 			currentAniID = (nx > 0) ?
 				(int)SimonAniId::IDGoingUpStairsRight :
-				(int)SimonAniId::IDGoingDownStairsLeft;
+				(int)SimonAniId::IDGoingUpStairsLeft;
 		}
-		else if(vx != 0)
+		/*else if(vx != 0)
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::IDGoingUpStairsRight :
+				(int)SimonAniId::IDGoingDownStairsLeft;
+		}*/
+		else
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::idleGoingDownStairsRight :
+				(int)SimonAniId::idleGoingDownStairsLeft;
+		}
+	}
+	else if (stairs == -1)
+	{
+
+		if (vx != 0)
 		{
 			currentAniID = (nx > 0) ?
 				(int)SimonAniId::IDGoingUpStairsRight :
 				(int)SimonAniId::IDGoingDownStairsLeft;
 		}
+		/*else if(vx != 0)
+		{
+			currentAniID = (nx > 0) ?
+				(int)SimonAniId::IDGoingUpStairsRight :
+				(int)SimonAniId::IDGoingDownStairsLeft;
+		}*/
 		else
 		{
 			currentAniID = (nx > 0) ?
-				(int)SimonAniId::idleGoingUpStairsRight :
+				(int)SimonAniId::idleGoingDownStairsRight :
 				(int)SimonAniId::idleGoingDownStairsLeft;
 		}
 	}
@@ -337,43 +311,113 @@ void CSimon::ChoiceAnimation()
 void CSimon::Idle()
 {                                                                                                                                     
 	vx = 0;
-	// not yet
-	//if (IsInBridge)
-	//{
-	//	CBridge bridge;
-	//	int nxB;
-	//	nxB = bridge.GetDirection();
-	//	//vx = (nxB > 0) ? bridge.GetV() : -bridge.GetV();
-	//	vx = (nxB > 0) ? BRIDGE_SPEED*nxB : -BRIDGE_SPEED;
-	//}
 	isAttacking = false;
 	isUsingweapon = false;
 	beHit = false;
-	canGoingUp = false;
-	canGoingDown = false;
+	this->StandUp();
+}
+
+void CSimon::IdleInBridge()
+{
+	vx = BRIDGE_SPEED;
+	isAttacking = false;
+	isUsingweapon = false;
+	beHit = false;
 	this->StandUp();
 }
 
 void CSimon::WalkingRight()
 {
-	nx = 1;
-	if (isSitting) return;
-	vx = SIMON_WALKING_SPEED;
+	if (stairs == 0)
+	{
+		this->nx = 1;
+		if (!isSitting)
+		{
+			this->vx = SIMON_WALKING_SPEED * this->nx;
+		}
+	}
+	else
+	{
+		if (stairs == 1)
+		{
+			if (nx == 1)
+				GoingUpStairs();
+			else
+				GoingDownStairs();
+		}
+		else if (stairs == -1)
+		{
+			if (nx == -1)
+				GoingUpStairs();
+			else
+				GoingDownStairs();
+		}
+	}
+}
+
+void CSimon::WalkingRightInBridge()
+{
+	this->nx = 1;
+	if (!isSitting)
+	{
+		this->vx = (SIMON_WALKING_SPEED * this->nx) * BRIDGE_SPEED;
+	}
 }
 
 void CSimon::WalkingLeft()
 {
-	nx = -1;
-	if (isSitting) return;
-	vx = -SIMON_WALKING_SPEED;
+	if (stairs == 0)
+	{
+		this->nx = -1;
+		if (!isSitting)
+		{
+			this->vx = SIMON_WALKING_SPEED*this->nx;
+		}
+	}
+	else
+	{
+		if (stairs == 1)
+		{
+			if (nx == 1)
+				GoingDownStairs();
+			else
+				GoingUpStairs();
+		}
+		else if (stairs == -1)
+		{
+			if (nx == -1)
+				GoingDownStairs();
+			else
+				GoingUpStairs();
+		}
+	}
+}
+
+void CSimon::WalkingLeftInBridge()
+{
+	this->nx = -1;
+	if (!isSitting)
+	{
+		this->vx = (SIMON_WALKING_SPEED * this->nx) * BRIDGE_SPEED;
+	}
 }
 
 void CSimon::Sitting()
 {
-	if (!isSitting)
+	if (!isSitting && stairs == 0)
 	{
 		this->isSitting = true;
 		this->vx = 0;
+		this->y += SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
+	}
+}
+
+void CSimon::SittingInBridge()
+{
+	if (!isSitting)
+	{
+		this->isSitting = true;
+		this->vx = BRIDGE_SPEED;
 		this->y += SIMON_IDLE_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT;
 	}
 }
@@ -404,8 +448,25 @@ void CSimon::Whipping()
 	vx = 0;
 }
 
+void CSimon::WhippingInBridge()
+{
+	isAttacking = true;
+	startTimeAttack = GetTickCount();
+	this->whip->SetVisible(true);
+	vx = BRIDGE_SPEED;
+}
+
 void CSimon::UseWeapon()
 {
+	vx = 0;
+	isAttacking = true;
+	isUsingweapon = true;
+	startTimeAttack = GetTickCount();
+}
+
+void CSimon::UseWeaponInBridge()
+{
+	vx = BRIDGE_SPEED;
 	isAttacking = true;
 	isUsingweapon = true;
 	startTimeAttack = GetTickCount();
@@ -413,20 +474,154 @@ void CSimon::UseWeapon()
 
 void CSimon::GoingUpStairs()
 {
-	nx = 1;
-	vx = SIMON_WALKING_SPEED;
-	vy = -SIMON_WALKING_SPEED;
-	isJumping = false;
-	isSitting = false;
+	float xS, yS;
+	if (stairs == 0)
+	{
+		LPGAMEOBJECT objS = NULL;
+		for (UINT i = 0; i < ovlObjects.size(); ++i)
+		{
+			if (dynamic_cast<CStairsUp *>(ovlObjects[i]))
+			{
+				objS = ovlObjects[i];
+				break;
+			}
+		}
+			
+
+		if (objS == NULL) return;
+
+		objS->GetPosition(xS, yS);
+		
+		if (x != xS)
+		{
+			x = xS;
+			y = yS;
+		}
+		else
+		{
+			nx = 1;
+			/*vx = 0.051*nx;
+			vy = -0.051;
+			isJumping = false;
+			isSitting = false;*/
+			stairs = 1;
+		}
+	}
+	
+	else
+	{
+		if (stairs == -1)
+		{
+			this->nx = -nx;
+			/*vx = SIMON_WALKING_SPEED;
+			vy = -SIMON_WALKING_SPEED;*/
+			stairs = 1;
+		}
+		/*nx = 1;*/
+		vx = 0.051 * nx;
+		vy = -0.051;
+		isJumping = false;
+		isSitting = false;
+	}
+
+	
+}
+
+void CSimon::OnStairs()
+{
+	LPGAMEOBJECT objS = NULL;
+
+	if (stairs == 1)
+	{
+		for (UINT i = 0; i < ovlObjects.size(); ++i)
+			if (dynamic_cast<CStairsDown *>(ovlObjects[i]))
+			{
+				objS = ovlObjects[i];
+				break;
+			}
+
+		if (objS == NULL) return;
+
+		float xS, yS;
+		objS->GetPosition(xS, yS);
+		
+		// Has reached the stairs exit
+		if (y < yS)
+		{
+			y = yS - 0.4;
+			stairs = 0;
+			vx = vy = 0;
+		}
+	}
+	else if (stairs == -1)
+	{
+		for (UINT i = 0; i < ovlObjects.size(); ++i)
+			if (dynamic_cast<CStairsUp *>(ovlObjects[i]))
+			{
+				objS = ovlObjects[i];
+				break;
+			}
+
+		if (objS == NULL) return;
+
+		float xS, yS;
+		objS->GetPosition(xS, yS);
+
+		// Has reached the stairs exit
+		if (y > yS)
+		{
+			y = yS - 0.4;
+			stairs = 0;
+			vx = vy = 0;
+		}
+	}
 }
 
 void CSimon::GoingDownStairs()
 {
-	nx = -1;
-	vx = -SIMON_WALKING_SPEED;
-	vy = SIMON_WALKING_SPEED;
-	isJumping = false;
-	isSitting = false;
+	if (stairs == 0)
+	{
+		LPGAMEOBJECT objS = NULL;
+		for (UINT i = 0; i < ovlObjects.size(); ++i)
+			if (dynamic_cast<CStairsDown *>(ovlObjects[i]))
+			{
+				objS = ovlObjects[i];
+				break;
+			}
+		if (objS == NULL) return;
+
+		float xS, yS;
+		objS->GetPosition(xS, yS);
+		if (x != xS)
+		{
+			x = xS;
+			y = yS;
+		}
+		else
+		{
+			nx = -1;
+		/*	vx = 0.051 * nx;
+			vy = 0.051;
+			isJumping = false;
+			isSitting = false;*/
+			stairs = -1;
+		}
+	}
+	else
+	{
+		if (stairs == 1)
+		{
+			nx = -nx;
+			/*vx = SIMON_WALKING_SPEED;
+			vy = -SIMON_WALKING_SPEED;*/
+			stairs = -1;
+		}
+		//nx = -1;
+		vx = 0.051 * nx;
+		vy = 0.051;
+		isJumping = false;
+		isSitting = false;
+	}
 }
 
 void CSimon::BeHit()
@@ -438,6 +633,53 @@ void CSimon::BeHit()
 	isJumping = true;
 	StartUntouchable();
 	
+}
+
+void CSimon::Overlapping()
+{
+	LPGAMEOBJECT obj;
+	for (UINT i = 0; i < ovlObjects.size(); i++)
+	{
+		obj = ovlObjects[i];
+		if (dynamic_cast<CWhipItem *>(obj))
+		{
+			obj->SetVisible(false);
+			this->whip->LvUp();
+		}
+		else if (dynamic_cast<CHeartItem *>(obj))
+		{
+			obj->SetVisible(false);
+		}
+		else if (dynamic_cast<CKnifeItem *>(obj))
+		{
+			obj->SetVisible(false);
+			secondWeapon = (int)Weapon::KNIFE;
+		}
+		else if (dynamic_cast<CBoomerangItem *>(obj))
+		{
+			obj->SetVisible(false);
+			secondWeapon = (int)Weapon::BOOMERANG;
+		}
+		else if (dynamic_cast<CKnight *>(obj))
+		{
+			if (untouchable == 0)
+			{
+				BeHit();
+			}
+		}
+	/*	else if (dynamic_cast<CPortal *>(obj))
+		{
+			CPortal *p = dynamic_cast<CPortal *>(obj);
+			CGame::GetInstance()->SwitchScene(p->GetSceneId());
+		}*/
+	}
+	/*if (stairs == 1)
+		this->GoingUpStairs();
+	else if (stairs == -1)
+		this->GoingDownStairs();
+	else if (stairs == 0)
+		vx = this->nx * 0.06;
+		vy = 0;*/
 }
 
 void CSimon::SetVisible(bool isVisble)
@@ -471,31 +713,20 @@ void CSimon::SetState(int state)
 		UseWeapon();
 		break;
 	case (int)SimonStateID::stateGoingUpStairsRight:
-		if (canGoingUp || IsOnStairs()!=0)
-		{
-			GoingUpStairs();
-			break;
-		}
+		GoingUpStairs();
+		break;
 	case (int)SimonStateID::stateGoingDownStairsLeft:
-		if (canGoingDown || IsOnStairs() != 0)
-		{
-			GoingDownStairs();
-			break;
-		}
+		GoingDownStairs();
+		break;
 	case (int)SimonStateID::stateBeHitRight:
-	{
 		beHit = true;
-		canGoingDown = false;
-		canGoingUp = false;
 		isAttacking = false;
-	}
+		break;
 	case (int)SimonStateID::stateIdleInBridge:
 		vx = BRIDGE_SPEED;
 		isAttacking = false;
 		isUsingweapon = false;
 		beHit = false;
-		canGoingUp = false;
-		canGoingDown = false;
 		this->StandUp();
 		break;
 	case (int)SimonStateID::stateIdle:

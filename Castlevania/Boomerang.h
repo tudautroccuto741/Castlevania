@@ -2,8 +2,8 @@
 #include "Animations.h"
 #include "GameObject.h"
 #include "KnifeItem.h"
-#define BOOMERANG_BBOX_WIDTH			28
-#define BOOMERANG_BBOX_HEIGHT			28
+#define BOOMERANG_BBOX_WIDTH				28
+#define BOOMERANG_BBOX_HEIGHT				28
 #define DISTANCE_OF_BOOMERANG_AND_SIMON		0
 #define BOOMERANG_FLYING_SPEED				0.2
 using namespace std;

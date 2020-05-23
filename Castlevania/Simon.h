@@ -35,11 +35,17 @@ enum class SimonAniId
 	IDWhippingRight,
 	IDWhippingLeft,
 	idleGoingUpStairsRight,
+	idleGoingUpStairsLeft,
 	IDGoingUpStairsRight,
+	IDGoingUpStairsLeft,
 	idleGoingDownStairsLeft,
+	idleGoingDownStairsRight,
 	IDGoingDownStairsLeft,
-	IDAttackingOnStairsRight,
-	IDAttackingOnStairsLeft,
+	IDGoingDownStairsRight,
+	IDAttackingOnStairsUpRight,
+	IDAttackingOnStairsUpLeft,
+	IDAttackingOnStairsDownLeft,
+	IDAttackingOnStairsDownRight,
 	IDBeAttackingRight,
 	IDBeAttackingLeft
 };
@@ -66,16 +72,13 @@ class CSimon : public CGameObject
 	int untouchable;
 	int secondWeapon;
 	int states;
-	int stairs; // 1 going up stairs, -1 going down
+	int stairs; // 1 going up stairs, -1 going down, 0 not in
 	bool isJumping;
 	bool isAttacking;
 	bool beHit;
 	bool isUsingweapon;
 	bool isSitting;
-	bool canGoingUp;
-	bool canGoingDown;
-	bool IsInBridge;
-	bool flag;
+	bool isInBridge;
 	
 
 	DWORD startTimeAttack;
@@ -85,6 +88,7 @@ class CSimon : public CGameObject
 	CWhip *whip;
 	CWeapons *weapons;
 
+	vector<LPGAMEOBJECT> ovlObjects;
 
 	static CSimon * __instance;
 public:
@@ -97,25 +101,29 @@ public:
 	int GetState() { return this->states; }
 	void SetVisible(bool visible);
 	
-	void SetOnStairs(int onStairs) { this->stairs = onStairs; }
-	int IsOnStairs(){ return this->stairs; }
-	bool CanGoingUp(){ return this->canGoingUp; }
-	bool CanGoingDown() { return this->canGoingDown; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
 	void Idle();
+	void IdleInBridge();
 	void WalkingRight();
+	void WalkingRightInBridge();
 	void WalkingLeft();
+	void WalkingLeftInBridge();
 	void Sitting();
+	void SittingInBridge();
 	void Jumping();
 	void StandUp();
 	void Whipping();
+	void WhippingInBridge();
 	void UseWeapon();
+	void UseWeaponInBridge();
 	void ChoiceAnimation();
 	void GoingUpStairs();
 	void GoingDownStairs();
 	void BeHit();
+	void Overlapping();
+	void OnStairs();
 
 	int GetSecondWeapons() { return this->secondWeapon; }
 

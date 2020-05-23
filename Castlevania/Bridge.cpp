@@ -1,4 +1,5 @@
 #include "Bridge.h"
+#include"Brick.h"
 
 void CBridge::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {

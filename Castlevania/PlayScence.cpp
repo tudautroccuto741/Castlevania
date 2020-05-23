@@ -23,6 +23,7 @@
 #include "BoomerangItem.h"
 #include "Boomerang.h"
 #include "Bridge.h"
+#include "SecretBrick.h"
 
 using namespace std;
 
@@ -51,6 +52,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_CANDLE				2
 #define OBJECT_TYPE_SMALL_CANDLE		21
 #define OBJECT_TYPE_BRICK				3
+#define OBJECT_TYPE_SECRET_BRICK		411
 #define OBJECT_TYPE_STAIRS_UP			31
 #define OBJECT_TYPE_STAIRS_DOWN			32
 #define OBJECT_TYPE_BRIDGE				39
@@ -225,6 +227,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRIDGE:
 		obj = new CBridge();
 		break;
+	case OBJECT_TYPE_SECRET_BRICK:
+		obj = new CSecretBrick();
+		break;
 	case OBJECT_TYPE_STAIRS_UP:
 		obj = new CStairsUp();
 		break;
@@ -364,7 +369,8 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		/*if (objects[i]->GetVisible())*/
+			objects[i]->Update(dt, &coObjects);
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -379,9 +385,9 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetScreenHeight() / 2;
 	
 	if (cx < 0) 
-		cx = 0;
+		cx = 0;/*
 	if (cx > game->GetScreenWidth()) 
-		cx = game->GetScreenWidth();
+		cx = game->GetScreenWidth();*/
 	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
@@ -419,7 +425,7 @@ void CPlayScene::Unload()
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->player;
 	switch (KeyCode)
@@ -438,12 +444,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			simon->SetState((int)SimonStateID::stateWhipping);
 			break;
 		}
-	/*case DIK_A: // reset
-		simon->SetState((int)SimonStateID::stateIdle);
-		simon->SetLevel(SIMON_LEVEL_BIG);
-		simon->SetPosition(50.0f, 0.0f);
-		simon->SetSpeed(0, 0);
-		break;*/
+	
+	case DIK_A:
+		simon->SetState((int)SimonStateID::stateWalkingLeft);
+		break;
+	case DIK_D:
+		simon->SetState((int)SimonStateID::stateWalkingRight);
+		break;
 	}
 }
 
@@ -452,54 +459,28 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
+
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	if (CGame::GetInstance()->IsKeyDown(DIK_D))
+	if (CGame::GetInstance()->IsKeyDown(DIK_S))
+	{
+		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+		simon->SetState((int)SimonStateID::stateSit);
+	}
+	else if (CGame::GetInstance()->IsKeyDown(DIK_D))
 	{	
-		if (simon->IsOnStairs() == 1)
-		{
-			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
-		}
-		else if (simon->IsOnStairs() == -1)
-		{
-			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
-		}
-		else
-		{
-			simon->SetState((int)SimonStateID::stateWalkingRight);
-		}
+		simon->SetState((int)SimonStateID::stateWalkingRight);
 	}
 	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
 	{
-		if (simon->IsOnStairs() == -1)
-		{
-			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
-		}
-		else if (simon->IsOnStairs() == 1)
-		{
-			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
-		}
-		else
-		{
-			simon->SetState((int)SimonStateID::stateWalkingLeft);
-		}
+		simon->SetState((int)SimonStateID::stateWalkingLeft);
 	}
 	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
 	{
-		if (simon->CanGoingDown()|| simon->IsOnStairs() != 0)
-		{
-			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
-		}
-		else
-		{
-			simon->SetState((int)SimonStateID::stateSit);
-		}
+		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
 	}
 	else if (CGame::GetInstance()->IsKeyDown(DIK_W))
 	{
-		if (simon->CanGoingUp()||simon->IsOnStairs()!=0)
-		{
-			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
-		}
+		simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
 	}
 	else simon->SetState((int)SimonStateID::stateIdle);
 }
