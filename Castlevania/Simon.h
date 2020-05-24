@@ -59,12 +59,17 @@ enum class SimonStateID
 	stateSit = 105,
 	stateWhipping = 106,
 	stateUseWeapon = 107,
-	stateJumpingAndWhipping = 108,
-	stateGoingUpStairsRight = 109,
-	stateGoingDownStairsLeft = 110,
-	stateBeHitRight = 111,
-	stateBeHitLeft = 112,
-	stateIdleInBridge = 113
+	stateGoingUpStairsRight = 108,
+	stateGoingDownStairsLeft = 109,
+	stateBeHitRight = 110,
+	stateBeHitLeft = 111,
+	stateIdleInBridge = 112,
+	stateWalkingRightInBridge = 113,
+	stateWalkingLeftInBridge = 114,
+	stateJumpInBridge = 115,
+	stateSitInBridge = 116,
+	stateWhippingInBridge = 117,
+	stateUseWeaponInBridge = 118
 };
 
 class CSimon : public CGameObject
@@ -78,7 +83,7 @@ class CSimon : public CGameObject
 	bool beHit;
 	bool isUsingweapon;
 	bool isSitting;
-	bool isInBridge;
+	bool isInBridge; // simon in a bridge
 	
 
 	DWORD startTimeAttack;
@@ -101,6 +106,7 @@ public:
 	int GetState() { return this->states; }
 	void SetVisible(bool visible);
 	
+	bool IsInBridge(){ return this->isInBridge; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 

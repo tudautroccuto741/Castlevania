@@ -428,59 +428,118 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	switch (KeyCode)
+	if (simon->IsInBridge())
 	{
-	case DIK_K:
-		simon->SetState((int)SimonStateID::stateJump);
-		break;
-	case DIK_L:
-		if (CGame::GetInstance()->IsKeyDown(DIK_W)&&CSimon::GetInstance()->GetSecondWeapons()!=(int)Weapon::NONE)
+		switch (KeyCode)
 		{
-			simon->SetState((int)SimonStateID::stateUseWeapon);
+		case DIK_K:
+			simon->SetState((int)SimonStateID::stateJumpInBridge);
+			break;
+		case DIK_L:
+			if (CGame::GetInstance()->IsKeyDown(DIK_W) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
+			{
+				simon->SetState((int)SimonStateID::stateUseWeaponInBridge);
+				break;
+			}
+			else
+			{
+				simon->SetState((int)SimonStateID::stateWhippingInBridge);
+				break;
+			}
+
+		case DIK_A:
+			simon->SetState((int)SimonStateID::stateWalkingLeftInBridge);
+			break;
+		case DIK_D:
+			simon->SetState((int)SimonStateID::stateWalkingRightInBridge);
 			break;
 		}
-		else
+	}
+	else
+	{
+		switch (KeyCode)
 		{
-			simon->SetState((int)SimonStateID::stateWhipping);
+		case DIK_K:
+			simon->SetState((int)SimonStateID::stateJump);
+			break;
+		case DIK_L:
+			if (CGame::GetInstance()->IsKeyDown(DIK_W) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
+			{
+				simon->SetState((int)SimonStateID::stateUseWeapon);
+				break;
+			}
+			else
+			{
+				simon->SetState((int)SimonStateID::stateWhipping);
+				break;
+			}
+
+		case DIK_A:
+			simon->SetState((int)SimonStateID::stateWalkingLeft);
+			break;
+		case DIK_D:
+			simon->SetState((int)SimonStateID::stateWalkingRight);
 			break;
 		}
-	
-	case DIK_A:
-		simon->SetState((int)SimonStateID::stateWalkingLeft);
-		break;
-	case DIK_D:
-		simon->SetState((int)SimonStateID::stateWalkingRight);
-		break;
+
 	}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
-{}
+{
+	CSimon *simon = ((CPlayScene*)scence)->player;
+	if (simon->IsInBridge())
+	{
+		simon->SetState((int)SimonStateID::stateIdleInBridge);
+	}
+	else
+	{
+		simon->SetState((int)SimonStateID::stateIdle);
+	}
+}
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
-
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	if (CGame::GetInstance()->IsKeyDown(DIK_S))
+	if (simon->IsInBridge())
 	{
-		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
-		simon->SetState((int)SimonStateID::stateSit);
+		if (CGame::GetInstance()->IsKeyDown(DIK_S))
+		{
+			simon->SetState((int)SimonStateID::stateSitInBridge);
+		}
+		else if (CGame::GetInstance()->IsKeyDown(DIK_D))
+		{
+			simon->SetState((int)SimonStateID::stateWalkingRightInBridge);
+		}
+		else if (CGame::GetInstance()->IsKeyDown(DIK_A))
+		{
+			simon->SetState((int)SimonStateID::stateWalkingLeftInBridge);
+		}
+		else simon->SetState((int)SimonStateID::stateIdleInBridge);
 	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_D))
-	{	
-		simon->SetState((int)SimonStateID::stateWalkingRight);
-	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
+	else
 	{
-		simon->SetState((int)SimonStateID::stateWalkingLeft);
+		if (CGame::GetInstance()->IsKeyDown(DIK_S))
+		{
+			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+			simon->SetState((int)SimonStateID::stateSit);
+		}
+		else if (CGame::GetInstance()->IsKeyDown(DIK_D))
+		{
+			simon->SetState((int)SimonStateID::stateWalkingRight);
+		}
+		else if (CGame::GetInstance()->IsKeyDown(DIK_A))
+		{
+			simon->SetState((int)SimonStateID::stateWalkingLeft);
+		}
+		else if (CGame::GetInstance()->IsKeyDown(DIK_S))
+		{
+			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+		}
+		else if (CGame::GetInstance()->IsKeyDown(DIK_W))
+		{
+			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
+		}
+		else simon->SetState((int)SimonStateID::stateIdle);
 	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
-	{
-		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
-	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_W))
-	{
-		simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
-	}
-	else simon->SetState((int)SimonStateID::stateIdle);
 }
