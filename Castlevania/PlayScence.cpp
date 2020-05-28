@@ -24,6 +24,7 @@
 #include "Boomerang.h"
 #include "Bridge.h"
 #include "SecretBrick.h"
+#include "SmallHeart.h"
 
 using namespace std;
 
@@ -58,6 +59,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BRIDGE				39
 #define OBJECT_TYPE_FLAMES				4
 #define OBJECT_TYPE_HEART				6
+#define OBJECT_TYPE_SMALL_HEART			61
 #define OBJECT_TYPE_WHIPITEM			7
 #define OBJECT_TYPE_KNIFE_ITEM			8
 #define OBJECT_TYPE_KNIFE				9
@@ -214,6 +216,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_HEART:
 		obj = new CHeartItem();
 		CItems::GetInstance()->Add((int)Item::HEART, obj);
+		break;
+	case OBJECT_TYPE_SMALL_HEART:
+		obj = new CSmallHeart();
+		CItems::GetInstance()->Add((int)Item::SMALLHEART, obj);
 		break;
 	case OBJECT_TYPE_BRICK:
 	{

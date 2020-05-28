@@ -12,6 +12,7 @@
 #include "Knight.h"
 #include "BoomerangItem.h"
 #include "Bridge.h"
+#include "SmallHeart.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -469,7 +470,7 @@ void CSimon::SittingInBridge()
 
 void CSimon::Jumping()
 {
-	if (vy < SIMON_GRAVITY && !isJumping && !isSitting)
+	if (!isJumping && !isSitting)
 	{
 		isJumping = true;
 		this->vy = -SIMON_JUMP_SPEED_Y;
@@ -677,7 +678,7 @@ void CSimon::Overlapping()
 			obj->SetVisible(false);
 			this->whip->LvUp();
 		}
-		else if (dynamic_cast<CHeartItem *>(obj))
+		else if (dynamic_cast<CHeartItem *>(obj)||dynamic_cast<CSmallHeart *>(obj))
 		{
 			obj->SetVisible(false);
 		}

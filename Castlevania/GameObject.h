@@ -40,6 +40,7 @@ enum class Item
 {
 	NONE,
 	HEART = 6,
+	SMALLHEART = 61,
 	WHIP_ITEM = 7,
 	KNIFE = 8,
 	BOOMERANG = 10
@@ -79,6 +80,7 @@ public:
 	int lastAniID;
 	LPANIMATION_SET animation_set;
 	DWORD dt;
+	DWORD start_untouchable = 0;
 
 	//int currentState;
 
@@ -150,6 +152,7 @@ public:
 	virtual void Destroy();
 	virtual void BeHit(int damage);
 	virtual bool IsOverlapping(LPGAMEOBJECT obj);
+	virtual void Untouchable();
 
 	CGameObject();
 	~CGameObject();

@@ -1,11 +1,10 @@
 #include "Knight.h"
 #include "Brick.h"
 
-//CKnight * CKnight::__instance = NULL;
 void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	CGameObject::Update(dt);
-	x += dx;
+	//x += dx;
 	vy += KNIGHT_GRAVITY * dt;
 	vx = (nx > 0) ? KNIGHT_WALKING_SPEED : -KNIGHT_WALKING_SPEED;
 	if (x > 738)
@@ -16,6 +15,15 @@ void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		SetDirection(1);
 	}
+
+	// untouchable
+	if (start_untouchable != 0)
+	{
+		Untouchable();
+	}
+
+	
+	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -83,9 +91,15 @@ void CKnight::Render()
 	CGameObject::Render();
 }
 
+void CKnight::BeHit(int damage)
+{
+	CGameObject::BeHit(damage);
+}
+
 CKnight::CKnight()
 {
 	this->currentAniID = (int)KnightAniId::walkRight;
 	visible = true;
 	health = KNIGHT_HEALTH;
+	untouchable = 0;
 }

@@ -188,14 +188,29 @@ bool CGameObject::IsInViewport()
 	return true;
 }
 
+void CGameObject::Untouchable()
+{
+	if (GetTickCount() - start_untouchable > 200)
+		start_untouchable = 0;
+	else vx = vy = 0;
+}
 
 void CGameObject::BeHit(int damage)
 {
-	if (health > 0)
-		health -= damage;
-	if (health <= 0)
+	if (start_untouchable == 0)
 	{
-		this->Destroy();
+		if (health > 0)
+			health -= damage;
+
+		// If killed..
+		if (health <= 0)
+		{
+			this->Destroy();
+		}
+
+		// If the object is still alive
+		else
+			start_untouchable = GetTickCount();
 	}
 }
 

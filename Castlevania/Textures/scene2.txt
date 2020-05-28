@@ -127,6 +127,8 @@
 50004	198	7	214	37	300
 #Heart
 60001	95	105	119	125	300
+# Small Heart
+60002	126	110	142	126	300
 # Knight
 # walk Right
 20	10	246	42	310	1000
@@ -149,6 +151,7 @@
 90003	123	256	151	284	300
 # Secret Brick
 40011	129	67	161	99	300
+
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 
@@ -231,6 +234,9 @@
 # ==== Heart ========
 601	60001	100
 
+# ==== Small Heart ========
+602	60002	100
+
 # ==== UPSTAIRS ========
 302	40001	100
 
@@ -274,6 +280,8 @@
 500	501
 # Heart
 600	601
+# Small Heart
+601	602
 # UPSTAIRS
 301	302
 # DOWNSTAIRS
@@ -289,8 +297,8 @@
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
 # SIMON
-#0	560	672	100
-0	193	96	100
+0	560	672	100
+#0	193	96	100
 # WHIP
 1	108	288	200
 # Knight
@@ -321,6 +329,8 @@
 # Heart
 6	167	225	600
 6	945	225	600
+# Small Heart
+61	167	225	601
 # UPSTAIRS
 31	658	670	301
 31	590	480	301
@@ -328,9 +338,9 @@
 32	782	544	302
 32	912	160	302
 # Small Candle
-21	592	608	401	10
+21	592	608	401	61
 21	846	608	401	6
-21	752	416	401	6
+21	752	416	401	61
 # BoomerangItem
 10	0	0	999
 # Boomerang

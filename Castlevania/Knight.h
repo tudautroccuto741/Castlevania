@@ -23,13 +23,17 @@ enum class KnightStateID
 
 class CKnight : public CGameObject
 {
-	/*static CKnight * __instance;*/
+	DWORD dame_start;
+	int untouchable;
+	
 public:
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL) override;
 	void Render() override;
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 	void ChoiceAnimation();
+	void StartUntouchable() { untouchable = 1; dame_start = GetTickCount(); }
+	void BeHit(int damage) override;
 
 	CKnight();
 };

@@ -144,6 +144,9 @@
     <ClCompile Include="SecretBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SmallHeart.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -253,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="SecretBrick.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallHeart.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
