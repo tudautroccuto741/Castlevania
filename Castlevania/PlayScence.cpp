@@ -25,6 +25,9 @@
 #include "Bridge.h"
 #include "SecretBrick.h"
 #include "SmallHeart.h"
+#include "Bat.h"
+#include "CameraChangeViewObject.h"
+#include "LimitedObject.h"
 
 using namespace std;
 
@@ -45,7 +48,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ANIMATIONS		4
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS			6
-#define SCENE_SECTION_TILEMAP			7
+#define SCENE_SECTION_TILEMAP_INFOR		7
+#define SCENE_SECTION_TILEMAP			8
 
 
 #define OBJECT_TYPE_SIMON				0
@@ -54,6 +58,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_SMALL_CANDLE		21
 #define OBJECT_TYPE_BRICK				3
 #define OBJECT_TYPE_SECRET_BRICK		411
+#define OBJECT_TYPE_CAMERA_CHANGE_VIEW	4111
 #define OBJECT_TYPE_STAIRS_UP			31
 #define OBJECT_TYPE_STAIRS_DOWN			32
 #define OBJECT_TYPE_BRIDGE				39
@@ -67,6 +72,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BOOMERANG			11
 #define OBJECT_TYPE_PORTAL				50
 #define OBJECT_TYPE_KNIGHT				1000
+#define OBJECT_TYPE_LIMITED_OBJ			10001
+#define OBJECT_TYPE_BAT					1001
 
 #define MAX_SCENE_LINE 1024
 
@@ -81,12 +88,6 @@ void CPlayScene::_ParseSection_TEXTURES(string line)
 	int R = atoi(tokens[2].c_str());
 	int G = atoi(tokens[3].c_str());
 	int B = atoi(tokens[4].c_str());
-
-	if (texID == TEXTURE_ID_TILE_MAP) {
-		this->tileMapWidth = atoi(tokens[5].c_str());
-		this->tileMapHeight = atoi(tokens[6].c_str());
-	}
-	
 	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 }
 
@@ -157,7 +158,19 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
 }
 
-void CPlayScene::__ParseSection_TILE_MAP(string line)
+void CPlayScene::_ParseSection_TILE_MAP_INFOR(string line)
+{
+	vector<string> tokens = split(line);//cat chuoi  
+	
+	this->tileMapWidth = atoi(tokens[0].c_str());
+	this->tileMapHeight = atoi(tokens[1].c_str());
+	this->mapWidth = atoi(tokens[2].c_str());
+	this->mapHeight = atoi(tokens[3].c_str());
+	this->limitedSmallMapLeft = atoi(tokens[4].c_str());
+	this->limitedSmallMapRight = atoi(tokens[5].c_str());
+}
+
+void CPlayScene::_ParseSection_TILE_MAP(string line)
 {
 	vector<string> tokens = split(line, ",");//cat chuoi  
 
@@ -236,6 +249,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SECRET_BRICK:
 		obj = new CSecretBrick();
 		break;
+	case OBJECT_TYPE_CAMERA_CHANGE_VIEW:
+		obj = CCameraChangeViewObject::GetInstance();
+		break;
 	case OBJECT_TYPE_STAIRS_UP:
 		obj = new CStairsUp();
 		break;
@@ -282,6 +298,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_KNIGHT:
 		obj = new CKnight();
+		break;
+	case OBJECT_TYPE_LIMITED_OBJ:
+		obj = new CLimitedObject();
+		break;
+	case OBJECT_TYPE_BAT:
+		obj = new CBat();
 		break;
 	case OBJECT_TYPE_PORTAL:
 	{
@@ -335,6 +357,9 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
+		if (line == "[TILEMAP_INFOR]") {
+			section = SCENE_SECTION_TILEMAP_INFOR; continue;
+		}
 		if (line == "[TILEMAP]") {
 			section = SCENE_SECTION_TILEMAP; continue;
 		}
@@ -350,7 +375,8 @@ void CPlayScene::Load()
 		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-		case SCENE_SECTION_TILEMAP: __ParseSection_TILE_MAP(line); break;
+		case SCENE_SECTION_TILEMAP_INFOR: _ParseSection_TILE_MAP_INFOR(line); break;
+		case SCENE_SECTION_TILEMAP: _ParseSection_TILE_MAP(line); break;
 		}
 	}
 
@@ -385,16 +411,45 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow SIMON
 	float cx, cy;
 	player->GetPosition(cx, cy);
-
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
 	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
+	float xc, yc;
+	CCameraChangeViewObject::GetInstance()->GetPosition(xc, yc);
 	
+	// camera limited
+	cx -= game->GetScreenWidth() / 2;
+	if (xS > xc && yS <= yc)
+	{
+		cy = 0;
+	}
+	else
+	{
+		if (cy >= LIMITEDHEIGHTMAP)
+		{
+			cy = game->GetScreenHeight();
+			if (cx <= limitedSmallMapLeft)
+			{
+				cx = limitedSmallMapLeft;
+			}
+			else if (cx >= limitedSmallMapRight - game->GetScreenWidth())
+			{
+				cx = limitedSmallMapRight - game->GetScreenWidth();
+			}
+		}
+		else
+			cy = 0;
+	}
 	if (cx < 0) 
-		cx = 0;/*
-	if (cx > game->GetScreenWidth()) 
-		cx = game->GetScreenWidth();*/
+		cx = 0;
+	
+	if (cx >= (mapWidth - game->GetScreenWidth()))
+		cx = mapWidth - game->GetScreenWidth();
+	
+	
+	
 	CGame::GetInstance()->SetCamPos(cx, cy);
+	
 }
 
 void CPlayScene::Render()
@@ -405,7 +460,6 @@ void CPlayScene::Render()
 	for (int i = 0; i < objects.size(); i++)
 		if (this->objects[i]->GetVisible())
 			objects[i]->Render();
-
 }
 
 /*
@@ -452,7 +506,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 				simon->SetState((int)SimonStateID::stateWhippingInBridge);
 				break;
 			}
-
 		case DIK_A:
 			simon->SetState((int)SimonStateID::stateWalkingLeftInBridge);
 			break;

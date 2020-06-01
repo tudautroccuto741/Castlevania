@@ -15,6 +15,7 @@
 using namespace std;
 
 #define KEYBOARD_BUFFER_SIZE 1024
+#define LIMITEDHEIGHTMAP 320
 
 class CGame
 {
@@ -84,6 +85,10 @@ public:
 
 
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
+
+	float GetCurrentCam_Y() { return this->cam_y; }
+
+	void CamereBoundingBox(float &left, float &top, float &right, float &bottom);
 
 	static CGame * GetInstance();
 

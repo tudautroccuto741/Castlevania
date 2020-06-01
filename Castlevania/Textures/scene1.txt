@@ -5,7 +5,7 @@
 300	textures\3.png	255	0	255
 # id	file_path	r	g	b	width	height 
 # width, height only available for tilemap texture  
-123	textures\0.png	255	0	255	544	288
+123	textures\0.png	255	0	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -271,7 +271,9 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	1376	225	0	1408	287	2
-
+[TILEMAP_INFOR]
+# tilesetWidth	tilesetHeight	mapWidth	mapHeight	limitedSmallMap
+544	288	1472	320	0	0
 [TILEMAP]
 4,4,1,2,1,2,1,2,1,2,1,2,4,4,4,4,4,4,1,2,1,2,1,2,1,2,1,2,4,4,4,4,4,4,4,4,4,4,4,4,72,23,6,7,6,7,91,92,0,0,
 18,19,18,19,18,19,18,19,18,19,18,19,4,4,4,4,18,19,18,19,18,19,18,19,18,19,18,19,4,4,4,4,4,4,4,4,4,4,4,4,92,92,23,24,23,24,90,92,

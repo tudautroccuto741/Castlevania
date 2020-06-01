@@ -3,11 +3,11 @@
 100	textures\1.png	255	0	255
 200	textures\2.png	255	0	255
 300	textures\3.png	255	0	255
-309	textures\01.png	112	111	104
+309	textures\01.png	116	116	116
 1000	textures\4.png	255	0	255
 # id	file_path	r	g	b	width	height 
 # width, height only available for tilemap texture  
-123	textures\tile_map2.png	255	0	255	192	800
+123	textures\tile_map2.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # SIMON
@@ -140,6 +140,15 @@
 11	252	66	284	130	1000
 12	220	66	252	130	1000
 13	188	66	220	130	1000
+# LimitedObject
+15	129	67	161	99	300
+# Bat
+# idle
+30	226	180	256	212	1000
+# fly right
+31	130	180	162	212	1000
+32	162	180	194	212	1000
+33	194	180	226	212	1000
 # Small Candle
 30003	67	0	83	32	300
 30004	83	0	99	32	300
@@ -151,6 +160,8 @@
 90003	123	256	151	284	300
 # Secret Brick
 40011	129	67	161	99	300
+# CamemraChangeViewObj
+400111	129	67	161	99	300
 
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -228,6 +239,9 @@
 # ==== SECRET BRICK ========
 4011	40011	100
 
+# ==== CamemraChangeViewObj ========
+40111	400111	100
+
 # ==== FLAMES ========
 501	50002	100	50003	100	50004	100
 
@@ -248,6 +262,13 @@
 10001	20	200	21	200	22	200	23	200
 #walk left
 10011	10	200	11	200	12	200	13	200
+# ==== LimitedObject =========
+10012	15	100
+# ==== Bat =========
+# idle
+10002	30	100
+# fly right
+100021	31	100	32	100	33	100	32	100
 
 # ==== Small Candle =========
 402	30003	100	30004	100
@@ -276,6 +297,8 @@
 309	409
 # SECRET BRICK
 4011	4011
+# CamemraChangeViewObj
+40111	40111
 # FLAMES
 500	501
 # Heart
@@ -287,7 +310,11 @@
 # DOWNSTAIRS
 302	303
 # Knight
-10	10000	10001	10011
+10	10001	10011
+# LimitedObject
+11	10012
+# Bat
+101	10002	100021
 # SmallCandle
 401	402
 # Boomerang
@@ -303,6 +330,15 @@
 1	108	288	200
 # Knight
 1000	720	479	10
+1000	657	96	10
+1000	218	94	10
+# LimitedObject
+10001	774	480	11
+10001	321	96	11
+10001	193	96	11
+# Bat
+1001	523	400	101
+1001	590	47	101
 # BRICK	width	height
 3	450	736	300	508	32
 3	448	386	300	32	320
@@ -312,6 +348,7 @@
 3	896	607	300	32	125
 3	896	385	300	32	157
 3	926	224	300	32	32
+3	962	0	300	32	192
 3	705	160	300	194	32
 3	705	224	300	32	32
 3	640	288	300	64	32
@@ -322,6 +359,8 @@
 # SECRET BRICK
 411	896	542	4011
 411	896	574	4011
+# CamemraChangeViewObj
+4111	735	354	40111
 # BRIDGE
 39	70	160	309
 # Flames
@@ -341,6 +380,13 @@
 21	592	608	401	61
 21	846	608	401	6
 21	752	416	401	61
+21	911	32	401	61
+21	783	32	401	61
+21	655	32	401	61
+21	527	32	401	61
+21	399	32	401	61
+21	271	32	401	61
+21	143	32	401	61
 # BoomerangItem
 10	0	0	999
 # Boomerang
@@ -348,6 +394,9 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	32	96	0	64	160	1
+[TILEMAP_INFOR]
+# tilesetWidth	tilesetHeight	mapWidth	mapHeight	limitedSmallMapLeft	limitedSmallMapRight
+192	800	1024	768	448	960
 [TILEMAP]
 1,2,3,4,5,6,7,8,2,2,5,6,3,4,2,2,28,29,2,2,3,4,35,36,2,2,2,2,2,2,37,52,
 1,2,11,12,13,14,7,8,2,2,13,14,11,12,2,2,28,29,2,2,11,12,35,36,2,2,2,2,2,2,37,52,

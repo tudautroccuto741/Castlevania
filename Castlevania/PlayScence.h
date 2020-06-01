@@ -14,6 +14,10 @@ protected:
 	int tileMapLineY = 0;
 	int tileMapWidth = 0;
 	int tileMapHeight = 0;
+	int mapWidth = 0;
+	int mapHeight = 0;
+	int limitedSmallMapLeft = 0;
+	int limitedSmallMapRight = 0;
 
 	vector<LPGAMEOBJECT> objects;
 	vector<LPTILE> tileMap;
@@ -23,7 +27,8 @@ protected:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
-	void __ParseSection_TILE_MAP(string line);
+	void _ParseSection_TILE_MAP_INFOR(string line);
+	void _ParseSection_TILE_MAP(string line);
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 

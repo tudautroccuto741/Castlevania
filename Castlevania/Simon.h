@@ -19,7 +19,7 @@
 #define SIMON_IS_PUSHED_Y					0.25f
 #define SIMON_IS_PUSHED_X					0.1f
 #define SIMON_GRAVITY						0.001f
-#define SIMON_UNTOUCHABLE_TIME				5000
+#define SIMON_UNTOUCHABLE_TIME				2000
 #define SIMON_ATTACK_TIME					450
 
 enum class SimonAniId

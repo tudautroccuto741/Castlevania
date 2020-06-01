@@ -123,12 +123,6 @@
     <ClCompile Include="Knight.cpp">
       <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="StairsUp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StairsDown.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SmallCandle.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -145,6 +139,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SmallHeart.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraChangeViewObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Source Files\Objects\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="LimitedObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="StairsUp.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="StairsDown.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -236,12 +245,6 @@
     <ClInclude Include="Knight.h">
       <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="StairsUp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StairsDown.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SmallCandle.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -258,6 +261,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SmallHeart.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraChangeViewObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Header Files\Objects\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="LimitedObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="StairsDown.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="StairsUp.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>

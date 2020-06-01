@@ -1,5 +1,6 @@
 #include "Knight.h"
 #include "Brick.h"
+#include "LimitedObject.h"
 
 void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -7,7 +8,7 @@ void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//x += dx;
 	vy += KNIGHT_GRAVITY * dt;
 	vx = (nx > 0) ? KNIGHT_WALKING_SPEED : -KNIGHT_WALKING_SPEED;
-	if (x > 738)
+	/*if (x > 738)
 	{
 		SetDirection(-1);
 	}
@@ -15,7 +16,7 @@ void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		SetDirection(1);
 	}
-
+*/
 	// untouchable
 	if (start_untouchable != 0)
 	{
@@ -51,12 +52,16 @@ void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			// collision with brick
 
-			if (dynamic_cast<CBrick *>(e->obj))
+			if (dynamic_cast<CBrick *>(e->obj)||dynamic_cast<CLimitedObject *>(e->obj))
 			{
 				if (e->ny != 0)
 				{
 					y += ny * 0.4f;
 					vy = 0;
+				}
+				if (e->nx != 0)
+				{
+					SetDirection(-this->nx);
 				}
 			}
 		}
@@ -101,5 +106,4 @@ CKnight::CKnight()
 	this->currentAniID = (int)KnightAniId::walkRight;
 	visible = true;
 	health = KNIGHT_HEALTH;
-	untouchable = 0;
 }

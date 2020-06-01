@@ -12,10 +12,14 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (visible)
 	{
-		nx = CSimon::GetInstance()->GetDirection();
 		CGameObject::Update(dt);
 		vx = (nx > 0) ? KNIFE_FLYING_SPEED : -KNIFE_FLYING_SPEED;
-		if (x < 0 || x>1504)
+
+		//if (x < 0 || x>1504)//not yet
+		//{
+		//	this->SetVisible(false);
+		//}
+		if(!IsInViewport())
 		{
 			this->SetVisible(false);
 		}
@@ -69,9 +73,7 @@ void CKnife::GetBoundingBox(float & left, float & top, float & right, float & bo
 
 void CKnife::ChoiceAnimation()
 {
-	int nxKn;
-	nxKn = CSimon::GetInstance()->GetDirection();
-	currentAniID = (nxKn > 0) ?
+	currentAniID = (nx > 0) ?
 		(int)KnifeAniID::knifeRight :
 		(int)KnifeAniID::knifeLeft;
 }

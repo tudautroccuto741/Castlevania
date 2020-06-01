@@ -13,6 +13,8 @@
 #include "BoomerangItem.h"
 #include "Bridge.h"
 #include "SmallHeart.h"
+#include "CameraChangeViewObject.h"
+#include "Bat.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -22,7 +24,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (vx < 0 && x < 0) x = 0;
 
-	if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
+	if (GetTickCount() - untouchable_start > 1000)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
@@ -130,6 +132,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					this->whip->LvUp();
 					e->obj->SetVisible(false);
+					//TouchingItemRope();
 				}
 			}
 			else if (dynamic_cast<CHeartItem *>(e->obj))
@@ -164,12 +167,21 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						BeHit();
 					}
 				}
+				else
+				{
+					x += dx;
+				}
 			}
-			else if (dynamic_cast<CPortal *>(e->obj))
+			else if (dynamic_cast<CBat *>(e->obj))
 			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
-				i = coEventsResult.size();
+				if (untouchable == 0)
+				{
+					if (e->nx != 0 || e->ny != 0)
+					{
+						e->obj->Destroy();
+						BeHit();
+					}
+				}
 			}
 			else if (dynamic_cast<CBridge *>(e->obj))
 			{
@@ -180,6 +192,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vx = BRIDGE_SPEED;
 				}
 			}
+			else if (dynamic_cast<CPortal *>(e->obj))
+			{
+				CPortal *p = dynamic_cast<CPortal *>(e->obj);
+				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				i = coEventsResult.size();
+			}
+			
 		}
 	}
 	
@@ -190,6 +209,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CSimon::Render()
 {
 	ChoiceAnimation();
+	//TouchingItemRope();
 	CGameObject::Render();
 }
 
@@ -354,6 +374,29 @@ void CSimon::ChoiceAnimation()
 	}
 }
 
+//void CSimon::Flicker()
+//{
+//	if (flicker_start == 0)
+//		flicker_start = GetTickCount();
+//}
+//
+//void CSimon::TouchingItemRope()
+//{
+//	if (flicker_start != 0)
+//	{
+//		// Animation frame will be rendered with
+//		// these 3 colors defined by change the argb value
+//		if (this->argb.blue != 0)
+//			this->argb.blue = 0;
+//
+//		else if (argb.green != 0)
+//			this->argb.green = 0;
+//
+//		else
+//			this->argb = ARGB();
+//	}
+//}
+
 void CSimon::Idle()
 {                                                                                                                                     
 	vx = 0;
@@ -472,8 +515,12 @@ void CSimon::Jumping()
 {
 	if (!isJumping && !isSitting)
 	{
-		isJumping = true;
-		this->vy = -SIMON_JUMP_SPEED_Y;
+		if (stairs == 0)
+		{
+			isJumping = true;
+			this->vy = -SIMON_JUMP_SPEED_Y;
+		}
+	
 	}
 }
 
@@ -488,10 +535,13 @@ void CSimon::StandUp()
 
 void CSimon::Whipping()
 {
+	if (!isJumping)
+	{
+		vx = 0;
+	}
 	isAttacking = true;
 	startTimeAttack = GetTickCount();
 	this->whip->SetVisible(true);
-	vx = 0;
 }
 
 void CSimon::WhippingInBridge()
@@ -658,13 +708,15 @@ void CSimon::GoingDownStairs()
 
 void CSimon::BeHit()
 {
-	beHit = true;
-	vx = vy = dx = dy = 0;
-	this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
-	this->vy = -SIMON_IS_PUSHED_Y;
-	isJumping = true;
-	StartUntouchable();
-	
+	if (stairs == 0)
+	{
+		beHit = true;
+		vx = vy = dx = dy = 0;
+		this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
+		this->vy = -SIMON_IS_PUSHED_Y;
+		isJumping = true;
+		StartUntouchable();
+	}
 }
 
 void CSimon::Overlapping()
@@ -693,6 +745,13 @@ void CSimon::Overlapping()
 			secondWeapon = (int)Weapon::BOOMERANG;
 		}
 		else if (dynamic_cast<CKnight *>(obj))
+		{
+			if (untouchable == 0)
+			{
+				BeHit();
+			}
+		}
+		else if (dynamic_cast<CBat *>(obj))
 		{
 			if (untouchable == 0)
 			{

@@ -24,7 +24,6 @@ enum class KnightStateID
 class CKnight : public CGameObject
 {
 	DWORD dame_start;
-	int untouchable;
 	
 public:
 
@@ -32,7 +31,6 @@ public:
 	void Render() override;
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 	void ChoiceAnimation();
-	void StartUntouchable() { untouchable = 1; dame_start = GetTickCount(); }
 	void BeHit(int damage) override;
 
 	CKnight();
