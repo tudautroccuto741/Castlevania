@@ -30,6 +30,7 @@
 #include "LimitedObject.h"
 #include "Rock.h"
 #include "Rocks.h"
+#include "Crown.h"
 
 using namespace std;
 
@@ -61,6 +62,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BRICK				3
 #define OBJECT_TYPE_SECRET_BRICK		411
 #define OBJECT_TYPE_ROCK				412
+#define OBJECT_TYPE_CROWN				413
 #define OBJECT_TYPE_CAMERA_CHANGE_VIEW	4111
 #define OBJECT_TYPE_STAIRS_UP			31
 #define OBJECT_TYPE_STAIRS_DOWN			32
@@ -256,6 +258,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ROCK:
 		obj = new CRock();
 		CRocks::GetInstance()->Add((CRock*)obj);
+		break;
+	case OBJECT_TYPE_CROWN:
+		obj = new CCrown();
 		break;
 	case OBJECT_TYPE_CAMERA_CHANGE_VIEW:
 		obj = CCameraChangeViewObject::GetInstance();
@@ -495,34 +500,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	/*if (simon->IsInBridge())
-	{
-		switch (KeyCode)
-		{
-		case DIK_K:
-			simon->SetState((int)SimonStateID::stateJumpInBridge);
-			break;
-		case DIK_L:
-			if (CGame::GetInstance()->IsKeyDown(DIK_W) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
-			{
-				simon->SetState((int)SimonStateID::stateUseWeaponInBridge);
-				break;
-			}
-			else
-			{
-				simon->SetState((int)SimonStateID::stateWhippingInBridge);
-				break;
-			}
-		case DIK_A:
-			simon->SetState((int)SimonStateID::stateWalkingLeftInBridge);
-			break;
-		case DIK_D:
-			simon->SetState((int)SimonStateID::stateWalkingRightInBridge);
-			break;
-		}
-	}
-	else
-	{*/
 	switch (KeyCode)
 	{
 	case DIK_K:
@@ -547,8 +524,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetState((int)SimonStateID::stateWalkingRight);
 		break;
 	}
-
-	//}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)

@@ -135,9 +135,6 @@
     <ClCompile Include="Bridge.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="SecretBrick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SmallHeart.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -156,10 +153,16 @@
     <ClCompile Include="StairsDown.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Rocks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rock.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rocks.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="SecretBrick.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Crown.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,9 +266,6 @@
     <ClInclude Include="Bridge.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="SecretBrick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SmallHeart.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -285,9 +285,15 @@
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Rocks.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="SecretBrick.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Rock.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Crown.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

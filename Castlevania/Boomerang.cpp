@@ -16,9 +16,9 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (visible)
 	{
+		start_time_turn_around = GetTickCount();
 		CGameObject::Update(dt);
 		vx = (nx > 0) ? BOOMERANG_FLYING_SPEED : -BOOMERANG_FLYING_SPEED;
-
 		CGame *game = CGame::GetInstance();
 		// The viewport bounding box
 		float vpLeft, vpTop, vpRight, vpBottom;
@@ -28,13 +28,26 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float left, top, right, bottom;
 		this->GetBoundingBox(left, top, right, bottom);
 
-		if (left <= vpLeft || right >= vpRight)
+		//probelm is here??????????????????????????????????????????????????
+		if (left <= vpLeft || right >= vpRight|| (GetTickCount() - start_time_turn_around >= BOOMERANG_FLYING_TIME))
 		{
-			SetDirection(-this->nx);
+			DebugOut(L"[INFO] Touch CameraBoundingBox\n");
+			/*SetDirection(-nx);*/
+			isReturn = true;
+			start_untouchable = GetTickCount();
+		}
+		if (isReturn)
+		{
+			if (GetTickCount() - start_untouchable > 200)
+				start_untouchable = 0;
+			else vx = vy = 0;
+			SetDirection(-nx);
+
+			isReturn = false;
 		}
 
 		if (!IsInViewport())
-		{			
+		{
 			this->SetVisible(false);
 		}
 
@@ -66,7 +79,6 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						vx = 0;
 						e->obj->BeHit(damage);
-						this->SetVisible(false);
 					}
 				}
 			}
@@ -109,6 +121,8 @@ CBoomerang * CBoomerang::GetInstance()
 
 CBoomerang::CBoomerang()
 {
+	start_time_turn_around = 0;
 	visible = false;
 	damage = 2;
+	isReturn = false;
 }
