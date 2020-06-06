@@ -6,6 +6,7 @@
 #define BOOMERANG_BBOX_HEIGHT				28
 #define DISTANCE_OF_BOOMERANG_AND_SIMON		0
 #define BOOMERANG_FLYING_SPEED				0.2
+#define BOOMERANG_FLYING_TIME				5000
 using namespace std;
 
 enum class BoomerangAniID

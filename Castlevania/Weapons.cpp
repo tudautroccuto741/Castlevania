@@ -49,6 +49,10 @@ LPGAMEOBJECT CWeapons::GetWeapon(int weapon)
 void CWeapons::UseKnife()
 {
 	LPGAMEOBJECT knife = GetWeapon((int)Weapon::KNIFE);
+	if(knife == NULL)
+	{
+		return;
+	}
 	knife->SetVisible(true);
 	knife->nx = CSimon::GetInstance()->GetDirection();
 	float xS, yS;
@@ -61,6 +65,7 @@ void CWeapons::UseKnife()
 void CWeapons::UseBoomerang()
 {
 	LPGAMEOBJECT boom = GetWeapon((int)Weapon::BOOMERANG);
+	if (boom == NULL) return;
 	boom->SetVisible(true);
 	boom->nx = CSimon::GetInstance()->GetDirection();
 	float xS, yS;

@@ -28,6 +28,8 @@
 #include "Bat.h"
 #include "CameraChangeViewObject.h"
 #include "LimitedObject.h"
+#include "Rock.h"
+#include "Rocks.h"
 
 using namespace std;
 
@@ -47,9 +49,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_SPRITES			3
 #define SCENE_SECTION_ANIMATIONS		4
 #define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS			6
-#define SCENE_SECTION_TILEMAP_INFOR		7
-#define SCENE_SECTION_TILEMAP			8
+#define SCENE_SECTION_OBJECTS			7
+#define SCENE_SECTION_TILEMAP_INFOR		8
+#define SCENE_SECTION_TILEMAP			9
 
 
 #define OBJECT_TYPE_SIMON				0
@@ -58,6 +60,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_SMALL_CANDLE		21
 #define OBJECT_TYPE_BRICK				3
 #define OBJECT_TYPE_SECRET_BRICK		411
+#define OBJECT_TYPE_ROCK				412
 #define OBJECT_TYPE_CAMERA_CHANGE_VIEW	4111
 #define OBJECT_TYPE_STAIRS_UP			31
 #define OBJECT_TYPE_STAIRS_DOWN			32
@@ -120,7 +123,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 
 	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
 
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+	DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
 	LPANIMATION ani = new CAnimation();
 
@@ -145,13 +148,13 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 
 	LPANIMATION_SET s = new CAnimationSet();
 
-	CAnimations *animations = CAnimations::GetInstance();
+	//CAnimations *animations = CAnimations::GetInstance();
 
 	for (int i = 1; i < tokens.size(); i++)
 	{
 		int ani_id = atoi(tokens[i].c_str());
 
-		LPANIMATION ani = animations->Get(ani_id);
+		LPANIMATION ani = CAnimations::GetInstance()->Get(ani_id);
 		s->push_back(ani);
 	}
 
@@ -224,6 +227,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = CSimon::GetInstance();
 		player = (CSimon*)obj;
+		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_WHIP: obj = CWhip::GetInstance(); break;
 	case OBJECT_TYPE_HEART:
@@ -244,19 +248,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_BRIDGE:
-		obj = new CBridge();
+		obj = CBridge::GetInstance();
 		break;
 	case OBJECT_TYPE_SECRET_BRICK:
 		obj = new CSecretBrick();
+		break;
+	case OBJECT_TYPE_ROCK:
+		obj = new CRock();
+		CRocks::GetInstance()->Add((CRock*)obj);
 		break;
 	case OBJECT_TYPE_CAMERA_CHANGE_VIEW:
 		obj = CCameraChangeViewObject::GetInstance();
 		break;
 	case OBJECT_TYPE_STAIRS_UP:
 		obj = new CStairsUp();
+		obj->nx = atoi(tokens[4].c_str());
 		break;
 	case OBJECT_TYPE_STAIRS_DOWN:
 		obj = new CStairsDown();
+		obj->nx = atoi(tokens[4].c_str());
 		break;
 	case OBJECT_TYPE_FLAMES:
 		obj = new CFlame();
@@ -401,7 +411,7 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		/*if (objects[i]->GetVisible())*/
+		if (objects[i]->GetVisible())
 			objects[i]->Update(dt, &coObjects);
 	}
 
@@ -419,33 +429,30 @@ void CPlayScene::Update(DWORD dt)
 	
 	// camera limited
 	cx -= game->GetScreenWidth() / 2;
-	if (xS > xc && yS <= yc)
+	//cy -= game->GetScreenHeight() / 2;
+	if (CCameraChangeViewObject::GetInstance() == NULL) return;
+	if (yS <= yc)
 	{
 		cy = 0;
 	}
-	else
+	else if(yS>yc)
 	{
-		if (cy >= LIMITEDHEIGHTMAP)
+		if (cx <= limitedSmallMapLeft)
 		{
-			cy = game->GetScreenHeight();
-			if (cx <= limitedSmallMapLeft)
-			{
-				cx = limitedSmallMapLeft;
-			}
-			else if (cx >= limitedSmallMapRight - game->GetScreenWidth())
-			{
-				cx = limitedSmallMapRight - game->GetScreenWidth();
-			}
+			cx = limitedSmallMapLeft;
 		}
-		else
-			cy = 0;
+		else if (cx >= limitedSmallMapRight - game->GetScreenWidth())
+		{
+			cx = limitedSmallMapRight - game->GetScreenWidth();
+		}
+		cy = game->GetScreenHeight();
 	}
-	if (cx < 0) 
+
+	if (cx < 0)
 		cx = 0;
-	
 	if (cx >= (mapWidth - game->GetScreenWidth()))
 		cx = mapWidth - game->GetScreenWidth();
-	
+
 	
 	
 	CGame::GetInstance()->SetCamPos(cx, cy);
@@ -488,7 +495,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	if (simon->IsInBridge())
+	/*if (simon->IsInBridge())
 	{
 		switch (KeyCode)
 		{
@@ -515,90 +522,64 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		}
 	}
 	else
+	{*/
+	switch (KeyCode)
 	{
-		switch (KeyCode)
+	case DIK_K:
+		simon->SetState((int)SimonStateID::stateJump);
+		break;
+	case DIK_L:
+		if (CGame::GetInstance()->IsKeyDown(DIK_W) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
 		{
-		case DIK_K:
-			simon->SetState((int)SimonStateID::stateJump);
+			simon->SetState((int)SimonStateID::stateUseWeapon);
 			break;
-		case DIK_L:
-			if (CGame::GetInstance()->IsKeyDown(DIK_W) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
-			{
-				simon->SetState((int)SimonStateID::stateUseWeapon);
-				break;
-			}
-			else
-			{
-				simon->SetState((int)SimonStateID::stateWhipping);
-				break;
-			}
-
-		case DIK_A:
-			simon->SetState((int)SimonStateID::stateWalkingLeft);
-			break;
-		case DIK_D:
-			simon->SetState((int)SimonStateID::stateWalkingRight);
+		}
+		else
+		{
+			simon->SetState((int)SimonStateID::stateWhipping);
 			break;
 		}
 
+	case DIK_A:
+		simon->SetState((int)SimonStateID::stateWalkingLeft);
+		break;
+	case DIK_D:
+		simon->SetState((int)SimonStateID::stateWalkingRight);
+		break;
 	}
+
+	//}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	if (simon->IsInBridge())
-	{
-		simon->SetState((int)SimonStateID::stateIdleInBridge);
-	}
-	else
-	{
-		simon->SetState((int)SimonStateID::stateIdle);
-	}
+	simon->SetState((int)SimonStateID::stateIdle);
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	if (simon->IsInBridge())
+	if (CGame::GetInstance()->IsKeyDown(DIK_S))
 	{
-		if (CGame::GetInstance()->IsKeyDown(DIK_S))
-		{
-			simon->SetState((int)SimonStateID::stateSitInBridge);
-		}
-		else if (CGame::GetInstance()->IsKeyDown(DIK_D))
-		{
-			simon->SetState((int)SimonStateID::stateWalkingRightInBridge);
-		}
-		else if (CGame::GetInstance()->IsKeyDown(DIK_A))
-		{
-			simon->SetState((int)SimonStateID::stateWalkingLeftInBridge);
-		}
-		else simon->SetState((int)SimonStateID::stateIdleInBridge);
+		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+		simon->SetState((int)SimonStateID::stateSit);
 	}
-	else
+	else if (CGame::GetInstance()->IsKeyDown(DIK_D))
 	{
-		if (CGame::GetInstance()->IsKeyDown(DIK_S))
-		{
-			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
-			simon->SetState((int)SimonStateID::stateSit);
-		}
-		else if (CGame::GetInstance()->IsKeyDown(DIK_D))
-		{
-			simon->SetState((int)SimonStateID::stateWalkingRight);
-		}
-		else if (CGame::GetInstance()->IsKeyDown(DIK_A))
-		{
-			simon->SetState((int)SimonStateID::stateWalkingLeft);
-		}
-		else if (CGame::GetInstance()->IsKeyDown(DIK_S))
-		{
-			simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
-		}
-		else if (CGame::GetInstance()->IsKeyDown(DIK_W))
-		{
-			simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
-		}
-		else simon->SetState((int)SimonStateID::stateIdle);
+		simon->SetState((int)SimonStateID::stateWalkingRight);
 	}
+	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
+	{
+		simon->SetState((int)SimonStateID::stateWalkingLeft);
+	}
+	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
+	{
+		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
+	}
+	else if (CGame::GetInstance()->IsKeyDown(DIK_W))
+	{
+		simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
+	}
+	else simon->SetState((int)SimonStateID::stateIdle);
 }

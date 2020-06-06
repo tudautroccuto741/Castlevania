@@ -62,21 +62,20 @@ enum class SimonStateID
 	stateGoingUpStairsRight = 108,
 	stateGoingDownStairsLeft = 109,
 	stateBeHitRight = 110,
-	stateBeHitLeft = 111,
-	stateIdleInBridge = 112,
-	stateWalkingRightInBridge = 113,
-	stateWalkingLeftInBridge = 114,
-	stateJumpInBridge = 115,
-	stateSitInBridge = 116,
-	stateWhippingInBridge = 117,
-	stateUseWeaponInBridge = 118
+	stateBeHitLeft = 111
+	//stateIdleInBridge = 112,
+	//stateWalkingRightInBridge = 113,
+	//stateWalkingLeftInBridge = 114,
+	//stateJumpInBridge = 115,
+	//stateSitInBridge = 116,
+	//stateWhippingInBridge = 117,
+	//stateUseWeaponInBridge = 118
 };
 
 class CSimon : public CGameObject
 {
 	int untouchable;
 	int secondWeapon;
-	int states;
 	int stairs; // 1 going up stairs, -1 going down, 0 not in
 	bool isJumping;
 	bool isAttacking;
@@ -84,7 +83,8 @@ class CSimon : public CGameObject
 	bool isUsingweapon;
 	bool isSitting;
 	bool isInBridge; // simon in a bridge
-	
+
+	float vxDefault = 0;
 
 	DWORD startTimeAttack;
 	DWORD untouchable_start;
@@ -103,7 +103,6 @@ public:
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 
 	void SetState(int state);
-	int GetState() { return this->states; }
 	void SetVisible(bool visible);
 	
 	bool IsInBridge(){ return this->isInBridge; }
@@ -111,19 +110,13 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
 	void Idle();
-	void IdleInBridge();
 	void WalkingRight();
-	void WalkingRightInBridge();
 	void WalkingLeft();
-	void WalkingLeftInBridge();
 	void Sitting();
-	void SittingInBridge();
 	void Jumping();
 	void StandUp();
 	void Whipping();
-	void WhippingInBridge();
 	void UseWeapon();
-	void UseWeaponInBridge();
 	void ChoiceAnimation();
 	void GoingUpStairs();
 	void GoingDownStairs();

@@ -23,7 +23,12 @@ void CBridge::GetBoundingBox(float &l, float &t, float &r, float &b)
 	r = x + BRIDGE_BBOX_WIDTH;
 	b = y + BRIDGE_BBOX_HEIGHT;
 }
-
+CBridge * CBridge::__instance = NULL;
+CBridge * CBridge::GetInstance()
+{
+	if (__instance == NULL) __instance = new CBridge();
+	return __instance;
+}
 CBridge::CBridge()
 {
 	this->currentAniID = (int)BridgeAniID::idleBridge;

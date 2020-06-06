@@ -6,6 +6,9 @@
 #include "Flame.h"
 #include "BoomerangItem.h"
 #include "Brick.h"
+#include "Bat.h"
+#include "Knight.h"
+#include "Game.h"
 
 CBoomerang * CBoomerang::__instance = NULL;
 
@@ -13,14 +16,28 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (visible)
 	{
-		nx = CSimon::GetInstance()->GetDirection();
 		CGameObject::Update(dt);
 		vx = (nx > 0) ? BOOMERANG_FLYING_SPEED : -BOOMERANG_FLYING_SPEED;
-		if (x < 0 || x>448)
+
+		CGame *game = CGame::GetInstance();
+		// The viewport bounding box
+		float vpLeft, vpTop, vpRight, vpBottom;
+		game->CamereBoundingBox(vpLeft, vpTop, vpRight, vpBottom);
+
+		// The object bounding box
+		float left, top, right, bottom;
+		this->GetBoundingBox(left, top, right, bottom);
+
+		if (left <= vpLeft || right >= vpRight)
 		{
-			this->vx = (-this->nx)*BOOMERANG_FLYING_SPEED;
+			SetDirection(-this->nx);
+		}
+
+		if (!IsInViewport())
+		{			
 			this->SetVisible(false);
 		}
+
 		vector<LPCOLLISIONEVENT> coEvents;
 		coEvents.clear();
 		CalcPotentialCollisions(coObjects, coEvents);
@@ -43,16 +60,15 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				// collision with candle
-				if (dynamic_cast<CSmallCandle *>(e->obj))
+				if (dynamic_cast<CSmallCandle *>(e->obj)||dynamic_cast<CBat*>(e->obj)|| dynamic_cast<CKnight *>(e->obj))
 				{
 					if (e->nx != 0 || e->ny != 0)
 					{
 						vx = 0;
-						e->obj->Destroy();
+						e->obj->BeHit(damage);
 						this->SetVisible(false);
 					}
 				}
-
 			}
 		}
 
@@ -94,4 +110,5 @@ CBoomerang * CBoomerang::GetInstance()
 CBoomerang::CBoomerang()
 {
 	visible = false;
+	damage = 2;
 }

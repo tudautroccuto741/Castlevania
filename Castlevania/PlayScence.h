@@ -10,7 +10,7 @@
 class CPlayScene : public CScene //dai dien 1 canh choi
 {
 protected:
-	CSimon *player;					// A play scene has to have player, right? 
+	CSimon *player;				// A play scene has to have player, right? 
 	int tileMapLineY = 0;
 	int tileMapWidth = 0;
 	int tileMapHeight = 0;

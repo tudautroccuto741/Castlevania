@@ -169,6 +169,8 @@
     <ClCompile Include="LimitedObject.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Rock.cpp" />
+    <ClCompile Include="Rocks.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="SecretBrick.cpp" />
     <ClCompile Include="Simon.cpp" />
@@ -211,6 +213,8 @@
     <ClInclude Include="LimitedObject.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="Rock.h" />
+    <ClInclude Include="Rocks.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="SecretBrick.h" />
     <ClInclude Include="Simon.h" />

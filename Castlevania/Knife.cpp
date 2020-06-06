@@ -15,10 +15,6 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGameObject::Update(dt);
 		vx = (nx > 0) ? KNIFE_FLYING_SPEED : -KNIFE_FLYING_SPEED;
 
-		//if (x < 0 || x>1504)//not yet
-		//{
-		//	this->SetVisible(false);
-		//}
 		if(!IsInViewport())
 		{
 			this->SetVisible(false);
@@ -94,4 +90,5 @@ CKnife * CKnife::GetInstance()
 CKnife::CKnife()
 {
 	visible = false;
+	damage = 1;
 }

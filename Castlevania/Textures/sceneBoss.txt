@@ -2,14 +2,105 @@
 [TEXTURES]
 # id	file_path	r	g	b	width	height 
 # width, height only available for tilemap texture  
-123	textures\0.png	255	0	255	544	288
+123	textures\0.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+# Brick
+40000	129	67	161	99	300
+# Up Stairs
+40001	129	67	161	99	300
+# Down Stairs
+40002	129	67	161	99	300
+# Small Candle
+30003	67	0	83	32	300
+30004	83	0	99	32	300
+#Heart
+60001	95	105	119	125	300
+# Small Heart
+60002	126	110	142	126	300
 [ANIMATIONS]
 #
 # id	ani1	ani2	ani3
 #
+# ==== BRICK ========
+301	40000	100
+
+# ==== Heart ========
+601	60001	100
+
+# ==== Small Heart ========
+602	60002	100
+
+# ==== UPSTAIRS ========
+302	40001	100
+
+# ==== DOWNSTAIRS ========
+303	40002	100
+
+# ==== Small Candle =========
+402	30003	100	30004	100
+
 [ANIMATION_SETS]
+# BRICK
+300	301
+# Heart
+600	601
+# Small Heart
+601	602
+# UPSTAIRS
+301	302
+# DOWNSTAIRS
+302	303
+# SmallCandle
+401	402
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
+# SIMON
+0	30	96	100
+# WHIP
+1	108	288	200
+# BRICK	width	height
+3	0	160	300	224	32
+3	287	224	300	320	32
+3	1345	287	300	64	32
+3	1438	224	300	96	32
+3	1504	288	300	32	32
+3	1504	96	300	32	32
+3	0	353	300	1533	32
+# Flames
+4	175	257	500
+# Heart
+6	167	225	600
+6	945	225	600
+# Small Heart
+61	167	225	601
+# UPSTAIRS
+31	287	161	301	-1
+31	737	289	301	-1
+31	1343	224	301	1
+# DOWNSTAIRS
+32	192	97	302	1
+32	575	160	302	1
+32	1439	160	302	-1
+# Small Candle
+21	1464	224	401	61
+21	1334	224	401	61
+21	1206	287	401	61
+21	1078	224	401	61
+21	950	287	401	61
+21	822	287	401	61
+21	696	224	401	61
+21	567	288	401	61
+21	309	160	401	61
+21	182	96	401	61
+21	55	224	401	61
+# --- SCENE PORTAL ----
+# type	l	t	ani_set_id	r	b	scene_id
+50	1503	160	0	1535	222	1
+[TILEMAP_INFOR]
+# tilesetWidth	tilesetHeight	mapWidth	mapHeight	limitedSmallMapLeft	limitedSmallMapRight
+544	288	1472	320	0	0
 [TILEMAP]
 76,77,76,77,143,144,42,43,76,77,105,106,8,9,76,77,105,106,27,28,94,96,132,133,76,77,130,131,143,144,132,133,76,77,130,131,105,106,132,133,76,77,10,11,8,9,46,115,
 93,94,93,94,110,111,59,60,93,94,110,111,25,26,76,77,110,111,44,45,93,94,149,150,93,94,147,148,110,111,149,150,93,94,147,148,110,111,149,150,93,94,27,11,25,26,63,115,

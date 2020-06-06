@@ -7,15 +7,17 @@
 #include <d3dx9.h>
 
 
+
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
 #include "Scence.h"
-
 using namespace std;
 
+//#define SCENE_SECTION_UNKNOWN			-1
+
+
 #define KEYBOARD_BUFFER_SIZE 1024
-#define LIMITEDHEIGHTMAP 320
 
 class CGame
 {
@@ -60,6 +62,10 @@ public:
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
+	void _ParseSection_TEXTURES(string line);
+	void _ParseSection_SPRITES(string line);
+	void _ParseSection_ANIMATIONS(string line);
+	void _ParseSection_ANIMATION_SETS(string line);
 
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }

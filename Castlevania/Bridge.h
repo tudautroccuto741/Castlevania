@@ -12,9 +12,11 @@ enum class BridgeAniID
 
 class CBridge : public CGameObject
 {
+	static CBridge * __instance;
 public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL) override;
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
-	float GetV() { return vx; }
+	float GetV() { return this->vx*this->nx; }
 	CBridge();
+	static CBridge * GetInstance();
 };

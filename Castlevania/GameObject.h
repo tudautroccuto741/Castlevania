@@ -9,7 +9,7 @@
 #include "AnimationSet.h"
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
-#define GAME_GRAVITY 0.004
+#define GAME_GRAVITY 0.006
 
 using namespace std;
 

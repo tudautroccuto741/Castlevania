@@ -169,10 +169,7 @@ bool CGameObject::IsOverlapping(LPGAMEOBJECT obj)
 
 bool CGameObject::IsInViewport()
 {
-	/*float cx, cy;*/
 	CGame *game = CGame::GetInstance();
-	//cx -= game->GetScreenWidth() / 2;
-	//cy -= game->GetScreenHeight() / 2;
 	// The viewport bounding box
 	float vpLeft, vpTop, vpRight, vpBottom;
 	game->CamereBoundingBox(vpLeft, vpTop, vpRight, vpBottom);
