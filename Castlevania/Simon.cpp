@@ -16,6 +16,8 @@
 #include "CameraChangeViewObject.h"
 #include "Bat.h"
 #include "Boomerang.h"
+#include "SecretBrick.h"
+#include "Crown.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -129,6 +131,38 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				isInBridge = false;
 
+			}
+			else if (dynamic_cast<CSecretBrick *>(e->obj))
+			{
+				vxDefault = 0;
+				if (e->ny < 0)
+				{
+					if (isJumping || beHit)
+					{
+						isJumping = false;
+						beHit = false;
+					}
+					y += ny * 0.4f;
+					vy = 0;
+				}
+				if (stairs != 0)
+				{
+					x += dx;
+				}
+
+				if (e->nx != 0)
+				{
+					x += nx * 0.4f;
+				}
+				isInBridge = false;
+
+			}
+			else if (dynamic_cast<CCrown *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+				}
 			}
 			else if (dynamic_cast<CWhipItem *>(e->obj))
 			{
