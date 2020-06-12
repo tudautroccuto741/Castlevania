@@ -18,7 +18,7 @@ void CRocks::ShowSomeRocksAfterBreaking(float x, float y)
 	{
 		if (rocks[i]->GetVisible() == false)
 		{
-			rock = rocks[i];
+			rock = rocks[i];	
 			i++;
 			break;
 		}
@@ -29,7 +29,6 @@ void CRocks::ShowSomeRocksAfterBreaking(float x, float y)
 		rock->SetSpeed(ROCK1_INITIAL_SPEED_X, ROCK1_INITIAL_SPEED_Y);
 		rock->SetVisible(true);
 	}
-
 
 	// Get rock no.2
 	for (; i < rocks.size(); i++)

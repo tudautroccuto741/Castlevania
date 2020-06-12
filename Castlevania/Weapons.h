@@ -13,9 +13,12 @@ public:
 	void ChoiceWeapon(int weaponName);
 	void UseKnife();
 	void UseBoomerang();
+	void UseAquafina();
+	void UseAxe();
 	LPGAMEOBJECT GetWeapon(int weapon);
 	void Add(int weaponName, LPGAMEOBJECT weapon);
 	CWeapons() { ; }
 	static CWeapons * GetInstance();
 };
+
 

@@ -14,8 +14,8 @@ void CSmallHeart::SetVisible(bool visible)
 	CGameObject::SetVisible(visible);
 	if (this->GetVisible())
 	{
-		vy = 0.04;
-		vx = 0.1f;
+		vy = SMALL_HEART_FALL_SPEED_Y;
+		vx = SMALL_HEART_MAX_SPEED_X;
 	}
 }
 
@@ -27,7 +27,7 @@ void CSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// Horizontal movement
 	vx += vxSH * dt;
-	if (abs(vx) > 0.1f && vx * vxSH > 0) vxSH = -vxSH;
+	if (abs(vx) > SMALL_HEART_MAX_SPEED_X && vx * vxSH > 0) vxSH = -vxSH;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -68,13 +68,15 @@ void CSmallHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
+	if (!this->IsInViewport())
+		SetVisible(false);
 }
 
 CSmallHeart::CSmallHeart()
 {
-	this->vxSH = 0.0002;
-	vy = 0.04;
-	vx = 0.1f;
+	this->vxSH = SMALL_HEART_SPEED_VX;
+	vy = SMALL_HEART_FALL_SPEED_Y;
+	vx = SMALL_HEART_MAX_SPEED_X;
 	this->currentAniID = (int)SmallHeartAniID::idleSmallHeart;
 	visible = false;
 }

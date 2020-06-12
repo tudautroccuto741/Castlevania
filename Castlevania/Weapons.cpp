@@ -3,6 +3,8 @@
 #include "Simon.h"
 #include "Knife.h"
 #include "Boomerang.h"
+#include "Aquafina.h"
+#include "Axe.h"
 
 CWeapons * CWeapons::__instance = NULL;
 
@@ -22,6 +24,12 @@ void CWeapons::ChoiceWeapon(int weaponName)
 		break;
 	case (int)Weapon::BOOMERANG:
 		UseBoomerang();
+		break;
+	case (int)Weapon::AQUAFINA:
+		UseAquafina();
+		break;
+	case (int)Weapon::AXE:
+		UseAxe();
 		break;
 	default:
 		break;
@@ -73,6 +81,33 @@ void CWeapons::UseBoomerang()
 	float xK = xS;
 	float yK = yS + DISTANCE_OF_BOOMERANG_AND_SIMON;
 	boom->SetPosition(xK, yK);
+}
+
+void CWeapons::UseAquafina()
+{
+	LPGAMEOBJECT aquafina = GetWeapon((int)Weapon::AQUAFINA);
+	if (aquafina == NULL) return;
+	aquafina->SetVisible(true);
+	aquafina->nx = CSimon::GetInstance()->GetDirection();
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+	/*float xK = (xS + SIMON_IDLE_BBOX_WIDTH) / 2;
+	float yK = (yS + SIMON_IDLE_BBOX_HEIGHT) / 2;*/
+	//aquafina->SetPosition(xK, yK);
+	aquafina->SetPosition(xS, yS);
+}
+
+void CWeapons::UseAxe()
+{
+	LPGAMEOBJECT axe = GetWeapon((int)Weapon::AXE);
+	if (axe == NULL) return;
+	axe->SetVisible(true);
+	axe->nx = CSimon::GetInstance()->GetDirection();
+	float xS, yS;
+	CSimon::GetInstance()->GetPosition(xS, yS);
+	float xK = xS;
+	float yK = yS;
+	axe->SetPosition(xK, yK);
 }
 
 CWeapons * CWeapons::GetInstance()

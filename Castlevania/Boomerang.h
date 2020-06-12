@@ -17,7 +17,7 @@ enum class BoomerangAniID
 
 class CBoomerang : public CGameObject
 {
-	bool isReturn;
+	int isReturn;
 	static CBoomerang * __instance;
 	DWORD start_time_turn_around;
 public:

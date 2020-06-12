@@ -16,7 +16,6 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (visible)
 	{
-		start_time_turn_around = GetTickCount();
 		CGameObject::Update(dt);
 		vx = (nx > 0) ? BOOMERANG_FLYING_SPEED : -BOOMERANG_FLYING_SPEED;
 		CGame *game = CGame::GetInstance();
@@ -28,28 +27,31 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float left, top, right, bottom;
 		this->GetBoundingBox(left, top, right, bottom);
 
-		//probelm is here??????????????????????????????????????????????????
-		if (left <= vpLeft || right >= vpRight|| (GetTickCount() - start_time_turn_around >= BOOMERANG_FLYING_TIME))
+		if (isReturn == 0)
 		{
-			DebugOut(L"[INFO] Touch CameraBoundingBox\n");
-			/*SetDirection(-nx);*/
-			isReturn = true;
-			start_untouchable = GetTickCount();
+			start_time_turn_around = GetTickCount();
 		}
-		if (isReturn)
+		else if (isReturn >= 2)
 		{
-			if (GetTickCount() - start_untouchable > 200)
-				start_untouchable = 0;
-			else vx = vy = 0;
-			SetDirection(-nx);
-
-			isReturn = false;
-		}
-
-		if (!IsInViewport())
-		{
+			isReturn = 0;
 			this->SetVisible(false);
+			start_time_turn_around = 0;
 		}
+
+		//probelm is here??????????????????????????????????????????????????
+		if (start_time_turn_around > 0)
+		{
+			if ((left <= vpLeft && vx < 0)
+				|| (right >= vpRight && vx > 0) 
+				|| (GetTickCount() - start_time_turn_around >= BOOMERANG_FLYING_TIME && isReturn < 1))
+			{
+				DebugOut(L"[INFO] Touch CameraBoundingBox\n");
+				isReturn++;
+				SetDirection(-nx);
+			}
+		}
+
+		
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		coEvents.clear();
@@ -73,7 +75,9 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				// collision with candle
-				if (dynamic_cast<CSmallCandle *>(e->obj)||dynamic_cast<CBat*>(e->obj)|| dynamic_cast<CKnight *>(e->obj))
+				if (dynamic_cast<CSmallCandle *>(e->obj)
+					||dynamic_cast<CBat*>(e->obj)
+					|| dynamic_cast<CKnight *>(e->obj))
 				{
 					if (e->nx != 0 || e->ny != 0)
 					{
@@ -104,6 +108,14 @@ void CBoomerang::ChoiceAnimation()
 	currentAniID = (nxKn > 0) ?
 		(int)BoomerangAniID::BoomerangRight :
 		(int)BoomerangAniID::BoomerangLeft;
+	if (isReturn >= 1 && nx > 0)
+	{
+		currentAniID = (int)BoomerangAniID::BoomerangRight;
+	}
+	else if (isReturn >= 1 && nx < 0)
+	{
+		currentAniID = (int)BoomerangAniID::BoomerangLeft;
+	}
 }
 
 void CBoomerang::Render()
@@ -124,5 +136,5 @@ CBoomerang::CBoomerang()
 	start_time_turn_around = 0;
 	visible = false;
 	damage = 2;
-	isReturn = false;
+	isReturn = 0;
 }

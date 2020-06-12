@@ -1,10 +1,18 @@
-#include "WhipItem.h"
+#include "RedMoneyBag.h"
 #include "Brick.h"
 
-void CWhipItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CRedMoneyBag::GetBoundingBox(float &l, float &t, float &r, float &b)
+{
+	l = x;
+	t = y;
+	r = x + REDMONEYBAG_BBOX_WIDTH;
+	b = y + REDMONEYBAG_BBOX_HEIGHT;
+}
+
+void CRedMoneyBag::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-	vy += GAME_GRAVITY * dt;				// simple fall down
+	vy = GAME_GRAVITY * dt;				// simple fall down
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -22,7 +30,7 @@ void CWhipItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		float min_tx, min_ty, nx = 0, ny;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		
+
 		x += min_tx * dx;
 		y += min_ty * dy;
 
@@ -49,17 +57,8 @@ void CWhipItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetVisible(false);
 }
 
-void CWhipItem::GetBoundingBox(float & left, float & top, float & right, float & bottom)
+CRedMoneyBag::CRedMoneyBag()
 {
-	left = x;
-	top = y;
-	right = x + WHIP_ITEM_BBOX_WIDTH;
-	bottom = y + WHIP_ITEM_BBOX_HEIGHT;
-}
-
-CWhipItem::CWhipItem()
-{
-	// Choice animation
-	this->currentAniID = (int)WhipItemAniID::idleWhipItem;
+	this->currentAniID = (int)RedMoneyBagAniID::idle;
 	visible = false;
 }

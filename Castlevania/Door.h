@@ -1,17 +1,15 @@
 #pragma once
 #include "GameObject.h"
 #include "Animations.h"
-#define CANDLE_BBOX_WIDTH 32
-#define CANDLE_BBOX_HEIGHT 64
-
-enum class CandleAniID
+#define DOOR_BBOX_WIDTH  16
+#define DOOR_BBOX_HEIGHT 96
+enum class DoorAniID
 {
-	idleCandle = 401
+	idle = 124
 };
-
-class CCandle : public CGameObject
-{	
+class CDoor : public CGameObject
+{
 public:
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
-	CCandle();
+	CDoor();
 };

@@ -31,6 +31,16 @@
 #include "Rock.h"
 #include "Rocks.h"
 #include "Crown.h"
+#include "IIitem.h"
+#include "WhiteMoneyBag.h"
+#include "RedMoneyBag.h"
+#include "Meat.h"
+#include "Ball.h"
+#include "Door.h"
+#include "AxeItem.h"
+#include "AquafinaItem.h"
+#include "Axe.h"
+#include "Aquafina.h"
 
 using namespace std;
 
@@ -60,6 +70,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_CANDLE				2
 #define OBJECT_TYPE_SMALL_CANDLE		21
 #define OBJECT_TYPE_BRICK				3
+#define OBJECT_TYPE_DOOR				124
 #define OBJECT_TYPE_SECRET_BRICK		411
 #define OBJECT_TYPE_ROCK				412
 #define OBJECT_TYPE_CROWN				413
@@ -70,11 +81,20 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_FLAMES				4
 #define OBJECT_TYPE_HEART				6
 #define OBJECT_TYPE_SMALL_HEART			61
+#define OBJECT_TYPE_IIiTEM				42
+#define OBJECT_TYPE_WHITE_MONEY_BAG		40
+#define OBJECT_TYPE_RED_MONEY_BAG		41
+#define OBJECT_TYPE_MEAT				43
+#define OBJECT_TYPE_BALL				44
 #define OBJECT_TYPE_WHIPITEM			7
 #define OBJECT_TYPE_KNIFE_ITEM			8
 #define OBJECT_TYPE_KNIFE				9
 #define OBJECT_TYPE_BOOMERANG_ITEM		10
 #define OBJECT_TYPE_BOOMERANG			11
+#define OBJECT_TYPE_AQUAFINA_ITEM		45
+#define OBJECT_TYPE_AQUAFINA			47
+#define OBJECT_TYPE_AXE_ITEM			46
+#define OBJECT_TYPE_AXE					48
 #define OBJECT_TYPE_PORTAL				50
 #define OBJECT_TYPE_KNIGHT				1000
 #define OBJECT_TYPE_LIMITED_OBJ			10001
@@ -232,6 +252,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_WHIP: obj = CWhip::GetInstance(); break;
+	case OBJECT_TYPE_DOOR:
+		obj = new CDoor();
+		break;
 	case OBJECT_TYPE_HEART:
 		obj = new CHeartItem();
 		CItems::GetInstance()->Add((int)Item::HEART, obj);
@@ -239,6 +262,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SMALL_HEART:
 		obj = new CSmallHeart();
 		CItems::GetInstance()->Add((int)Item::SMALLHEART, obj);
+		break;
+	case OBJECT_TYPE_BALL:
+		obj = new CBall();
+		CItems::GetInstance()->Add((int)Item::BALL, obj);
+		break;
+	case OBJECT_TYPE_IIiTEM:
+		obj = new CIIitem();
+		CItems::GetInstance()->Add((int)Item::IIiTEM, obj);
+		break;
+	case OBJECT_TYPE_MEAT:
+		obj = new CMeat();
+		CItems::GetInstance()->Add((int)Item::MEAT, obj);
+		break;
+	case OBJECT_TYPE_WHITE_MONEY_BAG:
+		obj = new CWhiteMoneyBag();
+		CItems::GetInstance()->Add((int)Item::WHITEMONEYBAG, obj);
+		break;
+	case OBJECT_TYPE_RED_MONEY_BAG:
+		obj = new CRedMoneyBag();
+		CItems::GetInstance()->Add((int)Item::REDMONEYBAG, obj);
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
@@ -253,8 +296,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = CBridge::GetInstance();
 		break;
 	case OBJECT_TYPE_SECRET_BRICK:
+	{
+		int typeObj = atoi(tokens[4].c_str());
 		obj = new CSecretBrick();
+		if (typeObj != -1)
+		{
+			obj->SetHoldingItem(typeObj);
+			/*obj = new CCandle();
+			obj->SetHoldingItem(typeObj);*/
+		}
 		break;
+	}
 	case OBJECT_TYPE_ROCK:
 		obj = new CRock();
 		CRocks::GetInstance()->Add((CRock*)obj);
@@ -289,6 +341,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBoomerangItem();
 		CItems::GetInstance()->Add((int)Item::BOOMERANG, obj);
 		break;
+	case OBJECT_TYPE_AQUAFINA_ITEM:
+		obj = new CAquafinaItem();
+		CItems::GetInstance()->Add((int)Item::AQUAFINA, obj);
+		break;
+	case OBJECT_TYPE_AXE_ITEM:
+		obj = new CAxeItem();
+		CItems::GetInstance()->Add((int)Item::AXE, obj);
+		break;
 	case OBJECT_TYPE_KNIFE:
 		obj = CKnife::GetInstance();
 		CWeapons::GetInstance()->Add((int)Weapon::KNIFE, obj);
@@ -296,6 +356,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BOOMERANG:
 		obj = CBoomerang::GetInstance();
 		CWeapons::GetInstance()->Add((int)Weapon::BOOMERANG, obj);
+		break;
+	case OBJECT_TYPE_AQUAFINA:
+		obj = CAquafina::GetInstance();
+		CWeapons::GetInstance()->Add((int)Weapon::AQUAFINA, obj);
+		break;
+	case OBJECT_TYPE_AXE:
+		obj = CAxe::GetInstance();
+		CWeapons::GetInstance()->Add((int)Weapon::AXE, obj);
 		break;
 	case OBJECT_TYPE_CANDLE:
 	{
@@ -397,7 +465,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
@@ -487,7 +555,6 @@ void CPlayScene::Unload()
 		else 
 		{ delete objects[i]; }
 	}
-		
 
 	objects.clear();
 	player = NULL;

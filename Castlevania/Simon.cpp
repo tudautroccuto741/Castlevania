@@ -18,6 +18,12 @@
 #include "Boomerang.h"
 #include "SecretBrick.h"
 #include "Crown.h"
+#include "WhiteMoneyBag.h"
+#include "IIitem.h"
+#include "RedMoneyBag.h"
+#include "Meat.h"
+#include "AquafinaItem.h"
+#include "AxeItem.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -27,27 +33,31 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (vx < 0 && x < 0) x = 0;
 
-	if (GetTickCount() - untouchable_start > 1000)
+	// untouchable
+	if (untouchable_start > 0)
 	{
-		untouchable_start = 0;
-		untouchable = 0;
+		if (GetTickCount() - untouchable_start > 1000)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
 	}
 
 	// Attacking
 	// check attack state
-	if (startTimeAttack != 0)
+	if (startTimeAttack > 0)
 	{
 		if (isAttacking && GetTickCount() - startTimeAttack > SIMON_ATTACK_TIME)
 		{
 			isAttacking = false;
 			whip->SetVisible(false);
+			startTimeAttack = 0;
 		}
 
 		if (isUsingweapon)
 		{
 			if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
 			{
-				//if (this->weapons->GetWeapon(secondWeapon) == NULL) return;
 				this->weapons->ChoiceWeapon(secondWeapon);
 				isUsingweapon = false;
 			}
@@ -85,7 +95,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 
-
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -107,7 +116,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			// collision with brick
 
-			if (dynamic_cast<CBrick *>(e->obj))
+			if (dynamic_cast<CBrick *>(e->obj)
+				|| dynamic_cast<CSecretBrick *>(e->obj))
 			{
 				vxDefault = 0;
 				if (e->ny < 0)
@@ -131,38 +141,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				isInBridge = false;
 
-			}
-			else if (dynamic_cast<CSecretBrick *>(e->obj))
-			{
-				vxDefault = 0;
-				if (e->ny < 0)
-				{
-					if (isJumping || beHit)
-					{
-						isJumping = false;
-						beHit = false;
-					}
-					y += ny * 0.4f;
-					vy = 0;
-				}
-				if (stairs != 0)
-				{
-					x += dx;
-				}
-
-				if (e->nx != 0)
-				{
-					x += nx * 0.4f;
-				}
-				isInBridge = false;
-
-			}
-			else if (dynamic_cast<CCrown *>(e->obj))
-			{
-				if (e->nx != 0 || e->ny != 0)
-				{
-					e->obj->SetVisible(false);
-				}
 			}
 			else if (dynamic_cast<CWhipItem *>(e->obj))
 			{
@@ -173,7 +151,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					//TouchingItemRope();
 				}
 			}
-			else if (dynamic_cast<CHeartItem *>(e->obj))
+			else if (dynamic_cast<CHeartItem *>(e->obj)
+				|| dynamic_cast<CCrown *>(e->obj)
+				|| dynamic_cast<CIIitem *>(e->obj)
+				|| dynamic_cast<CWhiteMoneyBag *>(e->obj)
+				|| dynamic_cast<CRedMoneyBag *>(e->obj)
+				|| dynamic_cast<CSmallHeart *>(e->obj)
+				|| dynamic_cast<CMeat *>(e->obj))
 			{
 				if (e->nx != 0 || e->ny != 0)
 				{
@@ -186,6 +170,22 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					e->obj->SetVisible(false);
 					secondWeapon = (int)Weapon::KNIFE;
+				}
+			}
+			else if (dynamic_cast<CAquafinaItem *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					secondWeapon = (int)Weapon::AQUAFINA;
+				}
+			}
+			else if (dynamic_cast<CAxeItem *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					secondWeapon = (int)Weapon::AXE;
 				}
 			}
 			else if (dynamic_cast<CBoomerangItem *>(e->obj))
@@ -202,6 +202,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (e->nx != 0 || e->ny != 0)
 					{
+						this->nx = (e->nx != 0) ?
+							-(e->nx) :
+							-(e->obj->GetDirection());
 						BeHit();
 					}
 				}
@@ -216,8 +219,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (e->nx != 0 || e->ny != 0)
 					{
-						e->obj->Destroy();
+						this->nx = (e->nx != 0) ?
+							-(e->nx) :
+							-(e->obj->GetDirection());
 						BeHit();
+						e->obj->Destroy();
 					}
 				}
 			}
@@ -640,6 +646,10 @@ void CSimon::BeHit()
 		this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
 		this->vy = -SIMON_IS_PUSHED_Y;
 		isJumping = true;
+		untouchable_start = 0;
+	}
+	else
+	{
 		StartUntouchable();
 	}
 }
@@ -655,7 +665,13 @@ void CSimon::Overlapping()
 			obj->SetVisible(false);
 			this->whip->LvUp();
 		}
-		else if (dynamic_cast<CHeartItem *>(obj)||dynamic_cast<CSmallHeart *>(obj))
+		else if (dynamic_cast<CHeartItem *>(obj)
+			|| dynamic_cast<CCrown *>(obj)
+			|| dynamic_cast<CIIitem *>(obj)
+			|| dynamic_cast<CWhiteMoneyBag *>(obj)
+			|| dynamic_cast<CRedMoneyBag *>(obj)
+			|| dynamic_cast<CSmallHeart *>(obj)
+			|| dynamic_cast<CMeat *>(obj))
 		{
 			obj->SetVisible(false);
 		}
@@ -669,11 +685,22 @@ void CSimon::Overlapping()
 			obj->SetVisible(false);
 			secondWeapon = (int)Weapon::BOOMERANG;
 		}
+		else if (dynamic_cast<CAquafinaItem *>(obj))
+		{
+			obj->SetVisible(false);
+			secondWeapon = (int)Weapon::AQUAFINA;
+		}
+		else if (dynamic_cast<CAxeItem *>(obj))
+		{
+			obj->SetVisible(false);
+			secondWeapon = (int)Weapon::AXE;
+		}
 		else if (dynamic_cast<CKnight *>(obj))
 		{
 			if (untouchable == 0)
 			{
 				BeHit();
+				StartUntouchable();
 			}
 		}
 		else if (dynamic_cast<CBat *>(obj))
@@ -681,6 +708,8 @@ void CSimon::Overlapping()
 			if (untouchable == 0)
 			{
 				BeHit();
+				StartUntouchable();
+				obj->Destroy();
 			}
 		}
 	}
@@ -745,6 +774,15 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	{
 		right = x + SIMON_IDLE_BBOX_WIDTH;
 		bottom = y + SIMON_IDLE_BBOX_HEIGHT;
+	}
+}
+
+void CSimon::StartUntouchable() 
+{ 
+	untouchable = 1;
+	if (untouchable_start == 0)
+	{
+		untouchable_start = GetTickCount();
 	}
 }
 

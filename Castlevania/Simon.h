@@ -63,13 +63,6 @@ enum class SimonStateID
 	stateGoingDownStairsLeft = 109,
 	stateBeHitRight = 110,
 	stateBeHitLeft = 111
-	//stateIdleInBridge = 112,
-	//stateWalkingRightInBridge = 113,
-	//stateWalkingLeftInBridge = 114,
-	//stateJumpInBridge = 115,
-	//stateSitInBridge = 116,
-	//stateWhippingInBridge = 117,
-	//stateUseWeaponInBridge = 118
 };
 
 class CSimon : public CGameObject
@@ -107,7 +100,7 @@ public:
 	
 	bool IsInBridge(){ return this->isInBridge; }
 
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void StartUntouchable();
 
 	void Idle();
 	void WalkingRight();

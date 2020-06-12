@@ -9,7 +9,7 @@
 #include "AnimationSet.h"
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
-#define GAME_GRAVITY 0.006
+#define GAME_GRAVITY 0.012
 
 using namespace std;
 
@@ -43,14 +43,23 @@ enum class Item
 	SMALLHEART = 61,
 	WHIP_ITEM = 7,
 	KNIFE = 8,
-	BOOMERANG = 10
+	BOOMERANG = 10,
+	WHITEMONEYBAG = 40,
+	REDMONEYBAG = 41,
+	IIiTEM = 42,
+	MEAT = 43,
+	BALL = 44,
+	AQUAFINA = 45,
+	AXE = 46
 };
 
 enum class Weapon
 {
 	NONE,
 	KNIFE,
-	BOOMERANG
+	BOOMERANG,
+	AQUAFINA,
+	AXE
 };
 
 class CGameObject
@@ -70,7 +79,6 @@ public:
 
 	int item;
 
-	int point = 0;
 	int health = 0;
 	int damage = 0;
 
@@ -123,8 +131,7 @@ public:
 	int GetHeight() { return this->height; }
 	void RenderBoundingBox();
 
-	// Points, Health, Damage
-	int GetPoint() { return this->point; }
+	// Health, Damage
 	int GetHealth() { return this->health; }
 	int GetDamage() { return this->damage; }
 	

@@ -17,10 +17,11 @@ void CCrown::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
 	
-
+	// growing up in this place
 	if (y <= LIMITED_GROW_UP_Y)
 	{
 		y = LIMITED_GROW_UP_Y;
+		vy = 0;
 	}
 	else
 	{
@@ -29,22 +30,16 @@ void CCrown::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			currentAniID = (int)CrownAniID::GROWUP;
 			vy = -CROWN_GROWING_UP_SPEED;
 		}
-		else
-		{
-			currentAniID = (int)CrownAniID::IDLE;
-		}
 	}
 
 	// Update position
 	x += dx;
 	y += dy;
 
-	// Re-set the state
-	/*if (this->IsInViewport() == false)
-		this->SetVisible(false);*/
 }
 
 CCrown::CCrown()
 {
 	visible = true;
+	currentAniID = (int)CrownAniID::IDLE;
 }
