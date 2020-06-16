@@ -106,7 +106,7 @@ void CPlayScene::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 3) return; // skip invalid lines
+	if (tokens.size() < 5) return; // skip invalid lines
 	
 	int texID = atoi(tokens[0].c_str());
 	wstring path = ToWSTR(tokens[1]);
@@ -465,7 +465,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
@@ -549,16 +549,25 @@ void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CSimon *>(objects[i]) || dynamic_cast<CWhip *>(objects[i])|| dynamic_cast<CKnife *>(objects[i])) 
+		if (dynamic_cast<CSimon *>(objects[i]) 
+			|| dynamic_cast<CWhip *>(objects[i])
+			|| dynamic_cast<CKnife *>(objects[i])
+			|| dynamic_cast<CBoomerang *>(objects[i])
+			|| dynamic_cast<CAquafina *>(objects[i])
+			|| dynamic_cast<CAxe *>(objects[i])
+			|| dynamic_cast<CCameraChangeViewObject *>(objects[i]))
 		{ ; }
 		
 		else 
-		{ delete objects[i]; }
+		{ 
+			delete objects[i]; 
+		}
 	}
 
 	objects.clear();
 	player = NULL;
-
+	CItems::GetInstance()->Clear();
+	CFlames::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 

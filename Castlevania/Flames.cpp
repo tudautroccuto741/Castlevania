@@ -42,6 +42,11 @@ void CFlames::ShowFlame(LPGAMEOBJECT obj)
 	}
 }
 
+void CFlames::Clear()
+{
+	flames.clear();
+}
+
 CFlames * CFlames::GetInstance()
 {
 	if (__instance == NULL)

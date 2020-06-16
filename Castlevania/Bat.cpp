@@ -97,7 +97,6 @@ CBat::CBat()
 	vx = 0;
 	vy = 0;
 
-	point = BAT_POINT_AWARD;
 	health =BAT_DEFAULT_HEALTH;
 	damage = BAT_DAMAGE;
 	visible = true;

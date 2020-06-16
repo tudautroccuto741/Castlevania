@@ -15,6 +15,7 @@ public:
 	void Add(int itemName, LPGAMEOBJECT item);
 	void CheckAndDrop(LPGAMEOBJECT gameObject);			// Check and the drop item
 	void Drop(int iteamName, float x, float y);
+	void Clear();
 	CItems() { ; }
 	static CItems * GetInstance();
 };

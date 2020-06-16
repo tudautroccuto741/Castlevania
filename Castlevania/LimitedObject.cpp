@@ -1,7 +1,7 @@
 #include "LimitedObject.h"
 void CLimitedObject::Render()
 {
-	;
+	RenderBoundingBox();
 }
 
 void CLimitedObject::GetBoundingBox(float &l, float &t, float &r, float &b)

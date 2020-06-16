@@ -16,7 +16,7 @@ public:
 
 	void Add(CFlame * flame);
 	void ShowFlame(LPGAMEOBJECT obj);
-
+	void Clear();
 	CFlames() { ; }
 	static CFlames * GetInstance();
 };
