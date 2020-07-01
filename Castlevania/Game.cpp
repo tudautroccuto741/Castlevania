@@ -494,7 +494,7 @@ void CGame::SwitchScene(int scene_id)
 // camera boundingbox
 void CGame::CamereBoundingBox(float &left, float &top, float &right, float &bottom) {
 	left = this->cam_x;
-	top = this->cam_y;
-	right = left + GetScreenWidth();
-	bottom = top + GetScreenHeight();
+	top = this->cam_y+79;
+	right = left + VIEWPORT_WIDTH;
+	bottom = top + VIEWPORT_HEIGHT;
 }

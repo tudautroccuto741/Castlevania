@@ -6,6 +6,7 @@
 #include "Brick.h"
 #include "Simon.h"
 #include "Tile.h"
+#include "Board.h"
 
 class CPlayScene : public CScene //dai dien 1 canh choi
 {
@@ -14,12 +15,13 @@ protected:
 	int tileMapLineY = 0;
 	int tileMapWidth = 0;
 	int tileMapHeight = 0;
-	int mapWidth = 0;
-	int mapHeight = 0;
 	int limitedSmallMapLeft = 0;
 	int limitedSmallMapRight = 0;
 
-	vector<LPGAMEOBJECT> objects;
+	//LPSCENE _stage;
+	//int mapWidth = 0;
+	//int mapHeight = 0;
+
 	vector<LPTILE> tileMap;
 
 	void _ParseSection_TEXTURES(string line);
@@ -31,12 +33,46 @@ protected:
 	void _ParseSection_TILE_MAP(string line);
 public:
 	CPlayScene(int id, LPCWSTR filePath);
-
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-
+	
+	void GetVisibleObjects()
+	{
+		/*LPGAMEOBJECT object;
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			object = this->objects[i];
+			if (object->GetVisible())
+			{
+				visibleObjects.push_back(object);
+			}
+		}*/
+		LPGAMEOBJECT object;
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			object = this->objects[i];
+			if (dynamic_cast<CSimon *>(object)
+				|| dynamic_cast<CWhip *>(object)
+				/*|| dynamic_cast<CKnife *>(object)
+				|| dynamic_cast<CBoomerang *>(object)
+				|| dynamic_cast<CAquafina *>(object)
+				|| dynamic_cast<CAxe *>(object)*/
+				|| object->GetVisible() == false)
+			{
+				defaultObjects.push_back(object);
+			}
+			else
+			{
+				visibleObjects.push_back(object);
+			}
+		}
+	}
+	//void GetDefaultObject()
+	//{
+	//	
+	//}
 	friend class CPlayScenceKeyHandler;
 };
 

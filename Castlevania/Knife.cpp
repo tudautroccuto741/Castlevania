@@ -5,6 +5,9 @@
 #include "Candle.h"
 #include "Flame.h"
 #include "Knife.h"
+#include "SmallCandle.h"
+#include "Bat.h"
+#include "Knight.h"
 
 CKnife * CKnife::__instance = NULL;
 
@@ -41,12 +44,15 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				// collision with candle
-				if (dynamic_cast<CCandle *>(e->obj))
+				if (dynamic_cast<CCandle *>(e->obj)
+					||dynamic_cast<CSmallCandle *>(e->obj)
+					|| dynamic_cast<CBat *>(e->obj)
+					|| dynamic_cast<CKnight *>(e->obj))
 				{
 					if (e->nx != 0 || e->ny != 0)
 					{
 						vx = 0;
-						e->obj->Destroy();
+						e->obj->BeHit(this->damage);
 						this->SetVisible(false);
 					}
 				}

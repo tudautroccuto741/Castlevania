@@ -83,6 +83,11 @@ void CRocks::ShowSomeRocksAfterBreaking(float x, float y)
 
 }
 
+void CRocks::Clear()
+{
+	rocks.clear();
+}
+
 CRocks * CRocks::GetInstance()
 {
 	if (__instance == NULL)

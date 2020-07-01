@@ -154,6 +154,7 @@
     <ClCompile Include="AxeItem.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoneWeapon.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="BoomerangItem.cpp" />
@@ -161,9 +162,12 @@
     <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="CameraChangeViewObject.cpp" />
     <ClCompile Include="Candle.cpp" />
+    <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="Cells.cpp" />
     <ClCompile Include="Crown.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="DrawBoard.cpp" />
     <ClCompile Include="Flame.cpp" />
     <ClCompile Include="Flames.cpp" />
     <ClCompile Include="Flea.cpp" />
@@ -216,6 +220,7 @@
     <ClInclude Include="AxeItem.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="Board.h" />
     <ClInclude Include="BoneWeapon.h" />
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="BoomerangItem.h" />
@@ -223,9 +228,12 @@
     <ClInclude Include="Bridge.h" />
     <ClInclude Include="CameraChangeViewObject.h" />
     <ClInclude Include="Candle.h" />
+    <ClInclude Include="Cell.h" />
+    <ClInclude Include="Cells.h" />
     <ClInclude Include="Crown.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="DrawBoard.h" />
     <ClInclude Include="Flame.h" />
     <ClInclude Include="Flames.h" />
     <ClInclude Include="Flea.h" />

@@ -9,6 +9,8 @@
 
 
 #define DIRECTINPUT_VERSION 0x0800
+#define VIEWPORT_WIDTH		512
+#define VIEWPORT_HEIGHT		384
 #include <dinput.h>
 
 #include "Scence.h"
@@ -61,6 +63,7 @@ public:
 
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
+	int GetCurrentSceneID(){ return current_scene; }
 	void SwitchScene(int scene_id);
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -91,6 +94,7 @@ public:
 
 
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
+	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
 
 	float GetCurrentCam_Y() { return this->cam_y; }
 

@@ -36,7 +36,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// untouchable
 	if (untouchable_start > 0)
 	{
-		if (GetTickCount() - untouchable_start > 1000)
+		if (untouchable == 1 && GetTickCount() - untouchable_start > 1000)
 		{
 			untouchable_start = 0;
 			untouchable = 0;
@@ -70,13 +70,32 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vy = 0;
 	}
 
-		
+	// Dying and revive
+	if (health <= 0 && !isJumping && start_die == 0)	// Simon has landed on the ground
+	{		
+		Dying();
+	}	
+	if (GetTickCount() - start_die >= SIMON_TIME_TO_DIE && isDying)
+	{
+		isDying = false;
+		Revive();
+		start_die = 0;
+	}
+
+	if (flicker_time > 0)
+	{
+		vx = vxDefault;
+		Flickering();
+	}
+
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
+
 	
 	// overlapping
 	ovlObjects.clear();
@@ -146,17 +165,32 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->nx != 0 || e->ny != 0)
 				{
+					flickering = true;
+					flicker_time = GetTickCount();
 					this->whip->LvUp();
 					e->obj->SetVisible(false);
-					//TouchingItemRope();
 				}
 			}
-			else if (dynamic_cast<CHeartItem *>(e->obj)
-				|| dynamic_cast<CCrown *>(e->obj)
+			else if (dynamic_cast<CHeartItem *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					heart += 5;
+				}
+			}
+			else if (dynamic_cast<CSmallHeart *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					heart += 1;
+				}
+			}
+			else if (dynamic_cast<CCrown *>(e->obj)
 				|| dynamic_cast<CIIitem *>(e->obj)
 				|| dynamic_cast<CWhiteMoneyBag *>(e->obj)
 				|| dynamic_cast<CRedMoneyBag *>(e->obj)
-				|| dynamic_cast<CSmallHeart *>(e->obj)
 				|| dynamic_cast<CMeat *>(e->obj))
 			{
 				if (e->nx != 0 || e->ny != 0)
@@ -206,6 +240,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							-(e->nx) :
 							-(e->obj->GetDirection());
 						BeHit();
+						StartUntouchable();
 					}
 				}
 				else
@@ -224,6 +259,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							-(e->obj->GetDirection());
 						BeHit();
 						e->obj->Destroy();
+						StartUntouchable();
 					}
 				}
 			}
@@ -268,8 +304,19 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CSimon::Render()
 {
 	ChoiceAnimation();
-	//TouchingItemRope();
-	CGameObject::Render();
+	if (untouchable == 1)
+	{
+		this->alpha = rand() % 255;
+		/*alpha = 128;
+		animations->Get(currentAniID)->Render(x, y, alpha);*/
+	}
+	else
+	{
+		this->alpha = 255;
+		
+	}
+	animations->Get(currentAniID)->Render(x, y, alpha);
+	/*CGameObject::Render();*/
 }
 
 void CSimon::ChoiceAnimation()
@@ -363,11 +410,23 @@ void CSimon::ChoiceAnimation()
 				(int)SimonAniId::IDSitLeft;
 		}
 	}
+	else if (flickering)
+	{
+		currentAniID = (nx > 0) ?
+			(int)SimonAniId::IDFlickeringRight :
+			(int)SimonAniId::IDFlickeringLeft;
+	}
 	else if (vx != vxDefault)
 	{
 		currentAniID = (nx > 0) ?
 			(int)SimonAniId::walkRight :
 			(int)SimonAniId::walkLeft;
+	}
+	else if (health <= 0)
+	{
+		currentAniID = (nx > 0) ?
+			(int)SimonAniId::IDDyingRight :
+			(int)SimonAniId::IDDyingLeft;
 	}
 	else
 	{
@@ -441,6 +500,17 @@ void CSimon::WalkingLeft()
 			else
 				GoingUpStairs();
 		}
+	}
+}
+
+void CSimon::Flickering()
+{
+	if (flickering && GetTickCount()-flicker_time >= SIMON_FLICKERING_TIME)
+	{
+		isAttacking = false;
+		isJumping = false;
+		flickering = false;
+		flicker_time = 0;
 	}
 }
 
@@ -639,6 +709,10 @@ void CSimon::GoingDownStairs()
 
 void CSimon::BeHit()
 {
+	if (health <= 0)
+	{
+		return;
+	}
 	if (stairs == 0)
 	{
 		beHit = true;
@@ -647,10 +721,47 @@ void CSimon::BeHit()
 		this->vy = -SIMON_IS_PUSHED_Y;
 		isJumping = true;
 		untouchable_start = 0;
+		//untouchable = 1;
+		health -= 2;
 	}
-	else
+	/*else
 	{
 		StartUntouchable();
+	}*/
+}
+
+void CSimon::Dying()
+{
+	isDying = true;
+	start_die = GetTickCount();
+	vx = 0;
+	isJumping = false;
+	isAttacking = false;
+	beHit = false;
+	isUsingweapon = false;
+	isSitting = false;
+	isInBridge = false;
+}
+
+void CSimon::Revive()
+{
+	this->health = SIMON_DEFAULT_HEALTH;
+	life = life - 1;
+	this->SetVisible(true);
+	float xS, yS;
+	int sceneID;
+	sceneID = CGame::GetInstance()->GetCurrentSceneID();
+	if (sceneID == 1)
+	{
+		SetPosition(80, 255);
+	}
+	else if(sceneID == 2)
+	{
+		SetPosition(560, 672);
+	}
+	else if (sceneID == 3)
+	{
+		SetPosition(1486, 640);
 	}
 }
 
@@ -662,15 +773,25 @@ void CSimon::Overlapping()
 		obj = ovlObjects[i];
 		if (dynamic_cast<CWhipItem *>(obj))
 		{
+			flickering = true;
+			flicker_time = GetTickCount();
 			obj->SetVisible(false);
 			this->whip->LvUp();
 		}
-		else if (dynamic_cast<CHeartItem *>(obj)
-			|| dynamic_cast<CCrown *>(obj)
+		else if (dynamic_cast<CHeartItem *>(obj))
+		{
+			obj->SetVisible(false);
+			heart += 5;
+		}
+		else if (dynamic_cast<CSmallHeart *>(obj))
+		{
+			obj->SetVisible(false);
+			heart += 1;
+		}
+		else if (dynamic_cast<CCrown *>(obj)
 			|| dynamic_cast<CIIitem *>(obj)
 			|| dynamic_cast<CWhiteMoneyBag *>(obj)
 			|| dynamic_cast<CRedMoneyBag *>(obj)
-			|| dynamic_cast<CSmallHeart *>(obj)
 			|| dynamic_cast<CMeat *>(obj))
 		{
 			obj->SetVisible(false);
@@ -722,9 +843,11 @@ void CSimon::SetVisible(bool isVisble)
 
 void CSimon::SetState(int state)
 {
+	if (isDying)return;
 	if (isAttacking) return;
 	if (isUsingweapon)return;
 	if (beHit) return;
+	if (flickering)return;
 	switch (state)
 	{
 	case (int)SimonStateID::stateWalkingRight:
@@ -775,6 +898,11 @@ void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		right = x + SIMON_IDLE_BBOX_WIDTH;
 		bottom = y + SIMON_IDLE_BBOX_HEIGHT;
 	}
+	if (health <= 0)
+	{
+		right = x + SIMON_DIE_BBOX_WIDTH;
+		bottom = y + SIMON_DIE_BBOX_HEIGHT;
+	}
 }
 
 void CSimon::StartUntouchable() 
@@ -803,6 +931,13 @@ CSimon::CSimon()
 	isJumping = false;
 	isSitting = false;
 	isInBridge = false;
+	flickering = false;
+	flicker_time = 0;
+	health = SIMON_DEFAULT_HEALTH;
+	life = SIMON_LIFES;
+	heart = SIMON_HEARTS;
+	isDying = false;
+	start_die = 0;
 }
 
 CSimon::~CSimon()

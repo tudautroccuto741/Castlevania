@@ -67,6 +67,7 @@ class CGameObject
 public:
 	float x;
 	float y;
+	int alpha = 255;
 
 	float vx;
 	float vy;

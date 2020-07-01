@@ -41,6 +41,7 @@
 #include "AquafinaItem.h"
 #include "Axe.h"
 #include "Aquafina.h"
+#include "Cells.h"
 
 using namespace std;
 
@@ -191,6 +192,7 @@ void CPlayScene::_ParseSection_TILE_MAP_INFOR(string line)
 	this->tileMapHeight = atoi(tokens[1].c_str());
 	this->mapWidth = atoi(tokens[2].c_str());
 	this->mapHeight = atoi(tokens[3].c_str());
+	
 	this->limitedSmallMapLeft = atoi(tokens[4].c_str());
 	this->limitedSmallMapRight = atoi(tokens[5].c_str());
 }
@@ -407,7 +409,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+	if (obj != NULL)
+	{
+		objects.push_back(obj);
+	}
+	else
+		DebugOut(L"\n[ERROR] Something cannot be loaded to object vector.");
 }
 
 void CPlayScene::Load()
@@ -465,9 +472,12 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+	GetVisibleObjects();
+	this->cells = new CCells();
+	this->cells->Init();
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -475,18 +485,14 @@ void CPlayScene::Update(DWORD dt)
 	// We know that SIMON is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
-	{
-		if (objects[i]->GetVisible())
-			coObjects.push_back(objects[i]);
-	}
 
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		if (objects[i]->GetVisible())
-			objects[i]->Update(dt, &coObjects);
-	}
+	CBoard::GetInstance()->Update(dt);
+	vector<LPGAMEOBJECT> coObjects;
+	coObjects.clear();
+
+	CGame *game = CGame::GetInstance();
+	// The viewport bounding box
+
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -496,10 +502,10 @@ void CPlayScene::Update(DWORD dt)
 	player->GetPosition(cx, cy);
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	CGame *game = CGame::GetInstance();
+	//CGame *game = CGame::GetInstance();
 	float xc, yc;
 	CCameraChangeViewObject::GetInstance()->GetPosition(xc, yc);
-	
+
 	// camera limited
 	cx -= game->GetScreenWidth() / 2;
 	//cy -= game->GetScreenHeight() / 2;
@@ -508,7 +514,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		cy = 0;
 	}
-	else if(yS>yc)
+	else if (yS > yc)
 	{
 		if (cx <= limitedSmallMapLeft)
 		{
@@ -518,7 +524,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			cx = limitedSmallMapRight - game->GetScreenWidth();
 		}
-		cy = game->GetScreenHeight();
+		cy = /*game->GetScreenHeight()*/VIEWPORT_HEIGHT;
 	}
 
 	if (cx < 0)
@@ -526,10 +532,42 @@ void CPlayScene::Update(DWORD dt)
 	if (cx >= (mapWidth - game->GetScreenWidth()))
 		cx = mapWidth - game->GetScreenWidth();
 
-	
-	
-	CGame::GetInstance()->SetCamPos(cx, cy);
-	
+
+
+	CGame::GetInstance()->SetCamPos(cx, cy-79);
+	float left, top, right, bottom;
+	game->CamereBoundingBox(left, top, right, bottom);
+
+
+	updateObjects.clear();
+	// get cell in screen && get object in this cell
+	CGame::GetInstance()->GetCurrentScene()->GetCells()->GetObjectsInRectangle(left, top, right, bottom, updateObjects);
+
+	// Add the default objects
+	for (size_t i = 0; i < defaultObjects.size(); i++)
+	{
+		if (defaultObjects[i]->GetVisible())
+			updateObjects.push_back(defaultObjects[i]);
+	}
+
+	//for (size_t i = 0; i < objects.size(); i++)
+	//{
+	//	if (objects[i]->GetVisible())
+	//		objects[i]->Update(dt, &coObjects);
+	//}
+
+	for (size_t i = 0; i < updateObjects.size(); i++)
+	{
+		if (updateObjects[i]->GetVisible() 
+			&& updateObjects[i]->IsInViewport() == true)
+			coObjects.push_back(updateObjects[i]);
+	}
+
+	for (size_t i = 0; i < updateObjects.size(); i++)
+	{
+		if (updateObjects[i]->GetVisible())
+			updateObjects[i]->Update(dt, &coObjects);
+	}	
 }
 
 void CPlayScene::Render()
@@ -537,9 +575,10 @@ void CPlayScene::Render()
 	for (int i = 0; i < tileMap.size(); i++)
 		tileMap[i]->Render();
 
-	for (int i = 0; i < objects.size(); i++)
-		if (this->objects[i]->GetVisible())
-			objects[i]->Render();
+	for (int i = 0; i < updateObjects.size(); i++)
+		if (this->updateObjects[i]->GetVisible())
+			updateObjects[i]->Render();
+	CBoard::GetInstance()->Render();
 }
 
 /*
@@ -565,9 +604,10 @@ void CPlayScene::Unload()
 	}
 
 	objects.clear();
-	player = NULL;
+	//player = NULL;
 	CItems::GetInstance()->Clear();
 	CFlames::GetInstance()->Clear();
+	CRocks::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 

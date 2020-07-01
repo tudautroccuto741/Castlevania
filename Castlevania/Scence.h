@@ -2,6 +2,7 @@
 
 #include <d3dx9.h>
 #include "KeyEventHandler.h"
+#include "Cells.h"
 
 class CScene
 {
@@ -11,6 +12,23 @@ protected:
 	LPCWSTR sceneFilePath;
 
 public:
+	int mapWidth = 0;
+	int mapHeight = 0;
+	int GetMapWidth() { return this->mapWidth; }
+	int GetMapHeight() { return this->mapHeight; }
+	void GetTileMapReSize(int &mapwidth, int &mapheight) { mapwidth = mapWidth; mapheight = mapHeight; }
+	CCells * cells;
+	CCells * GetCells() { return this->cells; }
+	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> visibleObjects;
+	vector<LPGAMEOBJECT> defaultObjects;
+	//the object need be updated
+	vector<LPGAMEOBJECT> updateObjects;
+	void GetGameObjects(vector<LPGAMEOBJECT> * &object)
+	{
+		object = &this->visibleObjects;
+	}
+
 	CScene(int id, LPCWSTR filePath);
 
 	CKeyEventHandler * GetKeyEventHandler() { return key_handler; }

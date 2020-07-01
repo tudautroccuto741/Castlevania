@@ -16,7 +16,7 @@ CGameObject::CGameObject()
 	vx = vy = 0;
 	nx = 1;
 
-	visible = false;
+	visible = true;
 	animations = CAnimations::GetInstance();
 	currentAniID = -1;
 	lastAniID = -1;
@@ -213,7 +213,7 @@ void CGameObject::BeHit(int damage)
 
 void CGameObject::Render()
 {
-	animations->Get(currentAniID)->Render(x, y, 255);
+	animations->Get(currentAniID)->Render(x, y, alpha);
 
 	this->RenderBoundingBox();
 }

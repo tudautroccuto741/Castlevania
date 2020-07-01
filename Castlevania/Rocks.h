@@ -22,7 +22,7 @@ public:
 
 	void Add(CRock * rock);
 	void ShowSomeRocksAfterBreaking(float x, float y);
-
+	void Clear();
 	static CRocks * GetInstance();
 
 };

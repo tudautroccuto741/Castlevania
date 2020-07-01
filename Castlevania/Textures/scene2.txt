@@ -165,22 +165,6 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
-# SIMON
-0	560	672	100
-#0	193	96	100
-# WHIP
-1	108	288	200
-# Knight
-1000	720	479	10
-1000	657	96	10
-1000	218	94	10
-# LimitedObject
-10001	774	480	11
-10001	321	96	11
-10001	193	96	11
-# Bat
-1001	523	400	101
-1001	590	40	101
 # BRICK	width	height
 3	450	736	300	508	32
 3	448	386	300	32	320
@@ -251,6 +235,22 @@
 41	167	225	100002
 # II item
 42	167	255	100003
+# Knight
+1000	720	479	10
+1000	657	96	10
+1000	218	94	10
+# LimitedObject
+10001	774	480	11
+10001	321	96	11
+10001	193	96	11
+# Bat
+1001	523	400	101
+1001	590	40	101
+# SIMON
+0	560	672	100
+#0	193	96	100
+# WHIP
+1	108	288	200
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b 	scene_id
 50	0	96	0	32	160	3

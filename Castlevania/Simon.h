@@ -19,8 +19,13 @@
 #define SIMON_IS_PUSHED_Y					0.25f
 #define SIMON_IS_PUSHED_X					0.1f
 #define SIMON_GRAVITY						0.001f
-#define SIMON_UNTOUCHABLE_TIME				2000
+#define SIMON_UNTOUCHABLE_TIME				5000
+#define SIMON_FLICKERING_TIME				1000
 #define SIMON_ATTACK_TIME					450
+#define SIMON_DEFAULT_HEALTH				16
+#define SIMON_LIFES							3
+#define SIMON_HEARTS						5
+#define SIMON_TIME_TO_DIE					2000
 
 enum class SimonAniId
 {
@@ -47,7 +52,11 @@ enum class SimonAniId
 	IDAttackingOnStairsDownLeft,
 	IDAttackingOnStairsDownRight,
 	IDBeAttackingRight,
-	IDBeAttackingLeft
+	IDBeAttackingLeft,
+	IDDyingRight,
+	IDDyingLeft,
+	IDFlickeringRight,
+	IDFlickeringLeft
 };
 
 enum class SimonStateID
@@ -62,7 +71,9 @@ enum class SimonStateID
 	stateGoingUpStairsRight = 108,
 	stateGoingDownStairsLeft = 109,
 	stateBeHitRight = 110,
-	stateBeHitLeft = 111
+	stateBeHitLeft = 111,
+	stateDyingRight = 112,
+	stateDyingLeft = 113
 };
 
 class CSimon : public CGameObject
@@ -70,18 +81,24 @@ class CSimon : public CGameObject
 	int untouchable;
 	int secondWeapon;
 	int stairs; // 1 going up stairs, -1 going down, 0 not in
+	int heart;
+	int life;
+	int score;
 	bool isJumping;
 	bool isAttacking;
 	bool beHit;
 	bool isUsingweapon;
 	bool isSitting;
 	bool isInBridge; // simon in a bridge
+	bool isDying;
+	bool flickering;
 
 	float vxDefault = 0;
 
 	DWORD startTimeAttack;
 	DWORD untouchable_start;
-
+	DWORD start_die;
+	DWORD flicker_time;
 
 	CWhip *whip;
 	CWeapons *weapons;
@@ -105,6 +122,7 @@ public:
 	void Idle();
 	void WalkingRight();
 	void WalkingLeft();
+	void Flickering();
 	void Sitting();
 	void Jumping();
 	void StandUp();
@@ -116,8 +134,15 @@ public:
 	void BeHit();
 	void Overlapping();
 	void OnStairs();
+	void Dying();
+	void Revive();
 
 	int GetSecondWeapons() { return this->secondWeapon; }
+	int GetHeart() { return heart; }
+	int GetLife() { return life; }
+	int GetScore() { return score; }
+	void SetScore(int _score) { score += _score; }
+
 
 	DWORD GetTimeStar() { return startTimeAttack; }
 	CSimon();
