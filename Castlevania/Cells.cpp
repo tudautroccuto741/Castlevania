@@ -3,14 +3,12 @@
 #include "Game.h"
 
 
-void CCells::Init(/*int cellWidth, int cellHeight*/)
+void CCells::Init()
 {
 	// Get tilemap information
 	int mapHeight = 768;
 	int mapWidth = 1600;
 	
-	/*mapHeight = CGame::GetInstance()->GetCurrentScene()->GetMapHeight();
-	mapWidth = CGame::GetInstance()->GetCurrentScene()->GetMapWidth();*/
 
 	this->cellHeight = CELL_HEIGHT;
 	this->cellWidth = CELL_WIDTH;
@@ -50,8 +48,8 @@ void CCells::GetObjectsInRectangle(float const & left, float const & top,
 	vector<LPGAMEOBJECT>& objects)
 {
 	// Find the top-left and bottom-right cell that contains the viewport's area
-	int firstCellColumn, firstCellRow;		// the left-top cell that containing the rectangle's area
-	int lastCellColumn, lastCellRow;		// the right-bottom cell that containing the rectangle's area
+	int firstCellColumn, firstCellRow;
+	int lastCellColumn, lastCellRow;
 	this->GetCellsContainRectangle(left, top, right, bottom,
 		firstCellColumn, firstCellRow, lastCellColumn, lastCellRow);
 
@@ -69,7 +67,7 @@ void CCells::GetObjectsInRectangle(float const & left, float const & top,
 			vector<LPGAMEOBJECT> * cellObjects = NULL;
 			cells[column][row]->GetObjects(cellObjects);
 
-			// Get the unique pointer to the game object
+			// Get the pointer to the game object
 			for (UINT i = 0; i < cellObjects->size(); i++)
 				setOfObjects.insert(cellObjects->at(i));
 		}
@@ -88,7 +86,7 @@ void CCells::Classify(LPGAMEOBJECT obj)
 	this->GetCellsContainRectangle(left, top, right, bottom,
 		beginCellColumn, beginCellRow, endCellColumn, endCellRow);
 
-	// add object to the suitable cells
+	// add object to the cells
 	for (UINT row = beginCellRow; row <= endCellRow; row++)
 		for (UINT column = beginCellColumn; column <= endCellColumn; column++)
 		{

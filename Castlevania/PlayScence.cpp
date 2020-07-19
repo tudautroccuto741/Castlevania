@@ -42,6 +42,13 @@
 #include "Axe.h"
 #include "Aquafina.h"
 #include "Cells.h"
+#include "Flea.h"
+#include "Monkey.h"
+#include "BoneWeapon.h"
+#include "Skeleton.h"
+#include "Zombie.h"
+#include "Raven.h"
+#include "SpawnFlea.h"
 
 using namespace std;
 
@@ -68,17 +75,20 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 #define OBJECT_TYPE_SIMON				0
 #define OBJECT_TYPE_WHIP				1
+
 #define OBJECT_TYPE_CANDLE				2
 #define OBJECT_TYPE_SMALL_CANDLE		21
 #define OBJECT_TYPE_BRICK				3
 #define OBJECT_TYPE_DOOR				124
 #define OBJECT_TYPE_SECRET_BRICK		411
+
 #define OBJECT_TYPE_ROCK				412
 #define OBJECT_TYPE_CROWN				413
 #define OBJECT_TYPE_CAMERA_CHANGE_VIEW	4111
 #define OBJECT_TYPE_STAIRS_UP			31
 #define OBJECT_TYPE_STAIRS_DOWN			32
 #define OBJECT_TYPE_BRIDGE				39
+
 #define OBJECT_TYPE_FLAMES				4
 #define OBJECT_TYPE_HEART				6
 #define OBJECT_TYPE_SMALL_HEART			61
@@ -96,10 +106,17 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_AQUAFINA			47
 #define OBJECT_TYPE_AXE_ITEM			46
 #define OBJECT_TYPE_AXE					48
+
 #define OBJECT_TYPE_PORTAL				50
+
 #define OBJECT_TYPE_KNIGHT				1000
 #define OBJECT_TYPE_LIMITED_OBJ			10001
 #define OBJECT_TYPE_BAT					1001
+#define OBJECT_TYPE_FLEA				49
+#define OBJECT_TYPE_MONKEY				51
+#define OBJECT_TYPE_SKELETON			52
+#define OBJECT_TYPE_BONE				53
+#define OBJECT_TYPE_RAVEN				54
 
 #define MAX_SCENE_LINE 1024
 
@@ -390,6 +407,23 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BAT:
 		obj = new CBat();
 		break;
+	case OBJECT_TYPE_FLEA:
+		obj = new CFlea();
+		CSpawnFlea::GetInstance()->Add((int)Monsters::FLEA,obj);
+		break;
+	case OBJECT_TYPE_MONKEY:
+		obj = new CMonkey();
+		break;
+	case OBJECT_TYPE_SKELETON:
+		obj = new CSkeleton();
+		//CSpawnSkeleton::GetInstance()->Add((int)Monsters::SKELETON, obj);
+		break;
+	//case OBJECT_TYPE_BONE:
+	//	obj = new CBone();
+	//	break;
+	case OBJECT_TYPE_RAVEN:
+		obj = new CRaven();
+		break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -550,11 +584,6 @@ void CPlayScene::Update(DWORD dt)
 			updateObjects.push_back(defaultObjects[i]);
 	}
 
-	//for (size_t i = 0; i < objects.size(); i++)
-	//{
-	//	if (objects[i]->GetVisible())
-	//		objects[i]->Update(dt, &coObjects);
-	//}
 
 	for (size_t i = 0; i < updateObjects.size(); i++)
 	{

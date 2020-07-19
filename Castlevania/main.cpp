@@ -20,8 +20,8 @@
 #define MAIN_WINDOW_TITLE L"Castlevania"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
-#define SCREEN_WIDTH 520
-#define SCREEN_HEIGHT /*448*/527
+#define SCREEN_WIDTH 512
+#define SCREEN_HEIGHT 500/*527*/
 #define MAX_FRAME_RATE 90
 #define ID_TEX_MISC 20
 

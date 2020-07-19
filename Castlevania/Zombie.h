@@ -1,5 +1,5 @@
 #pragma once
-class Zombie
+class CZombie
 {
 };
 

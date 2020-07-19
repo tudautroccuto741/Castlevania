@@ -91,9 +91,6 @@ void CWeapons::UseAquafina()
 	aquafina->nx = CSimon::GetInstance()->GetDirection();
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	/*float xK = (xS + SIMON_IDLE_BBOX_WIDTH) / 2;
-	float yK = (yS + SIMON_IDLE_BBOX_HEIGHT) / 2;*/
-	//aquafina->SetPosition(xK, yK);
 	aquafina->SetPosition(xS, yS);
 }
 

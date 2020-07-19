@@ -10,6 +10,7 @@
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 #define GAME_GRAVITY 0.012
+#define TIME_UNTOUCHABLE 200
 
 using namespace std;
 
@@ -62,6 +63,13 @@ enum class Weapon
 	AXE
 };
 
+enum class Monsters
+{
+	NONE,
+	FLEA,
+	SKELETON
+};
+
 class CGameObject
 {
 public:
@@ -106,6 +114,7 @@ public:
 	//nx
 	void SetDirection(int nx) { this->nx = nx; }
 	int GetDirection() { return this->nx; }
+	//void ReDirect(float posX);
 
 	// ViewPort
 	bool IsInViewport();

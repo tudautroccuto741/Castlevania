@@ -2,8 +2,10 @@
 #include "Cell.h"
 #include "GameObject.h"
 
-#define CELL_WIDTH			270/*270*/
-#define CELL_HEIGHT			192/*224*/
+#define CELL_WIDTH			/*270*/265
+#define CELL_HEIGHT			192
+#define MAX_MAP_HEIGHT		768
+#define MAX_MAP_HEIGHT		1600
 
 class CCells
 {
@@ -18,7 +20,7 @@ class CCells
 
 public:
 
-	void Init(/*int cellWidth, int cellHeight*/);
+	void Init();
 	void Classify(LPGAMEOBJECT obj);
 	void GetCellsContainRectangle(float const &left, float const &top,
 		float const &right, float const &bottom,

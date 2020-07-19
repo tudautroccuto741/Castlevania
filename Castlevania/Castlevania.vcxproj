@@ -195,6 +195,7 @@
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SmallCandle.cpp" />
     <ClCompile Include="SmallHeart.cpp" />
+    <ClCompile Include="SpawnFlea.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="StairsDown.cpp" />
@@ -203,6 +204,8 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Knife.cpp" />
+    <ClCompile Include="Watch.cpp" />
+    <ClCompile Include="WatchItem.cpp" />
     <ClCompile Include="Weapons.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="WhipItem.cpp" />
@@ -260,6 +263,7 @@
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="SmallCandle.h" />
     <ClInclude Include="SmallHeart.h" />
+    <ClInclude Include="SpawnFlea.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="StairsDown.h" />
@@ -268,6 +272,8 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Knife.h" />
+    <ClInclude Include="Watch.h" />
+    <ClInclude Include="WatchItem.h" />
     <ClInclude Include="Weapons.h" />
     <ClInclude Include="Whip.h" />
     <ClInclude Include="WhipItem.h" />

@@ -24,6 +24,12 @@
 #include "Meat.h"
 #include "AquafinaItem.h"
 #include "AxeItem.h"
+#include "Flea.h"
+#include "SpawnFlea.h"
+#include "Monkey.h"
+#include "Raven.h"
+#include "Skeleton.h"
+#include "BoneWeapon.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -36,7 +42,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// untouchable
 	if (untouchable_start > 0)
 	{
-		if (untouchable == 1 && GetTickCount() - untouchable_start > 1000)
+		if (untouchable == 1 && GetTickCount() - untouchable_start > 2000)
 		{
 			untouchable_start = 0;
 			untouchable = 0;
@@ -88,6 +94,18 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		Flickering();
 	}
 
+	// show a flea
+	
+	/*if (sceneID == 3)
+	{
+		if (x <= POSITION_FLEA_TO_VISIBLE 
+			&& CSpawnFlea::GetInstance()->GetFlea((int)Monsters::FLEA)->GetVisible() == false 
+			&& CSpawnFlea::GetInstance()->GetFlea((int)Monsters::FLEA)->GetHealth()>=3 
+			&& y > CCameraChangeViewObject::GetInstance()->GetY())
+		{
+			CSpawnFlea::GetInstance()->ShowFlea();
+		}
+	}*/
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -230,7 +248,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					secondWeapon = (int)Weapon::BOOMERANG;
 				}
 			}
-			else if (dynamic_cast<CKnight *>(e->obj))
+			else if (dynamic_cast<CKnight *>(e->obj)
+				|| dynamic_cast<CFlea *>(e->obj)
+				|| dynamic_cast<CMonkey *>(e->obj))
 			{
 				if (untouchable == 0)
 				{
@@ -248,7 +268,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					x += dx;
 				}
 			}
-			else if (dynamic_cast<CBat *>(e->obj))
+			else if (dynamic_cast<CBat *>(e->obj)
+			|| dynamic_cast<CRaven *>(e->obj))
 			{
 				if (untouchable == 0)
 				{
@@ -293,6 +314,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 				i = coEventsResult.size();
+				this->sceneID += 1;
 			}
 		}
 	}
@@ -307,8 +329,6 @@ void CSimon::Render()
 	if (untouchable == 1)
 	{
 		this->alpha = rand() % 255;
-		/*alpha = 128;
-		animations->Get(currentAniID)->Render(x, y, alpha);*/
 	}
 	else
 	{
@@ -316,7 +336,6 @@ void CSimon::Render()
 		
 	}
 	animations->Get(currentAniID)->Render(x, y, alpha);
-	/*CGameObject::Render();*/
 }
 
 void CSimon::ChoiceAnimation()
@@ -620,7 +639,7 @@ void CSimon::GoingUpStairs()
 void CSimon::OnStairs()
 {
 	LPGAMEOBJECT objS = NULL;
-
+	beHit = false;
 	if (stairs == 1)
 	{
 		for (UINT i = 0; i < ovlObjects.size(); ++i)
@@ -749,8 +768,6 @@ void CSimon::Revive()
 	life = life - 1;
 	this->SetVisible(true);
 	float xS, yS;
-	int sceneID;
-	sceneID = CGame::GetInstance()->GetCurrentSceneID();
 	if (sceneID == 1)
 	{
 		SetPosition(80, 255);
@@ -816,7 +833,9 @@ void CSimon::Overlapping()
 			obj->SetVisible(false);
 			secondWeapon = (int)Weapon::AXE;
 		}
-		else if (dynamic_cast<CKnight *>(obj))
+		else if (dynamic_cast<CKnight *>(obj)
+			||dynamic_cast<CFlea *>(obj)
+			|| dynamic_cast<CMonkey *>(obj))
 		{
 			if (untouchable == 0)
 			{
@@ -938,6 +957,7 @@ CSimon::CSimon()
 	heart = SIMON_HEARTS;
 	isDying = false;
 	start_die = 0;
+	sceneID = CGame::GetInstance()->GetCurrentSceneID();
 }
 
 CSimon::~CSimon()

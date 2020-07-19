@@ -7,6 +7,9 @@
 #include "Simon.h"
 #include "Tile.h"
 #include "Board.h"
+#include "Flea.h"
+#include "Raven.h"
+#include "Skeleton.h"
 
 class CPlayScene : public CScene //dai dien 1 canh choi
 {
@@ -40,21 +43,15 @@ public:
 	
 	void GetVisibleObjects()
 	{
-		/*LPGAMEOBJECT object;
-		for (size_t i = 0; i < objects.size(); i++)
-		{
-			object = this->objects[i];
-			if (object->GetVisible())
-			{
-				visibleObjects.push_back(object);
-			}
-		}*/
 		LPGAMEOBJECT object;
 		for (size_t i = 0; i < objects.size(); i++)
 		{
 			object = this->objects[i];
 			if (dynamic_cast<CSimon *>(object)
 				|| dynamic_cast<CWhip *>(object)
+				|| dynamic_cast<CFlea *>(object)
+				|| dynamic_cast<CRaven *>(object)
+				|| dynamic_cast<CSkeleton *>(object)
 				/*|| dynamic_cast<CKnife *>(object)
 				|| dynamic_cast<CBoomerang *>(object)
 				|| dynamic_cast<CAquafina *>(object)
@@ -69,10 +66,6 @@ public:
 			}
 		}
 	}
-	//void GetDefaultObject()
-	//{
-	//	
-	//}
 	friend class CPlayScenceKeyHandler;
 };
 

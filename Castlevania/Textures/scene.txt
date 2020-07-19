@@ -1,5 +1,5 @@
 [SETTINGS]
-start	2
+start	3
 #scene list
 [SCENES]
 1	Textures/scene1.txt
@@ -11,7 +11,7 @@ start	2
 [TEXTURES]
 
 100	textures\1.png	255	0	255
-101	textures\1.1.png	116	116	166
+101	textures\1.1.png	116	116	116
 200	textures\2.png	255	0	255
 300	textures\3.png	255	0	255
 700	textures\boardHub.png	255	0	255

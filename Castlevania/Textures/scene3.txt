@@ -60,7 +60,7 @@
 70	218	464	250	528	1000
 71	184	464	216	528	1000
 # left
-72	689	150	721	214	1000
+72	698	150	730	214	1000
 73	732	150	764	214	1000
 # Bone Skeleton right
 74	166	464	182	496	1000
@@ -211,8 +211,10 @@
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
 # SIMON
-0	1486	640	100
+#0	1486	640	100
 #0	367	512	100
+#0	258	130	100
+0	400	675	100
 # WHIP
 1	108	288	200
 # BRICK	width	height
@@ -248,7 +250,7 @@
 412	896	542	4012
 412	896	542	4012
 # CamemraChangeViewObj
-4111	128	290	40111
+4111	128	322	40111
 # Flames
 4	175	257	500
 # Heart
@@ -304,6 +306,23 @@
 47	167	255	904
 # Axe
 48	167	255	903
+# Flea
+49	1408	670	40
+# CrazyMonkey
+51	912	607	50
+51	656	607	50
+51	401	544	50
+# Skeleton
+52	110	570	70
+52	688	255	70
+52	1328	256	70
+# Bone
+#53	544	66	74
+# Clever Raven
+54	544	66	60
+54	832	160	60
+54	960	95	60
+54	1038	320	60
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

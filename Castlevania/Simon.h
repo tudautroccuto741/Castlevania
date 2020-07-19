@@ -84,6 +84,8 @@ class CSimon : public CGameObject
 	int heart;
 	int life;
 	int score;
+	int sceneID;
+
 	bool isJumping;
 	bool isAttacking;
 	bool beHit;
@@ -118,6 +120,7 @@ public:
 	bool IsInBridge(){ return this->isInBridge; }
 
 	void StartUntouchable();
+	int GetUntouchable() { return this->untouchable; }
 
 	void Idle();
 	void WalkingRight();

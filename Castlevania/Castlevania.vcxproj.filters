@@ -43,6 +43,18 @@
     <Filter Include="Source Files\Objects\Weapons">
       <UniqueIdentifier>{4f9dcd85-e273-46bd-94c3-53e90dade0c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Board">
+      <UniqueIdentifier>{1f2653b2-fb20-42f6-91ca-76b32867a268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Board">
+      <UniqueIdentifier>{9b42f337-ee3e-48ae-a24e-5302b8ae29e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cells">
+      <UniqueIdentifier>{eecbbb8d-6896-4e86-bf41-3d951982bcb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cells">
+      <UniqueIdentifier>{9c323e9c-58bb-49f5-a52e-91df4695c07d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -225,16 +237,25 @@
     <ClCompile Include="SmallHeart.cpp">
       <Filter>Source Files\Objects\Items</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
+    <ClCompile Include="SpawnFlea.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files\Board</Filter>
     </ClCompile>
     <ClCompile Include="DrawBoard.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Board</Filter>
     </ClCompile>
     <ClCompile Include="Cell.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Cells</Filter>
     </ClCompile>
     <ClCompile Include="Cells.cpp">
+      <Filter>Source Files\Cells</Filter>
+    </ClCompile>
+    <ClCompile Include="Watch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -416,16 +437,25 @@
     <ClInclude Include="SmallHeart.h">
       <Filter>Header Files\Objects\Items</Filter>
     </ClInclude>
-    <ClInclude Include="Board.h">
+    <ClInclude Include="SpawnFlea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DrawBoard.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Board</Filter>
     </ClInclude>
-    <ClInclude Include="Cell.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files\Board</Filter>
     </ClInclude>
     <ClInclude Include="Cells.h">
+      <Filter>Header Files\Cells</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Header Files\Cells</Filter>
+    </ClInclude>
+    <ClInclude Include="Watch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WatchItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

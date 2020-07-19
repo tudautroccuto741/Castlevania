@@ -138,7 +138,7 @@ void CGameObject::RenderBoundingBox()
 	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 100);
 }
 
-// rearrange the frames
+
 void CGameObject::ResetAnimation(int aniID)
 {
 	animations->GetInstance()->Get(aniID)->SetCurrentFrame(-1);
@@ -187,7 +187,7 @@ bool CGameObject::IsInViewport()
 
 void CGameObject::Untouchable()
 {
-	if (GetTickCount() - start_untouchable > 200)
+	if (GetTickCount() - start_untouchable > TIME_UNTOUCHABLE)
 		start_untouchable = 0;
 	else vx = vy = 0;
 }
