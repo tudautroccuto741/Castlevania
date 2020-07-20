@@ -34,6 +34,7 @@ class CMonkey : public CGameObject
 	bool isUp;
 	bool isJumping;
 	bool isOnGround;
+	int nxM;
 	DWORD time_start;
 public:
 

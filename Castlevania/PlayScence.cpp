@@ -416,7 +416,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_SKELETON:
 		obj = new CSkeleton();
-		//CSpawnSkeleton::GetInstance()->Add((int)Monsters::SKELETON, obj);
 		break;
 	//case OBJECT_TYPE_BONE:
 	//	obj = new CBone();
@@ -506,7 +505,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	GetVisibleObjects();

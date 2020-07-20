@@ -63,7 +63,6 @@ void CWeapons::UseKnife()
 	}
 	knife->SetVisible(true);
 	knife->nx = CSimon::GetInstance()->GetDirection();
-	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
 	float xK = xS;
 	float yK = yS + DISTANCE_OF_KNIFE_AND_SIMON;
@@ -76,20 +75,18 @@ void CWeapons::UseBoomerang()
 	if (boom == NULL) return;
 	boom->SetVisible(true);
 	boom->nx = CSimon::GetInstance()->GetDirection();
-	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	float xK = xS;
-	float yK = yS + DISTANCE_OF_BOOMERANG_AND_SIMON;
-	boom->SetPosition(xK, yK);
+	float xB = xS;
+	float yB = yS + DISTANCE_OF_BOOMERANG_AND_SIMON;
+	boom->SetPosition(xB, yB);
 }
 
 void CWeapons::UseAquafina()
 {
 	LPGAMEOBJECT aquafina = GetWeapon((int)Weapon::AQUAFINA);
 	if (aquafina == NULL) return;
-	aquafina->SetVisible(true);
 	aquafina->nx = CSimon::GetInstance()->GetDirection();
-	float xS, yS;
+	aquafina->SetVisible(true);
 	CSimon::GetInstance()->GetPosition(xS, yS);
 	aquafina->SetPosition(xS, yS);
 }
@@ -98,9 +95,8 @@ void CWeapons::UseAxe()
 {
 	LPGAMEOBJECT axe = GetWeapon((int)Weapon::AXE);
 	if (axe == NULL) return;
-	axe->SetVisible(true);
 	axe->nx = CSimon::GetInstance()->GetDirection();
-	float xS, yS;
+	axe->SetVisible(true);
 	CSimon::GetInstance()->GetPosition(xS, yS);
 	float xK = xS;
 	float yK = yS;

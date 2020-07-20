@@ -1,4 +1,4 @@
-#include "Boomerang.h"
+﻿#include "Boomerang.h"
 #include "Whip.h"
 #include "GameObject.h"
 #include "Simon.h"
@@ -14,83 +14,87 @@ CBoomerang * CBoomerang::__instance = NULL;
 
 void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (visible)
+	CGameObject::Update(dt);
+	CGame *game = CGame::GetInstance();
+	// The viewport bounding box
+	float vpLeft, vpTop, vpRight, vpBottom;
+	game->CamereBoundingBox(vpLeft, vpTop, vpRight, vpBottom);
+
+	// The object bounding box
+	float left, top, right, bottom;
+	this->GetBoundingBox(left, top, right, bottom);
+
+
+	if (isReturn > 1)
 	{
-		CGameObject::Update(dt);
-		vx = (nx > 0) ? BOOMERANG_FLYING_SPEED : -BOOMERANG_FLYING_SPEED;
-		CGame *game = CGame::GetInstance();
-		// The viewport bounding box
-		float vpLeft, vpTop, vpRight, vpBottom;
-		game->CamereBoundingBox(vpLeft, vpTop, vpRight, vpBottom);
+		isReturn = 0;
+		vx = 0;
+		this->SetVisible(false);
+	}
 
-		// The object bounding box
-		float left, top, right, bottom;
-		this->GetBoundingBox(left, top, right, bottom);
+	if (vx == 0 && visible)
+	{
+		CSimon::GetInstance()->GetPosition(xS, yS);
+	}
 
-		if (isReturn == 0)
-		{
-			start_time_turn_around = GetTickCount();
-		}
-		else if (isReturn >= 2)
-		{
-			isReturn = 0;
-			this->SetVisible(false);
-			start_time_turn_around = 0;
-		}
+	if ((left <= vpLeft && vx < 0)
+		|| (right >= vpRight && vx > 0)
+		|| x >= xS + SIMON_IDLE_BBOX_WIDTH + BOOMERANG_DISTANCE_WITH_SIMOM && nx > 0
+		|| x + BOOMERANG_BBOX_WIDTH + BOOMERANG_DISTANCE_WITH_SIMOM <= xS && nx < 0)
+	{
+		DebugOut(L"[INFO] Touch CameraBoundingBox\n");
+		isReturn = isReturn + 1;
+		SetDirection(-nx);
+	}
+	vx = nx * BOOMERANG_FLYING_SPEED;
 
-		//probelm is here??????????????????????????????????????????????????
-		if (start_time_turn_around > 0)
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	coEvents.clear();
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	float min_tx, min_ty, nx = 0, ny;
+
+	if (coEvents.size() == 0)
+	{
+		y += dy;
+		x += dx;
+	}
+	else
+	{
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+		x += min_tx * dx;
+		y += min_ty * dy;
+		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
-			if ((left <= vpLeft && vx < 0)
-				|| (right >= vpRight && vx > 0) 
-				|| (GetTickCount() - start_time_turn_around >= BOOMERANG_FLYING_TIME && isReturn < 1))
+			LPCOLLISIONEVENT e = coEventsResult[i];
+			// collision with candle
+			if (dynamic_cast<CSmallCandle *>(e->obj)
+				|| dynamic_cast<CBat*>(e->obj)
+				|| dynamic_cast<CKnight *>(e->obj))
 			{
-				DebugOut(L"[INFO] Touch CameraBoundingBox\n");
-				isReturn++;
-				SetDirection(-nx);
-			}
-		}
-
-		
-
-		vector<LPCOLLISIONEVENT> coEvents;
-		coEvents.clear();
-		CalcPotentialCollisions(coObjects, coEvents);
-
-		vector<LPCOLLISIONEVENT> coEventsResult;
-
-		float min_tx, min_ty, nx = 0, ny;
-
-		if (coEvents.size() == 0)
-		{
-			y += dy;
-			x += dx;
-		}
-		else
-		{
-			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-			x += min_tx * dx;
-			y += min_ty * dy;
-			for (UINT i = 0; i < coEventsResult.size(); i++)
-			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-				// collision with candle
-				if (dynamic_cast<CSmallCandle *>(e->obj)
-					||dynamic_cast<CBat*>(e->obj)
-					|| dynamic_cast<CKnight *>(e->obj))
+				if (e->nx != 0 || e->ny != 0)
 				{
-					if (e->nx != 0 || e->ny != 0)
-					{
-						vx = 0;
-						e->obj->BeHit(damage);
-					}
+					vx = 0;
+					e->obj->BeHit(damage);
+				}
+			}
+			if (dynamic_cast<CSimon *>(e->obj))
+			{
+				if (e->nx != 0)
+				{
+					isReturn = 0;
+					vx = 0;
+					SetVisible(false);
 				}
 			}
 		}
-
-		// clean up collision events
-		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void CBoomerang::GetBoundingBox(float & left, float & top, float & right, float & bottom)
@@ -118,6 +122,12 @@ void CBoomerang::ChoiceAnimation()
 	}
 }
 
+void CBoomerang::SetVisible(bool visible)
+{
+	CGameObject::SetVisible(visible);
+}
+
+
 void CBoomerang::Render()
 {
 	ChoiceAnimation();
@@ -133,7 +143,7 @@ CBoomerang * CBoomerang::GetInstance()
 
 CBoomerang::CBoomerang()
 {
-	start_time_turn_around = 0;
+	vx = 0;
 	visible = false;
 	damage = 2;
 	isReturn = 0;

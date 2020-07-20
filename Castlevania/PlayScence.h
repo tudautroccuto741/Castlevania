@@ -48,7 +48,7 @@ public:
 		{
 			object = this->objects[i];
 			if (dynamic_cast<CSimon *>(object)
-				|| dynamic_cast<CWhip *>(object)
+				//|| dynamic_cast<CWhip *>(object)
 				|| dynamic_cast<CFlea *>(object)
 				|| dynamic_cast<CRaven *>(object)
 				|| dynamic_cast<CSkeleton *>(object)

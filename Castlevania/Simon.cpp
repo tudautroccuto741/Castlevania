@@ -305,10 +305,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vxDefault = 0;
 				}
 			}
-			else if (dynamic_cast<CBoomerang *>(e->obj))
-			{
-				e->obj->SetVisible(false);
-			}
+			//else if (dynamic_cast<CBoomerang *>(e->obj))
+			//{
+			//	e->obj->SetVisible(false);
+			//}
 			else if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);

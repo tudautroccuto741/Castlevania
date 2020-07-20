@@ -22,13 +22,13 @@ enum class AquafinaAniID
 class CAquafina : public CGameObject
 {
 	bool boom = false;
-
 	DWORD boom_start = 0;
 	static CAquafina * __instance;
 
 public:
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects) override;
+	void Render()override;
 	void SetVisible(bool visible) override;
 	void ChoiceAnimations();
 

@@ -18,20 +18,19 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	ChangeDirection();
 	if (isRender)
 	{
-		if (x <= 64)
+		/*if (x <= 64)
 		{
 			limitedLeft = 64;
 			nxM = 1;
-		}
-		else
-		{
-			if (!isJumping)
+		}*/
+		/*else
+		{*/
+			if (!isJumping && isChangeLimited)
 			{
 				ChangeLimited();
-				Walking();
-				vx = nxM * SKELETON_SPEED_VX;
 			}
-		}
+			Walking();
+		/*}*/
 
 	}
 		
@@ -87,10 +86,18 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						
 					}
 				}
-				/*if (e->nx!= 0)
+				if (e->nx > 0)
 				{
-					limitedLeft = e->obj->GetWidth();
-				}*/
+					x += nx * 0.4f;
+					float xB, yB;
+					e->obj->GetPosition(xB, yB);
+					isChangeLimited = false;
+					limitedLeft = xB+32;
+				}
+				else
+				{
+					isChangeLimited = true;
+				}
 			}
 		}
 	}
@@ -124,14 +131,15 @@ void CSkeleton::ChangeDirection()
 void CSkeleton::Walking()
 {
 	limitedRight = limitedLeft + 32;
-	if(x > limitedRight)
+	if(x >= limitedRight)
 	{
 		nxM = -1;
 	}
-	else if (x < limitedLeft)
+	else if (x <= limitedLeft)
 	{
 		nxM = 1;
 	}	
+	vx = nxM * SKELETON_SPEED_VX;
 }
 
 void CSkeleton::Jump()
@@ -176,7 +184,7 @@ void CSkeleton::ChangeLimited()
 		}
 		else
 		{
-			limitedLeft = xS + 150;
+			limitedLeft = xS + 160;
 		}
 
 	}
@@ -220,4 +228,5 @@ CSkeleton::CSkeleton()
 	visible = true;
 	isRender = false;
 	isJumping = false;
+	isChangeLimited = true;
 }

@@ -225,10 +225,6 @@
 21	143	32	401	61
 # BoomerangItem
 10	0	0	999
-# Boomerang
-11	0	0	999
-# Knife
-9	184	77	800
 # MoneyBag White
 40	167	225	100001
 # MoneyBag Red
@@ -251,6 +247,10 @@
 #0	193	96	100
 # WHIP
 1	108	288	200
+# Boomerang
+11	0	0	999
+# Knife
+9	184	77	800
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b 	scene_id
 50	0	96	0	32	160	3

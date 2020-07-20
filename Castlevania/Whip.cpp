@@ -77,6 +77,7 @@ void CWhip::GetBoundingBox(float & left, float & top, float & right, float & bot
 		case WHIP_LV2:
 			right = x + FRONT_WHIP_BBOX_WIDTH_LV2;
 			bottom = y + FRONT_WHIP_BBOX_HEIGHT_LV2;
+			break;
 		case WHIP_LV3:
 			right = x + FRONT_WHIP_BBOX_WIDTH_LV3;
 			bottom = y + FRONT_WHIP_BBOX_HEIGHT_LV3;

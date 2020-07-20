@@ -30,10 +30,6 @@ void CAquafina::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy += AQUAFINA_IDLE_GRAVITY * this->dt;
 
 
-	// Choice animation 
-	ChoiceAnimations();
-
-
 	// boooooooooom
 	if (boom_start != 0)
 		if (GetTickCount() - boom_start > AQUAFINA_BOOM_TIME)
@@ -93,6 +89,13 @@ void CAquafina::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
+}
+
+void CAquafina::Render()
+{
+	// Choice animation 
+	ChoiceAnimations();
+	CGameObject::Render();
 }
 
 void CAquafina::SetVisible(bool visible)

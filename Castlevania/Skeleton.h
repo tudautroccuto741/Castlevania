@@ -25,6 +25,7 @@ class CSkeleton : public CGameObject
 {
 	bool isRender;
 	bool isJumping;
+	bool isChangeLimited;
 	int nxM;
 	float limitedLeft, limitedRight;
 public:
