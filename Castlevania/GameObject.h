@@ -51,7 +51,8 @@ enum class Item
 	MEAT = 43,
 	BALL = 44,
 	AQUAFINA = 45,
-	AXE = 46
+	AXE = 46,
+	WATCH = 47
 };
 
 enum class Weapon
@@ -60,7 +61,8 @@ enum class Weapon
 	KNIFE,
 	BOOMERANG,
 	AQUAFINA,
-	AXE
+	AXE,
+	WATCH
 };
 
 enum class Monsters

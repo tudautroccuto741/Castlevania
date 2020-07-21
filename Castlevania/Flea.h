@@ -29,7 +29,6 @@ public:
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects) override;
 	void Render() override;
-	//void BeHit(int damage) override;
 	void FindSimon();
 	void SetState(int state);
 	void ChoiceAnimations();

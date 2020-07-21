@@ -624,7 +624,6 @@ void CPlayScene::Unload()
 			|| dynamic_cast<CAxe *>(objects[i])
 			|| dynamic_cast<CCameraChangeViewObject *>(objects[i]))
 		{ ; }
-		
 		else 
 		{ 
 			delete objects[i]; 
@@ -666,6 +665,26 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_D:
 		simon->SetState((int)SimonStateID::stateWalkingRight);
+		break;
+	case DIK_1:
+		CBoard::GetInstance()->SetWeapon((int)Item::KNIFE);
+		simon->SetSecondaryWeapon((int)Weapon::KNIFE);
+		break;
+	case DIK_2:
+		CBoard::GetInstance()->SetWeapon((int)Item::BOOMERANG);
+		simon->SetSecondaryWeapon((int)Weapon::BOOMERANG);
+		break;
+	case DIK_3:
+		CBoard::GetInstance()->SetWeapon((int)Item::WATCH);
+		simon->SetSecondaryWeapon((int)Weapon::WATCH);
+		break;
+	case DIK_4:
+		CBoard::GetInstance()->SetWeapon((int)Item::AQUAFINA);
+		simon->SetSecondaryWeapon((int)Weapon::AQUAFINA);
+		break;
+	case DIK_5:
+		CBoard::GetInstance()->SetWeapon((int)Item::AXE);
+		simon->SetSecondaryWeapon((int)Weapon::AXE);
 		break;
 	}
 }

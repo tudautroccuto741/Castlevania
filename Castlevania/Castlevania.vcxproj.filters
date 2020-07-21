@@ -237,9 +237,6 @@
     <ClCompile Include="SmallHeart.cpp">
       <Filter>Source Files\Objects\Items</Filter>
     </ClCompile>
-    <ClCompile Include="SpawnFlea.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Board.cpp">
       <Filter>Source Files\Board</Filter>
     </ClCompile>
@@ -252,10 +249,10 @@
     <ClCompile Include="Cells.cpp">
       <Filter>Source Files\Cells</Filter>
     </ClCompile>
-    <ClCompile Include="Watch.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="SpawnFlea.cpp">
+      <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="WatchItem.cpp">
+    <ClCompile Include="Watch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -437,9 +434,6 @@
     <ClInclude Include="SmallHeart.h">
       <Filter>Header Files\Objects\Items</Filter>
     </ClInclude>
-    <ClInclude Include="SpawnFlea.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DrawBoard.h">
       <Filter>Header Files\Board</Filter>
     </ClInclude>
@@ -452,10 +446,10 @@
     <ClInclude Include="Cell.h">
       <Filter>Header Files\Cells</Filter>
     </ClInclude>
-    <ClInclude Include="Watch.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="SpawnFlea.h">
+      <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="WatchItem.h">
+    <ClInclude Include="Watch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

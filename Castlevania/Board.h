@@ -12,7 +12,7 @@
 class CBoard
 {
 	int _time;
-	int _weapon;
+	int weapon;
 	DWORD _count;
 	CDrawBoard* drawBoard;
 	bool isStop;
@@ -27,7 +27,7 @@ public:
 		isStop = false;
 		drawBoard = new CDrawBoard();
 		_numberOfWeapon = 0;
-		_weapon = 0;
+		weapon = 0;
 	}
 	~CBoard()
 	{
@@ -37,8 +37,8 @@ public:
 	}
 	void Update(DWORD dt);
 	void Render();
-	void SetWeapon(int weapon) { _weapon = weapon; }
-	int GetWeapon() { return _weapon; }
+	void SetWeapon(int weapons) { weapon = weapons; }
+	int GetWeapon() { return weapon; }
 	int GetTime() { return _time; }
 	void TimeDown() {
 		if (GetTickCount() - _count >= 1 && _time > 0)
@@ -53,5 +53,4 @@ public:
 	int GetNumberOfWeapon() { return _numberOfWeapon; }
 	void Stop() { isStop = true; }
 	bool IsStop() { return isStop; }
-	//void ChangeWeapon();
 };

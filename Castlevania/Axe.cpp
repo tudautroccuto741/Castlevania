@@ -20,9 +20,6 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += AXE_GRAVITY * this->dt;
 
 
-	// Choose animation 
-	ChoiceAnimations();
-
 	if (!IsInViewport())
 	{
 		this->SetVisible(false);
@@ -60,6 +57,13 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
 	
+}
+
+void CAxe::Render()
+{
+	// Choose animation 
+	ChoiceAnimations();
+	CGameObject::Render();
 }
 
 void CAxe::ChoiceAnimations()

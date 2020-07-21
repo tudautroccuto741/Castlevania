@@ -22,28 +22,25 @@ void CMonkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		time_start = GetTickCount();
 	}
-	if (!isTouchSimon) 
-	{
-		;
-	}
-	else
-	{
-		FindSimon();
-	}
+
 	if (time_start > 0)
 	{
 		if (GetTickCount() - time_start >= MONKEY_TIME_START)
 		{
-			
 			if(CSimon::GetInstance()->GetUntouchable() == 1)
 			{
-				JumpingHigh();
-				isTouchSimon = true;
+				if (isOnGround)
+				{
+					JumpingHigh();
+				}
 			}
 			else
 			{
-				Jumping();
-				isTouchSimon = false;
+				if (isOnGround)
+				{
+					Jumping();
+					FindSimon();
+				}
 			}
 			vy += 0.0012 * dt;
 		}
@@ -52,8 +49,6 @@ void CMonkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			Start();
 		}
 	}
-
-
 
 	// untouchable
 	if (start_untouchable != 0)
@@ -94,13 +89,16 @@ void CMonkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (isJumping)
 					{
 						isJumping = false;
-						vx = vy = 0;
 						time_start = 0;
 						
 					}
 					isOnGround = true;
 					y += ny * 0.4f;
-					vy = 0;
+				}
+				if (e->nx != 0)
+				{
+					JumpingHigh();
+					FindSimon();
 				}
 			}
 		}
@@ -121,31 +119,17 @@ void CMonkey::Render()
 
 void CMonkey::FindSimon()
 {
-	int nxS = CSimon::GetInstance()->GetDirection();
-	nx = -nxS;
-	isTouchSimon = true;
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
 
-	if (nx > 0)
+	if (xS > x + MONKEY_BBOX_WIDTH)
 	{
-		if ((x + MONKEY_BBOX_WIDTH) - xS >= 0)
-		{
-			isTouchSimon = true;
-		}
+		this->nx = 1;
 	}
-	else if (nx < 0)
+	else if (xS + SIMON_IDLE_BBOX_WIDTH < x)
 	{
-		if (x - (xS + SIMON_IDLE_BBOX_WIDTH) <= 0)
-		{
-			isTouchSimon = true;
-		}
+		this->nx = -1;
 	}
-	else
-	{
-		isTouchSimon = false;
-	}
-
 }
 
 void CMonkey::Jumping()
@@ -156,9 +140,9 @@ void CMonkey::Jumping()
 		isJumping = true;
 		dy = this->dt * vy;
 		vx = MONKEY_SPEED_VX * nx;
+		isOnGround = false;
 	}
 }
-
 
 void CMonkey::JumpingHigh()
 {
@@ -167,10 +151,10 @@ void CMonkey::JumpingHigh()
 		vy = -MONKEY_SPEED_VY_HIGH;
 		isJumping = true;
 		vx = MONKEY_SPEED_VX * nx;
+		isOnGround = false;
 	}
 	
 }
-
 
 void CMonkey::Start()
 {
@@ -218,6 +202,4 @@ CMonkey::CMonkey()
 	health = MONKEY_DEFAULT_HEALTH;
 	damage = MONKEY_DAMAGE;
 	visible = true;
-	isUp = false;
-	isTouchSimon = false;
 }

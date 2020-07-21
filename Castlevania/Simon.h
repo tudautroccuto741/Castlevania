@@ -141,6 +141,7 @@ public:
 	void Revive();
 
 	int GetSecondWeapons() { return this->secondWeapon; }
+	void SetSecondaryWeapon(int weapon) { this->secondWeapon = weapon; }
 	int GetHeart() { return heart; }
 	int GetLife() { return life; }
 	int GetScore() { return score; }

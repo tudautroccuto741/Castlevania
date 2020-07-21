@@ -11,18 +11,30 @@ void CWatch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CalcPotentialCollisions(coObjects, coEvents);
 
 
-	// Pick animation
-	this->currentAniID = (int)WatchAniID::IDLE;
-
 
 	if (coEvents.size() == 0)
 	{
 		y += dy;
 		x += dx;
 	}
+	else
+
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+
+	// If the item watch goes out the viewport
+	if (this->IsInViewport() == false)
+		SetVisible(false);
+}
+
+void CWatch::Render()
+{
+	// Pick animation
+	this->currentAniID = (int)WatchAniID::IDLE;
+
+	CGameObject::Render();
 }
 
 void CWatch::GetBoundingBox(float & left, float & top, float & right, float & bottom)

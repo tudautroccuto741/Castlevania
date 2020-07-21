@@ -16,7 +16,6 @@ void CFlea::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	x += dx;
 	y += dy;
 
-
 	FindSimon();
 
 	if (vy == 0)

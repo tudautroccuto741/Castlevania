@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #define MONKEY_BBOX_WIDTH				32
 #define MONKEY_BBOX_HEIGHT				32
-#define MONKEY_SPEED_VX					0.25f
+#define MONKEY_SPEED_VX					0.27f
 #define MONKEY_SPEED_VY_HIGH			0.4f
 #define MONKEY_SPEED_VY					0.12f
 #define MONKEY_DISTANCE_WITH_SIMON		238
@@ -30,11 +30,8 @@ enum class MonkeyStateID
 
 class CMonkey : public CGameObject
 {
-	bool isTouchSimon;
-	bool isUp;
 	bool isJumping;
 	bool isOnGround;
-	int nxM;
 	DWORD time_start;
 public:
 

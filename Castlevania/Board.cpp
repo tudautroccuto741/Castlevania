@@ -37,22 +37,24 @@ void CBoard::Render()
 	drawBoard->DrawNumber(2, cx + 400, cy + 32, simon->GetHeart());
 	drawBoard->DrawNumber(2, cx + 400, cy + 52, simon->GetLife());
 	drawBoard->DrawEnergyBar(cx + 110, cy + 30, 0, simon->GetHealth());
-	if (_weapon != 0)
+	if (weapon != 0)
 	{
-
-		switch (_weapon)
+		switch (weapon)
 		{
-		case (int)Weapon::KNIFE:
-			sprites->Get(13001)->Draw(cx + 310, cy + 40);;
+		case (int)Item::KNIFE:
+			sprites->Get(80001)->Draw(cx + 310, cy + 40);;
 			break;
 		case (int)Item::AXE:
-			sprites->Get(13010)->Draw(cx + 310, cy + 30);
+			sprites->Get(1000016)->Draw(cx + 310, cy + 32);
 			break;
 		case (int)Item::AQUAFINA:
-			sprites->Get(13015)->Draw(cx + 310, cy + 27);
+			sprites->Get(1000015)->Draw(cx + 310, cy + 32);
 			break;
 		case (int)Item::BOOMERANG:
-			sprites->Get(13020)->Draw(cx + 310, cy + 27);
+			sprites->Get(90000)->Draw(cx + 310, cy + 32);
+			break;
+		case (int)Item::WATCH:
+			sprites->Get(90010)->Draw(cx + 310, cy + 32);
 			break;
 		default:
 			break;
@@ -74,26 +76,3 @@ void CBoard::Render()
 	sprites = NULL;
 	simon = NULL;
 }
-//void CBoard::ChangeWeapon()
-//{
-//	switch (_weapon)
-//	{
-//	case 0:
-//		SetWeapon((int)Weapon::KNIFE);
-//		break;
-//	case (int)Weapon::AXE:
-//		SetWeapon((int)Weapon::AXE);
-//		break;
-//	case (int)Weapon::AXE:
-//		SetWeapon((int)Weapon::AXE);
-//		break;
-//	case (int)Weapon::AXE:
-//		SetWeapon((int)Weapon::AXE);
-//		break;
-//	case (int)Weapon::AXE:
-//		SetWeapon((int)Weapon::AXE);
-//		break;
-//	default:
-//		break;
-//	}
-//}

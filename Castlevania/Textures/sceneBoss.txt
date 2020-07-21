@@ -2,17 +2,17 @@
 [TEXTURES]
 # id	file_path	r	g	b	width	height 
 1000	textures\4.png	255	0	255
+300	textures\3.png	255	0	255
 # width, height only available for tilemap texture  
 123	textures\0.png	255	0	255
-124	textures\3.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# Door
-124	4	131	20	227	124
 # Brick
 40000	129	67	161	99	300
 # Secret Brick
 40011	129	67	161	99	300
+# Door
+124	4	131	20	227	300
 # Rock
 40012	229	45	243	61	300
 # Up Stairs
@@ -40,8 +40,8 @@
 # II item
 1000012	31	65	59	93	300
 # Ball
-1000014	210	222	238	254	300
-1000015	182	222	210	254	300
+1000017	210	222	238	254	300
+1000018	182	222	210	254	300
 # AxeItem
 1000016	193	164	223	192	300
 
@@ -92,7 +92,7 @@
 100003	1000012	100
 
 # ==== BALL ========
-100005	1000014	100	1000015	100
+100005	1000017	100	1000018	100
 
 # ==== AXEITEM ========
 100007	1000016	100
@@ -192,6 +192,10 @@
 42	167	255	100003
 # AxeItem
 46	167	255	100007
+# Boomerang
+11	0	0	999
+# Knife
+9	184	77	800
 # Aquafina
 47	167	255	904
 # Axe

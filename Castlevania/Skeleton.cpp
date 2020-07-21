@@ -176,7 +176,7 @@ void CSkeleton::ChangeLimited()
 {
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	if (ChekDistanceWithSimon()/*&&!isJumping*/)
+	if (ChekDistanceWithSimon())
 	{
 		if (nx > 0)
 		{
@@ -206,6 +206,7 @@ void CSkeleton::ChoiceAnimations()
 void CSkeleton::SetVisible(bool visible)
 {
 	CGameObject::SetVisible(visible);
+	isRender = true;
 }
 
 void CSkeleton::Render()

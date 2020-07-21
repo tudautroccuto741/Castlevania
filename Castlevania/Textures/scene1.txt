@@ -63,15 +63,21 @@
 7	678	225	700
 #KnifeItem
 8	1200	225	800
-#Knife
-9	80	225	800
+# Boomerang
+11	0	0	999
+# Knife
+9	184	77	800
+# Aquafina
+47	167	255	904
+# Axe
+48	167	255	903
 # BRICK	width	height
 3	0	292	300	1472	32
 # CamemraChangeViewObj
 4111	735	354	40111
 # SIMON
-0	80	225	100
-#0	1200	225	100
+#0	80	225	100
+0	1200	225	100
 # WHIP
 1	80	225	200
 # --- SCENE PORTAL ----

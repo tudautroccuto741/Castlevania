@@ -305,10 +305,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vxDefault = 0;
 				}
 			}
-			//else if (dynamic_cast<CBoomerang *>(e->obj))
-			//{
-			//	e->obj->SetVisible(false);
-			//}
 			else if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
@@ -740,13 +736,8 @@ void CSimon::BeHit()
 		this->vy = -SIMON_IS_PUSHED_Y;
 		isJumping = true;
 		untouchable_start = 0;
-		//untouchable = 1;
 		health -= 2;
 	}
-	/*else
-	{
-		StartUntouchable();
-	}*/
 }
 
 void CSimon::Dying()
@@ -893,10 +884,10 @@ void CSimon::SetState(int state)
 	case (int)SimonStateID::stateGoingDownStairsLeft:
 		GoingDownStairs();
 		break;
-	case (int)SimonStateID::stateBeHitRight:
+	/*case (int)SimonStateID::stateBeHitRight:
 		beHit = true;
 		isAttacking = false;
-		break;
+		break;*/
 	case (int)SimonStateID::stateIdle:
 		Idle();
 		break;

@@ -205,7 +205,6 @@
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Knife.cpp" />
     <ClCompile Include="Watch.cpp" />
-    <ClCompile Include="WatchItem.cpp" />
     <ClCompile Include="Weapons.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="WhipItem.cpp" />
@@ -273,7 +272,6 @@
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Knife.h" />
     <ClInclude Include="Watch.h" />
-    <ClInclude Include="WatchItem.h" />
     <ClInclude Include="Weapons.h" />
     <ClInclude Include="Whip.h" />
     <ClInclude Include="WhipItem.h" />
