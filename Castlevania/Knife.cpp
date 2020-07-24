@@ -2,12 +2,20 @@
 #include "Whip.h"
 #include "GameObject.h"
 #include "Simon.h"
-#include "Candle.h"
 #include "Flame.h"
 #include "Knife.h"
 #include "SmallCandle.h"
-#include "Bat.h"
+#include "Simon.h"
+#include "Candle.h"
 #include "Knight.h"
+#include "SmallCandle.h"
+#include "SecretBrick.h"
+#include "Bat.h"
+#include "Zombie.h"
+#include "Flea.h"
+#include "Monkey.h"
+#include "Skeleton.h"
+#include "Raven.h"
 
 CKnife * CKnife::__instance = NULL;
 
@@ -44,10 +52,16 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				// collision with candle
-				if (dynamic_cast<CCandle *>(e->obj)
-					||dynamic_cast<CSmallCandle *>(e->obj)
+				if (dynamic_cast<CSmallCandle *>(e->obj)
+					|| dynamic_cast<CCandle *>(e->obj)
+					|| dynamic_cast<CKnight *>(e->obj)
+					|| dynamic_cast<CSecretBrick *>(e->obj)
 					|| dynamic_cast<CBat *>(e->obj)
-					|| dynamic_cast<CKnight *>(e->obj))
+					|| dynamic_cast<CFlea *>(e->obj)
+					|| dynamic_cast<CMonkey *>(e->obj)
+					|| dynamic_cast<CZombie *>(e->obj)
+					|| dynamic_cast<CSkeleton *>(e->obj)
+					|| dynamic_cast<CRaven *>(e->obj))
 				{
 					if (e->nx != 0 || e->ny != 0)
 					{

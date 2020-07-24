@@ -31,6 +31,12 @@ void CWeapons::ChoiceWeapon(int weaponName)
 	case (int)Weapon::AXE:
 		UseAxe();
 		break;
+	case (int)Weapon::WATCH:
+		UseWatch();
+		break;
+	case (int)Weapon::BONE:
+		UseBone();
+		break;
 	default:
 		break;
 	}
@@ -101,6 +107,18 @@ void CWeapons::UseAxe()
 	float xK = xS;
 	float yK = yS;
 	axe->SetPosition(xK, yK);
+}
+
+void CWeapons::UseWatch()
+{
+	LPGAMEOBJECT watch = GetWeapon((int)Weapon::WATCH);
+}
+
+void CWeapons::UseBone()
+{
+	LPGAMEOBJECT bone = GetWeapon((int)Weapon::BONE);
+	if (bone == NULL) return;
+	bone->SetVisible(true);
 }
 
 CWeapons * CWeapons::GetInstance()

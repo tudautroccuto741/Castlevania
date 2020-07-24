@@ -24,13 +24,25 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		time_start = GetTickCount();
 	}
 
-	ChangeDirection();
+	if (!isTouchingSimon)
+	{
+		ChangeDirection();
+	}
+	else
+	{
+		//attack
+		if (CSimon::GetInstance()->GetUntouchable() == 1)
+		{
+			Attack();
+			//isTouchingSimon = false;
+		}
+	}
 
 	if (time_start > 0)
 	{
 		if (GetTickCount() - time_start >= RAVEN_TIME_START)
 		{
-			if (ny > 0) 
+			if (ny > 0)
 			{
 				if (y > yTemp + RAVEN_DISTANCE_TO_FLY)
 				{
@@ -47,7 +59,7 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else
 			{
-				if (y + RAVEN_DISTANCE_TO_FLY < yTemp )
+				if (y + RAVEN_DISTANCE_TO_FLY < yTemp)
 				{
 					Stop();
 					CheckDistanceWithSimon();
@@ -60,7 +72,7 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			}
-			
+
 		}
 		else
 		{
@@ -84,13 +96,8 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			CheckDistanceWithSimon();
 		}
 	}
+
 	
-	//attack
-	if (isTouchingSimon || CSimon::GetInstance()->GetUntouchable() == 1)
-	{
-		Attack();
-		isTouchingSimon = false;
-	}
 
 	// untouchable
 	if (start_untouchable != 0)
@@ -178,7 +185,7 @@ void CRaven::CheckDistanceWithSimon()
 {
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	if ((y + RAVEN_BBOX_HEIGHT >= yS)&&(x <= xS + SIMON_IDLE_BBOX_WIDTH))
+	if ((y + RAVEN_BBOX_HEIGHT >= yS) && (x <= xS + SIMON_IDLE_BBOX_WIDTH))
 	{
 		isTouchingSimon = true;
 	}
@@ -223,8 +230,8 @@ void CRaven::ChoiceAnimations()
 {
 	if (vx != 0 || isStop)
 	{
-		currentAniID = (nx > 0) ? 
-			(int)RavenAniID::flyRight: 
+		currentAniID = (nx > 0) ?
+			(int)RavenAniID::flyRight :
 			(int)RavenAniID::flyLeft;
 	}
 	else

@@ -224,7 +224,7 @@
 21	271	32	401	61
 21	143	32	401	61
 # BoomerangItem
-#10	0	0	999
+10	0	0	999
 # MoneyBag White
 40	167	225	100001
 # MoneyBag Red

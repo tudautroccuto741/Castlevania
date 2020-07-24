@@ -1,6 +1,16 @@
 #include "Axe.h"
-#include "Simon.h"
 #include "SmallCandle.h"
+#include "Simon.h"
+#include "Candle.h"
+#include "Knight.h"
+#include "SmallCandle.h"
+#include "SecretBrick.h"
+#include "Bat.h"
+#include "Zombie.h"
+#include "Flea.h"
+#include "Monkey.h"
+#include "Skeleton.h"
+#include "Raven.h"
 
 CAxe * CAxe::__instance = NULL;
 
@@ -46,7 +56,16 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			// collision with candle
-			if (dynamic_cast<CSmallCandle *>(e->obj))
+			if (dynamic_cast<CSmallCandle *>(e->obj)
+				|| dynamic_cast<CCandle *>(e->obj)
+				|| dynamic_cast<CKnight *>(e->obj)
+				|| dynamic_cast<CSecretBrick *>(e->obj)
+				|| dynamic_cast<CBat *>(e->obj)
+				|| dynamic_cast<CFlea *>(e->obj)
+				|| dynamic_cast<CMonkey *>(e->obj)
+				|| dynamic_cast<CZombie *>(e->obj)
+				|| dynamic_cast<CSkeleton *>(e->obj)
+				|| dynamic_cast<CRaven *>(e->obj))
 			{
 				e->obj->BeHit(this->damage);
 			}

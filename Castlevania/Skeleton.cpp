@@ -16,102 +16,130 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += 0.001 * dt;
 
 	ChangeDirection();
+
+	CheckIfNeedAttack();
+
 	if (isRender)
 	{
-		/*if (x <= 64)
+		if (!isJumping && isChangeLimited)
 		{
-			limitedLeft = 64;
-			nxM = 1;
-		}*/
-		/*else
-		{*/
-			if (!isJumping && isChangeLimited)
-			{
-				ChangeLimited();
-			}
+			ChangeLimited();
 			Walking();
-		/*}*/
+		}
 
-	}
-		
-	// untouchable
-	if (start_untouchable != 0)
-	{
-		Untouchable();
-	}
+		vx = nxM * SKELETON_SPEED_VX;
 
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
 
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	// No collision occured, proceed normally
-	if (coEvents.size() == 0)
-	{
-		x += dx;
-		y += dy;
-	}
-	else
-	{
-		float min_tx, min_ty, nx = 0, ny;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		x += min_tx * dx;
-		y += min_ty * dy;
-
-		// collision logic with other objects
-		float l, t, r, b;
-		for (UINT i = 0; i < coEventsResult.size(); i++)
+		// untouchable
+		if (start_untouchable != 0)
 		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-			// collision with brick
+			Untouchable();
+		}
 
-			if (dynamic_cast<CBrick *>(e->obj))
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		// No collision occured, proceed normally
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+			x += min_tx * dx;
+			y += min_ty * dy;
+
+			// collision logic with other objects
+			float l, t, r, b;
+			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				e->obj->GetBoundingBox(l, t, r, b);
-				if (e->ny < 0)
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				// collision with brick
+
+				if (dynamic_cast<CBrick *>(e->obj))
 				{
-					if (x < l || x + SKELETON_BBOX_WIDTH > r)
-					{
-						Jump();
-					}
-					else
-					{
-						isJumping = false;
-						vy = 0;
-						Walking();
-						y += ny * 0.4f;
-						
-					}
-				}
-				if (e->nx > 0)
-				{
-					x += nx * 0.4f;
 					float xB, yB;
 					e->obj->GetPosition(xB, yB);
-					isChangeLimited = false;
-					limitedLeft = xB+32;
-				}
-				else
-				{
-					isChangeLimited = true;
+					e->obj->GetBoundingBox(l, t, r, b);
+					if (e->ny < 0)
+					{
+						if (x < l)
+						{
+							nxM = -1;
+							Jump();
+						}
+						else if (x + SKELETON_BBOX_WIDTH > r)
+						{
+							nxM = 1;
+							Jump();
+						}
+						else
+						{
+							if (isJumping)
+							{
+								isJumping = false;
+								/*Walking();*/
+							}
+							vy = 0;
+							Walking();
+							y += ny * 0.4f;
+						}
+					}
+					if (e->nx > 0)
+					{
+						isChangeLimited = false;
+						limitedLeft = xB + BRICK_BBOX_WIDTH;
+						nxM = 1;
+					}
+					else if (e->nx < 0)
+					{
+						isChangeLimited = false;
+						limitedRight = xB;
+						limitedLeft = limitedRight - 32;
+						nxM = -1;
+					}
+					/*else
+					{
+						isChangeLimited = true;
+					}*/
 				}
 			}
 		}
+
+		// clean up collision events
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+		
+		if (!visible)
+		{
+			isRender = false;
+		}
 	}
-
-	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
 	if (this->IsInViewport() == false)
-		health = 0;
-	if (!visible)
 	{
-		isRender = false;
+		health = 0;
+	}
+	else
+	{
+		for (size_t i = 0; i < bones.size(); i++)
+		{
+			bones[i]->Update(dt);
+			if (bones[i]->IsInViewport() == false)
+			{
+				bones.erase(bones.begin() + i);
+			}
+		}
 	}
 }
+
 
 void CSkeleton::ChangeDirection()
 {
@@ -139,7 +167,6 @@ void CSkeleton::Walking()
 	{
 		nxM = 1;
 	}	
-	vx = nxM * SKELETON_SPEED_VX;
 }
 
 void CSkeleton::Jump()
@@ -150,6 +177,7 @@ void CSkeleton::Jump()
 		vy = -SKELETON_SPEED_VY;
 		vx = nxM * SKELETON_SPEED_VX;
 		limitedLeft = limitedRight = 0;
+		Attack();
 	}
 }
 
@@ -190,6 +218,30 @@ void CSkeleton::ChangeLimited()
 	}
 }
 
+void CSkeleton::CheckIfNeedAttack()
+{
+	int temp;
+	temp = rand() % 3000 + 1000;
+	if (ChekDistanceWithSimon() && GetTickCount() - time_free > temp)
+	{
+		Attack();
+	}
+}
+
+
+void CSkeleton::Attack()
+{
+	CBoneWeapon * bone = new CBoneWeapon;
+	bone->SetVisible(true);
+	bone->SetPosition(x + 16, y);
+	bone->SetDirection(nx);
+	time_free = GetTickCount();
+	bones.push_back(bone);
+	if (!this->IsInViewport())
+	{
+		bone->SetVisible(false);
+	}
+}
 
 void CSkeleton::ChoiceAnimations()
 {
@@ -206,7 +258,6 @@ void CSkeleton::ChoiceAnimations()
 void CSkeleton::SetVisible(bool visible)
 {
 	CGameObject::SetVisible(visible);
-	isRender = true;
 }
 
 void CSkeleton::Render()
@@ -217,11 +268,18 @@ void CSkeleton::Render()
 		ChoiceAnimations();
 		CGameObject::Render();
 	}
+	for (size_t i = 0; i < bones.size(); i++)
+	{
+		if (bones[i]->IsInViewport())
+		{
+			bones[i]->Render();
+		}
+	}
 }
 
 CSkeleton::CSkeleton()
 {
-	nxM = 1;
+	nxM = -1;
 	vx = 0;
 	vy = 0;
 	health = SKELETON_DEFAULT_HEALTH;

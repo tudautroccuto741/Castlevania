@@ -12,7 +12,7 @@ void CBoomerangItem::GetBoundingBox(float &l, float &t, float &r, float &b)
 void CBoomerangItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-	vy += GAME_GRAVITY * dt;				// simple fall down
+	vy += 0.001 * dt;				// simple fall down
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;

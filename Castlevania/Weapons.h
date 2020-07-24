@@ -9,6 +9,7 @@ class CWeapons
 	unordered_map<int, vector<LPGAMEOBJECT>> weapons;
 	static CWeapons * __instance;
 	float xS, yS;
+	
 
 public:
 	void ChoiceWeapon(int weaponName);
@@ -16,6 +17,8 @@ public:
 	void UseBoomerang();
 	void UseAquafina();
 	void UseAxe();
+	void UseWatch();
+	void UseBone();
 	LPGAMEOBJECT GetWeapon(int weapon);
 	void Add(int weaponName, LPGAMEOBJECT weapon);
 	CWeapons() { ; }

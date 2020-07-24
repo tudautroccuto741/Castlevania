@@ -1,5 +1,5 @@
 #include "Watch.h"
-
+#include "Brick.h"
 
 void CWatch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -7,6 +7,8 @@ void CWatch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += GAME_GRAVITY * dt;				// simple fall down
 
 	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
 	coEvents.clear();
 	CalcPotentialCollisions(coObjects, coEvents);
 
@@ -18,14 +20,33 @@ void CWatch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 	}
 	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
+		x += min_tx * dx;
+		y += min_ty * dy;
+
+		for (UINT i = 0; i < coEventsResult.size(); ++i)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBrick *>(e->obj))
+			{
+				// Block brick
+				if (e->ny < 0)
+				{
+					y += 0.4f * e->ny;
+					vy = 0;
+				}
+			}
+		}
+	}
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-
-	// If the item watch goes out the viewport
-	if (this->IsInViewport() == false)
+	if (!this->IsInViewport())
 		SetVisible(false);
 }
 

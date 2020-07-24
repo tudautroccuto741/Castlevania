@@ -66,6 +66,16 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				this->weapons->ChoiceWeapon(secondWeapon);
 				isUsingweapon = false;
+				if (secondWeapon == (int)Weapon::WATCH)
+				{
+					if (GetTickCount() - startFreezeTime > freezeTime)
+					{
+						for (UINT i = 0; i < this->objects.size(); ++i)
+							this->objects[i]->SetFreezing(false);
+
+						this->freezing = false;
+					}
+				}
 			}
 		}
 	}
@@ -96,7 +106,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// show a flea
 	
-	/*if (sceneID == 3)
+	if (sceneID == 3)
 	{
 		if (x <= POSITION_FLEA_TO_VISIBLE 
 			&& CSpawnFlea::GetInstance()->GetFlea((int)Monsters::FLEA)->GetVisible() == false 
@@ -105,7 +115,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			CSpawnFlea::GetInstance()->ShowFlea();
 		}
-	}*/
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -170,6 +180,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (stairs != 0)
 				{
 					x += dx;
+					beHit = false;
 				}
 
 				if (e->nx != 0)
@@ -250,7 +261,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CKnight *>(e->obj)
 				|| dynamic_cast<CFlea *>(e->obj)
-				|| dynamic_cast<CMonkey *>(e->obj))
+				|| dynamic_cast<CMonkey *>(e->obj)
+				|| dynamic_cast<CSkeleton *>(e->obj))
 			{
 				if (untouchable == 0)
 				{
@@ -275,10 +287,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (e->nx != 0 || e->ny != 0)
 					{
-						this->nx = (e->nx != 0) ?
-							-(e->nx) :
-							-(e->obj->GetDirection());
-						BeHit();
+						if (stairs == 0)
+						{
+							this->nx = (e->nx != 0) ?
+								-(e->nx) :
+								-(e->obj->GetDirection());
+							BeHit();
+						}
 						e->obj->Destroy();
 						StartUntouchable();
 					}
@@ -731,7 +746,7 @@ void CSimon::BeHit()
 	if (stairs == 0)
 	{
 		beHit = true;
-		vx = vy = dx = dy = 0;
+		//vx = vy = dx = dy = 0;
 		this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
 		this->vy = -SIMON_IS_PUSHED_Y;
 		isJumping = true;

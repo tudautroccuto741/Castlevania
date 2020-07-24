@@ -101,11 +101,15 @@ class CSimon : public CGameObject
 	DWORD untouchable_start;
 	DWORD start_die;
 	DWORD flicker_time;
+	bool freezing;
+	DWORD freezeTime;
+	DWORD startFreezeTime;
 
 	CWhip *whip;
 	CWeapons *weapons;
 
 	vector<LPGAMEOBJECT> ovlObjects;
+	vector<LPGAMEOBJECT> objects;
 
 	static CSimon * __instance;
 public:

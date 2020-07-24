@@ -62,7 +62,8 @@ enum class Weapon
 	BOOMERANG,
 	AQUAFINA,
 	AXE,
-	WATCH
+	WATCH,
+	BONE
 };
 
 enum class Monsters
@@ -81,6 +82,8 @@ public:
 
 	float vx;
 	float vy;
+
+	bool freezing;
 
 	bool visible;
 	float dx;	// dx = vx*dt
@@ -147,6 +150,7 @@ public:
 	int GetHealth() { return this->health; }
 	int GetDamage() { return this->damage; }
 	
+	virtual void SetFreezing(bool freezing) { this->freezing = freezing; }
 
 	//2 object moving
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);

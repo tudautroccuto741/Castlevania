@@ -168,9 +168,6 @@
     <ClCompile Include="Flea.cpp">
       <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="BoneWeapon.cpp">
-      <Filter>Source Files\Objects\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="BoomerangItem.cpp">
       <Filter>Source Files\Objects\Items</Filter>
     </ClCompile>
@@ -254,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="Watch.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneWeapon.cpp">
+      <Filter>Source Files\Objects\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,9 +349,6 @@
     </ClInclude>
     <ClInclude Include="Rock.h">
       <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="BoneWeapon.h">
-      <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Flea.h">
       <Filter>Header Files\Objects\Enemies</Filter>
@@ -451,6 +448,9 @@
     </ClInclude>
     <ClInclude Include="Watch.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneWeapon.h">
+      <Filter>Header Files\Objects\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

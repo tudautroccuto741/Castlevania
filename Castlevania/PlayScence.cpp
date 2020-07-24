@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <fstream>
 #include "PlayScence.h"
 #include "Utils.h"
@@ -417,9 +418,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SKELETON:
 		obj = new CSkeleton();
 		break;
-	//case OBJECT_TYPE_BONE:
-	//	obj = new CBone();
-	//	break;
+	case OBJECT_TYPE_BONE:
+		obj = new CBoneWeapon();
+		//CWeapons::GetInstance()->Add((int)Weapon::BONE, obj);
+		break;
 	case OBJECT_TYPE_RAVEN:
 		obj = new CRaven();
 		break;
@@ -570,7 +572,6 @@ void CPlayScene::Update(DWORD dt)
 	CGame::GetInstance()->SetCamPos(cx, cy-79);
 	float left, top, right, bottom;
 	game->CamereBoundingBox(left, top, right, bottom);
-
 
 	updateObjects.clear();
 	// get cell in screen && get object in this cell

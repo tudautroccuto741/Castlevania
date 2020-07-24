@@ -3,6 +3,7 @@
 300	textures\3.png	255	0	255
 310	textures\tile_map3.png	255	255	255
 1000	textures\04.png	116	116	116
+1001	textures\boneImage.png	116	116	116
 # id	file_path	r	g	b	width	height
 # width, height only available for tilemap texture  
 123	textures\tile_map3.png	255	255	255
@@ -63,13 +64,13 @@
 72	698	150	730	214	1000
 73	732	150	764	214	1000
 # Bone Skeleton right
-74	166	464	182	496	1000
-75	132	464	164	496	1000
-76	98	464	130	496	1000
+74	0	0	32	32	1001
+75	74	4	106	34	1001
+76	140	6	172	38	1001
 # Bone Skeleton left
-77	766	150	782	182	1000
-78	784	150	816	182	1000
-79	818	150	850	182	1000
+77	372	7	404	39	1001
+78	298	11	330	43	1001
+79	232	13	264	45	1001
 # MoneyBag White
 1000010	30	97	60	127	300
 # MoneyBag Red
@@ -211,11 +212,10 @@
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
 # SIMON
-#0	1486	640	100
+0	1486	640	100
 #0	367	512	100
 #0	258	130	100
-#0	1264	258	100
-0	400	675	100
+#0	400	675	100
 # WHIP
 1	108	288	200
 # Boomerang
@@ -269,7 +269,7 @@
 31	750	258	301	1
 31	1264	258	301	-1
 # DOWNSTAIRS
-32	128	258	302	1
+32	128	256	302	1
 32	226	130	302	-1
 32	816	194	302	-1
 32	1150	130	302	1
@@ -323,8 +323,8 @@
 51	401	544	50
 # Skeleton
 52	110	570	70
-52	688	255	70
-52	1328	256	70
+52	600	255	70
+52	1304	256	70
 # Bone
 #53	544	66	74
 # Clever Raven

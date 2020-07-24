@@ -1,9 +1,11 @@
 #pragma once
 #include "GameObject.h"
+#include "Weapons.h"
+#include "BoneWeapon.h"
 #define SKELETON_BBOX_WIDTH				32
 #define SKELETON_BBOX_HEIGHT			64
 #define SKELETON_SPEED_VX				0.15f
-#define SKELETON_SPEED_VY				0.4f
+#define SKELETON_SPEED_VY				0.42f
 #define SKELETON_DEFAULT_HEALTH			1
 #define SKELETON_DAMAGE					2
 #define SKELETON_DISTANCE_TO_VISIBLE	160
@@ -28,6 +30,9 @@ class CSkeleton : public CGameObject
 	bool isChangeLimited;
 	int nxM;
 	float limitedLeft, limitedRight;
+	vector<LPBONE> bones;
+	DWORD time_free;
+	//CBoneWeapon *bone;
 public:
 
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
@@ -39,6 +44,8 @@ public:
 	void Jump();
 	bool ChekDistanceWithSimon();
 	void ChangeLimited();
+	void CheckIfNeedAttack();
+	void Attack();
 	void ChoiceAnimations();
 	CSkeleton();
 };
