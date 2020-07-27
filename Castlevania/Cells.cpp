@@ -80,6 +80,12 @@ void CCells::GetObjectsInRectangle(float const & left, float const & top,
 void CCells::Classify(LPGAMEOBJECT obj)
 {
 	int beginCellColumn, beginCellRow, endCellColumn, endCellRow;
+
+	/*beginCellColumn = firstCellColumn;
+	endCellColumn = lastCellColumn;
+	endCellRow = lastCellRow;
+	beginCellRow = firstCellRow;*/
+
 	float left, top, right, bottom;
 	obj->GetBoundingBox(left, top, right, bottom);
 
@@ -95,6 +101,16 @@ void CCells::Classify(LPGAMEOBJECT obj)
 
 			cells[column][row]->Add(obj);
 		}
+
+		/*for (UINT row = firstCellRow; row <= lastCellRow; row++)
+			for (UINT column = firstCellColumn; column <= lastCellColumn; column++)
+			{
+				if (cells[column][row] == NULL)
+					cells[column][row] = new CCell();
+
+				cells[column][row]->Add(obj);
+			}*/
+
 }
 
 void CCells::GetCellsContainRectangle(float const & left, float const & top,

@@ -255,6 +255,10 @@
 47	167	255	904
 # Axe
 48	167	255	903
+# number
+2222222	0	0	2222222
+# HitEffects
+4444444	0	0	4444444
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b 	scene_id
 50	0	96	0	32	160	3

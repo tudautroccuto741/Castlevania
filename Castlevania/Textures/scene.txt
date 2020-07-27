@@ -1,5 +1,5 @@
 [SETTINGS]
-start	1
+start	2
 #scene list
 [SCENES]
 1	Textures/scene1.txt
@@ -45,6 +45,12 @@ start	1
 711	134	45	142	59	300
 # Pink Health
 712	123	45	131	59	300
+# number 100 (red moneybag)
+713	44	290	66	300	300
+#number 700 (white moneybag)
+714	104	290	126	300	300
+# hitEffect
+715	67	42	83	62	300
 # SIMON
 # idle right
 10001	436	2	468	64	100
@@ -195,7 +201,12 @@ start	1
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 
 [ANIMATIONS]
-
+#====hitEffect====
+4444444	715	100
+#====number====
+#idle
+2222222	713	100
+3333333	714	100
 # ==== SIMON =========
 # idle right
 0	10001	100
@@ -303,6 +314,11 @@ start	1
 40111	400111	100
 
 [ANIMATION_SETS]
+#hitEffect
+4444444	4444444
+# number
+2222222	2222222
+3333333	3333333
 # SIMON
 100	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27
 # WHIP

@@ -30,6 +30,9 @@
 #include "Raven.h"
 #include "Skeleton.h"
 #include "BoneWeapon.h"
+#include "Board.h"
+#include "Numbers.h"
+
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -216,16 +219,25 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					heart += 1;
 				}
 			}
-			else if (dynamic_cast<CCrown *>(e->obj)
-				|| dynamic_cast<CIIitem *>(e->obj)
-				|| dynamic_cast<CWhiteMoneyBag *>(e->obj)
-				|| dynamic_cast<CRedMoneyBag *>(e->obj)
+			else if (dynamic_cast<CIIitem *>(e->obj)
 				|| dynamic_cast<CMeat *>(e->obj))
 			{
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);
+					/*SetHealth(this->health + 2);*/
 				}
+			}
+			else if (dynamic_cast<CCrown *>(e->obj)
+				|| dynamic_cast<CWhiteMoneyBag *>(e->obj))
+			{
+				e->obj->SetVisible(false);
+				CNumbers::GetInstance()->ShowNumbers((int)NumberAniID::IDLE2, e->obj->x+32, e->obj->y+32);
+			}
+			else if (dynamic_cast<CRedMoneyBag *>(e->obj))
+			{
+				e->obj->SetVisible(false);
+				CNumbers::GetInstance()->ShowNumbers((int)NumberAniID::IDLE1, e->obj->x + 32, e->obj->y + 32);
 			}
 			else if (dynamic_cast<CKnifeItem *>(e->obj))
 			{
@@ -233,6 +245,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					e->obj->SetVisible(false);
 					secondWeapon = (int)Weapon::KNIFE;
+					CBoard::GetInstance()->SetWeapon((int)Item::KNIFE);
+
 				}
 			}
 			else if (dynamic_cast<CAquafinaItem *>(e->obj))
@@ -241,6 +255,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					e->obj->SetVisible(false);
 					secondWeapon = (int)Weapon::AQUAFINA;
+					CBoard::GetInstance()->SetWeapon((int)Item::AQUAFINA);
 				}
 			}
 			else if (dynamic_cast<CAxeItem *>(e->obj))
@@ -249,6 +264,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					e->obj->SetVisible(false);
 					secondWeapon = (int)Weapon::AXE;
+					CBoard::GetInstance()->SetWeapon((int)Item::AXE);
 				}
 			}
 			else if (dynamic_cast<CBoomerangItem *>(e->obj))
@@ -257,6 +273,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					e->obj->SetVisible(false);
 					secondWeapon = (int)Weapon::BOOMERANG;
+					CBoard::GetInstance()->SetWeapon((int)Item::BOOMERANG);
+
 				}
 			}
 			else if (dynamic_cast<CKnight *>(e->obj)
@@ -546,7 +564,7 @@ void CSimon::Flickering()
 
 void CSimon::Sitting()
 {
-	if (!isSitting && stairs == 0)
+	if (!isSitting && stairs == 0 && !isJumping)
 	{
 		this->isSitting = true;
 		this->vx = vxDefault;
@@ -823,11 +841,13 @@ void CSimon::Overlapping()
 		{
 			obj->SetVisible(false);
 			secondWeapon = (int)Weapon::KNIFE;
+			CBoard::GetInstance()->SetWeapon((int)Item::KNIFE);
 		}
 		else if (dynamic_cast<CBoomerangItem *>(obj))
 		{
 			obj->SetVisible(false);
 			secondWeapon = (int)Weapon::BOOMERANG;
+			CBoard::GetInstance()->SetWeapon((int)Item::BOOMERANG);
 		}
 		else if (dynamic_cast<CAquafinaItem *>(obj))
 		{
@@ -873,13 +893,20 @@ void CSimon::SetState(int state)
 	if (isUsingweapon)return;
 	if (beHit) return;
 	if (flickering)return;
+	/*if (isJumping) return;*/
 	switch (state)
 	{
 	case (int)SimonStateID::stateWalkingRight:
-		WalkingRight();
+		if (!isJumping)
+		{
+			WalkingRight();
+		}
 		break;
 	case (int)SimonStateID::stateWalkingLeft:
-		WalkingLeft();
+		if (!isJumping)
+		{
+			WalkingLeft();
+		}
 		break;
 	case (int)SimonStateID::stateJump:
 		Jumping();
@@ -899,10 +926,6 @@ void CSimon::SetState(int state)
 	case (int)SimonStateID::stateGoingDownStairsLeft:
 		GoingDownStairs();
 		break;
-	/*case (int)SimonStateID::stateBeHitRight:
-		beHit = true;
-		isAttacking = false;
-		break;*/
 	case (int)SimonStateID::stateIdle:
 		Idle();
 		break;

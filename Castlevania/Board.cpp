@@ -76,3 +76,27 @@ void CBoard::Render()
 	sprites = NULL;
 	simon = NULL;
 }
+
+void CBoard::ChangeWeapon()
+{
+	switch (weapon)
+	{
+	case 0:
+		SetWeapon((int)Item::NONE);
+		break;
+	case (int)Item::KNIFE:
+		SetWeapon((int)Item::KNIFE);
+		break;
+	case (int)Item::AQUAFINA:
+		SetWeapon((int)Item::AQUAFINA);
+		break;
+	case (int)Item::BOOMERANG:
+		SetWeapon((int)Item::BOOMERANG);
+		break;
+	case (int)Item::AXE:
+		SetWeapon((int)Item::AXE);
+		break;
+	default:
+		break;
+	}
+}

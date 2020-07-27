@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
@@ -19,15 +15,6 @@
     <Filter Include="Header Files\Frameworks">
       <UniqueIdentifier>{4b742c5f-7dd7-4d9e-9b12-6f937d89a7cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Frameworks">
-      <UniqueIdentifier>{282b3041-54bc-4882-ba57-df9e0b711633}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{8392aa5d-58a2-44ce-8044-604cf6738909}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\Enemies">
-      <UniqueIdentifier>{214f1597-04c6-414b-948f-fb3e0006a583}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Objects\Enemies">
       <UniqueIdentifier>{5adb35d2-63e9-4d9a-8da6-2ba82af31d12}</UniqueIdentifier>
     </Filter>
@@ -37,20 +24,33 @@
     <Filter Include="Header Files\Objects\Items">
       <UniqueIdentifier>{2da65f90-e62e-4a1c-9e6e-a1791b7983a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Board">
+      <UniqueIdentifier>{1f2653b2-fb20-42f6-91ca-76b32867a268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cells">
+      <UniqueIdentifier>{eecbbb8d-6896-4e86-bf41-3d951982bcb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Frameworks">
+      <UniqueIdentifier>{282b3041-54bc-4882-ba57-df9e0b711633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{8392aa5d-58a2-44ce-8044-604cf6738909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Enemies">
+      <UniqueIdentifier>{214f1597-04c6-414b-948f-fb3e0006a583}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Objects\Items">
       <UniqueIdentifier>{3e7c2081-7b74-4387-851d-d46899ea3e9a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Objects\Weapons">
       <UniqueIdentifier>{4f9dcd85-e273-46bd-94c3-53e90dade0c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Board">
-      <UniqueIdentifier>{1f2653b2-fb20-42f6-91ca-76b32867a268}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Board">
       <UniqueIdentifier>{9b42f337-ee3e-48ae-a24e-5302b8ae29e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Cells">
-      <UniqueIdentifier>{eecbbb8d-6896-4e86-bf41-3d951982bcb7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Cells">
       <UniqueIdentifier>{9c323e9c-58bb-49f5-a52e-91df4695c07d}</UniqueIdentifier>
@@ -255,6 +255,18 @@
     <ClCompile Include="BoneWeapon.cpp">
       <Filter>Source Files\Objects\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Number.cpp">
+      <Filter>Source Files\Objects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Numbers.cpp">
+      <Filter>Source Files\Objects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -451,6 +463,18 @@
     </ClInclude>
     <ClInclude Include="BoneWeapon.h">
       <Filter>Header Files\Objects\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Number.h">
+      <Filter>Header Files\Objects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Numbers.h">
+      <Filter>Header Files\Objects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffects.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

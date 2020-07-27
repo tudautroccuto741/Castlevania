@@ -112,6 +112,11 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+	if (!IsInViewport())
+	{
+		this->SetVisible(false);
+	}
 }
 
 void CBoomerang::GetBoundingBox(float & left, float & top, float & right, float & bottom)

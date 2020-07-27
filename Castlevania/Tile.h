@@ -16,7 +16,7 @@ class CTile
 	int bottom;
 	int x;
 	int y;
-	
+	float l, t, r, b;
 
 public:
 	
@@ -27,8 +27,12 @@ public:
 		this->bottom = bottom;
 		this->x = x;
 		this->y = y;
+		l = x;
+		t = y;
+		r = x + TILE_WIDTH;
+		b = y + TILE_HEIGHT;
 	};
-	
+	bool IsInViewPort();
 	void Render();
 
 };

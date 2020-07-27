@@ -148,6 +148,7 @@ public:
 
 	// Health, Damage
 	int GetHealth() { return this->health; }
+	void SetHealth(int health) { this->health = health; }
 	int GetDamage() { return this->damage; }
 	
 	virtual void SetFreezing(bool freezing) { this->freezing = freezing; }

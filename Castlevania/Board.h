@@ -41,6 +41,10 @@ public:
 	int GetWeapon() { return weapon; }
 	int GetTime() { return _time; }
 	void TimeDown() {
+		if (isStop)
+		{
+			return;
+		}
 		if (GetTickCount() - _count >= 1 && _time > 0)
 		{
 			_time--;
@@ -53,4 +57,6 @@ public:
 	int GetNumberOfWeapon() { return _numberOfWeapon; }
 	void Stop() { isStop = true; }
 	bool IsStop() { return isStop; }
+	void ChangeWeapon();
+
 };

@@ -15,10 +15,14 @@ class CCells
 	int rows;			// Number of cells in a column
 	int columns;		// Number of cells in a row
 
+	
+
 	int cellHeight;
 	int cellWidth;
 
 public:
+	int firstCellColumn = 0, firstCellRow = 0;
+	int lastCellColumn = 0, lastCellRow = 0;
 
 	void Init();
 	void Classify(LPGAMEOBJECT obj);
@@ -31,5 +35,10 @@ public:
 	void GetObjectsInRectangle(float const &left, float const &top,
 		float const &right, float const &bottom,
 		vector<LPGAMEOBJECT> &objects);
+
+	void SetFirstCellColumn(int &cellcolumn) { this->firstCellColumn = cellcolumn; }
+	void SetLastCellColumn(int &cellcolumn) { this->lastCellColumn = cellcolumn; }
+	void SetFirstCellRow(int &cellrow) { this->firstCellRow = cellrow; }
+	void SetLastCellRow(int &cellrow) { this->lastCellRow = cellrow; }
 };
 

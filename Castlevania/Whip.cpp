@@ -12,6 +12,7 @@
 #include "Monkey.h"
 #include "Skeleton.h"
 #include "Raven.h"
+#include "HitEffects.h"
 CWhip * CWhip::__instance = NULL;
 
 void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -47,6 +48,7 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							|| dynamic_cast<CRaven *>(coObjects->at(i)))
 						{
 							coObjects->at(i)->BeHit(this->damage);
+							CHitEffects::GetInstance()->Show(coObjects->at(i)->x, coObjects->at(i)->y);
 						}
 				
 					}

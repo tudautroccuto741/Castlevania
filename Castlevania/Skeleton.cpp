@@ -75,18 +75,25 @@ void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						{
 							nxM = -1;
 							Jump();
+							if (isJumping)
+							{
+								isJumping = false;
+							}
 						}
 						else if (x + SKELETON_BBOX_WIDTH > r)
 						{
 							nxM = 1;
 							Jump();
+							if (isJumping)
+							{
+								isJumping = false;
+							}
 						}
 						else
 						{
 							if (isJumping)
 							{
 								isJumping = false;
-								/*Walking();*/
 							}
 							vy = 0;
 							Walking();

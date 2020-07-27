@@ -50,7 +50,10 @@
 #include "Zombie.h"
 #include "Raven.h"
 #include "SpawnFlea.h"
-
+#include "Numbers.h"
+#include"Number.h"
+#include"HitEffect.h"
+#include"HitEffects.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -84,6 +87,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_SECRET_BRICK		411
 
 #define OBJECT_TYPE_ROCK				412
+#define OBJECT_TYPE_NUMBER				2222222
+#define OBJECT_TYPE_HITEFFECT			4444444
 #define OBJECT_TYPE_CROWN				413
 #define OBJECT_TYPE_CAMERA_CHANGE_VIEW	4111
 #define OBJECT_TYPE_STAIRS_UP			31
@@ -307,6 +312,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int width = atoi(tokens[4].c_str());
 		int height = atoi(tokens[5].c_str());
+		/*int firstcellcolumn = atoi(tokens[6].c_str());
+		int firstcellrow = atoi(tokens[7].c_str());
+		int lastcellcolumn = atoi(tokens[8].c_str());
+		int lastcellrow = atoi(tokens[9].c_str());
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellColumn(firstcellcolumn);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellRow(firstcellrow);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellColumn(lastcellcolumn);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellRow(lastcellrow);*/
 		obj = new CBrick();
 		obj->SetWidth(width);
 		obj->SetHeight(height);
@@ -330,6 +343,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ROCK:
 		obj = new CRock();
 		CRocks::GetInstance()->Add((CRock*)obj);
+		break;
+	case OBJECT_TYPE_NUMBER:
+		obj = new CNumber();
+		CNumbers::GetInstance()->Add((CNumber*)obj);
+		break;
+	case OBJECT_TYPE_HITEFFECT:
+		obj = new CHitEffect();
+		CHitEffects::GetInstance()->Add((CHitEffect*)obj);
 		break;
 	case OBJECT_TYPE_CROWN:
 		obj = new CCrown();
@@ -388,6 +409,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CANDLE:
 	{
 		int typeObj = atoi(tokens[4].c_str());
+		/*int firstcellcolumn = atoi(tokens[5].c_str());
+		int firstcellrow = atoi(tokens[6].c_str());
+		int lastcellcolumn = atoi(tokens[7].c_str());
+		int lastcellrow = atoi(tokens[8].c_str());
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellColumn(firstcellcolumn);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellRow(firstcellrow);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellColumn(lastcellcolumn);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellRow(lastcellrow);*/
 		obj = new CCandle();
 		obj->SetHoldingItem(typeObj);
 		break;
@@ -455,7 +484,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
-	
 	ifstream f;
 	f.open(sceneFilePath);
 	
@@ -507,7 +535,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
+	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	GetVisibleObjects();
@@ -602,7 +630,13 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	for (int i = 0; i < tileMap.size(); i++)
-		tileMap[i]->Render();
+	{
+		if (tileMap[i]->IsInViewPort())
+		{
+			tileMap[i]->Render();
+		}
+	}
+		
 
 	for (int i = 0; i < updateObjects.size(); i++)
 		if (this->updateObjects[i]->GetVisible())
@@ -646,11 +680,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	CSimon *simon = ((CPlayScene*)scence)->player;
 	switch (KeyCode)
 	{
-	case DIK_K:
+	case DIK_SPACE:
 		simon->SetState((int)SimonStateID::stateJump);
 		break;
-	case DIK_L:
-		if (CGame::GetInstance()->IsKeyDown(DIK_W) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
+	case DIK_A:
+		if (CGame::GetInstance()->IsKeyDown(DIK_I) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
 		{
 			simon->SetState((int)SimonStateID::stateUseWeapon);
 			break;
@@ -661,10 +695,10 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			break;
 		}
 
-	case DIK_A:
+	case DIK_J:
 		simon->SetState((int)SimonStateID::stateWalkingLeft);
 		break;
-	case DIK_D:
+	case DIK_L:
 		simon->SetState((int)SimonStateID::stateWalkingRight);
 		break;
 	case DIK_1:
@@ -699,24 +733,24 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	if (CGame::GetInstance()->IsKeyDown(DIK_S))
+	if (CGame::GetInstance()->IsKeyDown(DIK_K))
 	{
 		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
 		simon->SetState((int)SimonStateID::stateSit);
 	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_D))
+	else if (CGame::GetInstance()->IsKeyDown(DIK_L))
 	{
 		simon->SetState((int)SimonStateID::stateWalkingRight);
 	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_A))
+	else if (CGame::GetInstance()->IsKeyDown(DIK_J))
 	{
 		simon->SetState((int)SimonStateID::stateWalkingLeft);
 	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_S))
+	else if (CGame::GetInstance()->IsKeyDown(DIK_K))
 	{
 		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
 	}
-	else if (CGame::GetInstance()->IsKeyDown(DIK_W))
+	else if (CGame::GetInstance()->IsKeyDown(DIK_I))
 	{
 		simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
 	}

@@ -45,14 +45,14 @@
 600	601
 
 [OBJECTS]
-# type	x	y	ani_set_id	extra_settings per object type
+# type	x	y	ani_set_id	extra_settings per object type	firstcellcolumn	firstcellrow	lastcellcolumn	lastcellrow
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
 # CANDLE	typeItem
-2	167	225	400	6
-2	436	225	400	7
-2	678	225	400	7
-2	945	225	400	6
-2	1200	225	400	8
+2	167	225	400	6	0	1	0	1
+2	436	225	400	7	1	1	1	1
+2	678	225	400	7	2	1	2	1
+2	945	225	400	6	3	1	3	1
+2	1200	225	400	8	4	1	4	1
 # Flames
 4	167	225	500
 # Heart
@@ -72,17 +72,19 @@
 # Axe
 48	167	255	903
 # BRICK	width	height
-3	0	292	300	1472	32
+3	0	292	300	1472	32	0	1	5	1
 # CamemraChangeViewObj
 4111	735	354	40111
 # SIMON
-0	80	225	100
-#0	1200	225	100
+#0	80	225	100
+0	1200	225	100
 # WHIP
 1	80	225	200
+# HitEffects
+4444444	0	0	4444444
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	1376	225	0	1408	287	2
+50	1376	225	0	1408	287	2	5	1	5	1
 [TILEMAP_INFOR]
 # tilesetWidth	tilesetHeight	mapWidth	mapHeight	limitedSmallMap
 544	288	1536	384	0	0
