@@ -18,7 +18,15 @@
 #define SIMON_JUMP_SPEED_Y					0.4f
 #define SIMON_IS_PUSHED_Y					0.25f
 #define SIMON_IS_PUSHED_X					0.1f
+
 #define SIMON_GRAVITY						0.001f
+#define SIMON_FALL_GRAVITY					0.012f 
+#define SIMON_JUMP_GRAVITY					0.0012f
+#define SIMON_MAX_SPEED_WITH_JUMP_GRAVITY	0.26f		// max fall down speed can get by jump gravity
+
+#define SIMON_MAX_SPEED_Y						1.8f
+
+
 #define SIMON_UNTOUCHABLE_TIME				5000
 #define SIMON_FLICKERING_TIME				1000
 #define SIMON_ATTACK_TIME					450
@@ -86,6 +94,7 @@ class CSimon : public CGameObject
 	int score;
 	int sceneID;
 
+	bool controllable;
 	bool isJumping;
 	bool isAttacking;
 	bool beHit;
@@ -94,14 +103,15 @@ class CSimon : public CGameObject
 	bool isInBridge; // simon in a bridge
 	bool isDying;
 	bool flickering;
-
 	float vxDefault = 0;
+	int states;
+
 
 	DWORD startTimeAttack;
 	DWORD untouchable_start;
 	DWORD start_die;
 	DWORD flicker_time;
-	bool freezing;
+
 	DWORD freezeTime;
 	DWORD startFreezeTime;
 
@@ -113,12 +123,22 @@ class CSimon : public CGameObject
 
 	static CSimon * __instance;
 public:
+	bool freezing;
+	bool isBoss = false;
+
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL) override;
 	void Render() override;
 	void GetBoundingBox(float &left, float &top, float &right, float &bottom) override;
 
 	void SetState(int state);
+	int GetState() { return this->states; }
+
+	void SetFreezing(bool freez) { this->freezing = freez; }
+	bool GetFreezing() { return this->freezing; }
+
+	bool GetJumping() { return this->isJumping; }
+
 	void SetVisible(bool visible);
 	
 	bool IsInBridge(){ return this->isInBridge; }

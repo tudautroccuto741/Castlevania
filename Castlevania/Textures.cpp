@@ -64,7 +64,7 @@ LPDIRECT3DTEXTURE9 CTextures::Get(unsigned int id)
 {
 	return textures[id];
 }
-
+	
 /*
 	Clear all loaded textures
 */

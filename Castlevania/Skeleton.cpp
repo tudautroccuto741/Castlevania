@@ -12,6 +12,8 @@ void CSkeleton::GetBoundingBox(float & left, float & top, float & right, float &
 
 void CSkeleton::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (CSimon::GetInstance()->GetFreezing())
+		return;
 	CGameObject::Update(dt);
 	vy += 0.001 * dt;
 
@@ -272,8 +274,15 @@ void CSkeleton::Render()
 	if (ChekDistanceWithSimon() || vx != 0)
 	{
 		isRender = true;
-		ChoiceAnimations();
-		CGameObject::Render();
+		if (CSimon::GetInstance()->freezing)
+		{
+			animations->GetInstance()->Get(currentAniID)->RenderbyFrame(animations->Get(currentAniID)->GetCurrentFrame(), x, y, alpha);
+		}
+		else
+		{
+			ChoiceAnimations();
+			CGameObject::Render();
+		}
 	}
 	for (size_t i = 0; i < bones.size(); i++)
 	{

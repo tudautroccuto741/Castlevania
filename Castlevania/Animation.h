@@ -24,7 +24,7 @@ public:
 
 	int GetCurrentFrame() { return currentFrame; };
 	void SetCurrentFrame(int index) { this->currentFrame = index; }
-
+	void RenderbyFrame(int currentFrame, float x, float y, int alpha);
 	void ResetFrameStartTime();
 };
 

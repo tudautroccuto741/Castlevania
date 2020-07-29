@@ -54,6 +54,7 @@
 #include"Number.h"
 #include"HitEffect.h"
 #include"HitEffects.h"
+#include"Boss.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -123,6 +124,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_SKELETON			52
 #define OBJECT_TYPE_BONE				53
 #define OBJECT_TYPE_RAVEN				54
+#define OBJECT_TYPE_BOSS				5555555
+#define OBJECT_TYPE_ZOMBIE				6666666
 
 #define MAX_SCENE_LINE 1024
 
@@ -278,8 +281,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_WHIP: obj = CWhip::GetInstance(); break;
 	case OBJECT_TYPE_DOOR:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CDoor();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_HEART:
 		obj = new CHeartItem();
 		CItems::GetInstance()->Add((int)Item::HEART, obj);
@@ -312,32 +322,39 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int width = atoi(tokens[4].c_str());
 		int height = atoi(tokens[5].c_str());
-		/*int firstcellcolumn = atoi(tokens[6].c_str());
+		int firstcellcolumn = atoi(tokens[6].c_str());
 		int firstcellrow = atoi(tokens[7].c_str());
 		int lastcellcolumn = atoi(tokens[8].c_str());
 		int lastcellrow = atoi(tokens[9].c_str());
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellColumn(firstcellcolumn);
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellRow(firstcellrow);
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellColumn(lastcellcolumn);
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellRow(lastcellrow);*/
 		obj = new CBrick();
 		obj->SetWidth(width);
 		obj->SetHeight(height);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);		
 		break;
 	}
 	case OBJECT_TYPE_BRIDGE:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = CBridge::GetInstance();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_SECRET_BRICK:
 	{
 		int typeObj = atoi(tokens[4].c_str());
+		int firstcellcolumn = atoi(tokens[5].c_str());
+		int firstcellrow = atoi(tokens[6].c_str());
+		int lastcellcolumn = atoi(tokens[7].c_str());
+		int lastcellrow = atoi(tokens[8].c_str());
 		obj = new CSecretBrick();
 		if (typeObj != -1)
 		{
 			obj->SetHoldingItem(typeObj);
-			/*obj = new CCandle();
-			obj->SetHoldingItem(typeObj);*/
 		}
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
 	}
 	case OBJECT_TYPE_ROCK:
@@ -353,19 +370,40 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CHitEffects::GetInstance()->Add((CHitEffect*)obj);
 		break;
 	case OBJECT_TYPE_CROWN:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CCrown();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_CAMERA_CHANGE_VIEW:
 		obj = CCameraChangeViewObject::GetInstance();
 		break;
 	case OBJECT_TYPE_STAIRS_UP:
+	{
+		int firstcellcolumn = atoi(tokens[5].c_str());
+		int firstcellrow = atoi(tokens[6].c_str());
+		int lastcellcolumn = atoi(tokens[7].c_str());
+		int lastcellrow = atoi(tokens[8].c_str());
 		obj = new CStairsUp();
 		obj->nx = atoi(tokens[4].c_str());
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}	
 	case OBJECT_TYPE_STAIRS_DOWN:
+	{
+		int firstcellcolumn = atoi(tokens[5].c_str());
+		int firstcellrow = atoi(tokens[6].c_str());
+		int lastcellcolumn = atoi(tokens[7].c_str());
+		int lastcellrow = atoi(tokens[8].c_str());
 		obj = new CStairsDown();
 		obj->nx = atoi(tokens[4].c_str());
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_FLAMES:
 		obj = new CFlame();
 		CFlames::GetInstance()->Add((CFlame*)obj);
@@ -409,57 +447,134 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CANDLE:
 	{
 		int typeObj = atoi(tokens[4].c_str());
-		/*int firstcellcolumn = atoi(tokens[5].c_str());
+		int firstcellcolumn = atoi(tokens[5].c_str());
 		int firstcellrow = atoi(tokens[6].c_str());
 		int lastcellcolumn = atoi(tokens[7].c_str());
 		int lastcellrow = atoi(tokens[8].c_str());
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellColumn(firstcellcolumn);
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetFirstCellRow(firstcellrow);
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellColumn(lastcellcolumn);
-		CGame::GetInstance()->GetCurrentScene()->GetCells()->SetLastCellRow(lastcellrow);*/
 		obj = new CCandle();
 		obj->SetHoldingItem(typeObj);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);		
 		break;
 	}
 	case OBJECT_TYPE_SMALL_CANDLE:
 	{
 		int typeObj = atoi(tokens[4].c_str());
+		int firstcellcolumn = atoi(tokens[5].c_str());
+		int firstcellrow = atoi(tokens[6].c_str());
+		int lastcellcolumn = atoi(tokens[7].c_str());
+		int lastcellrow = atoi(tokens[8].c_str());
 		obj = new CSmallCandle();
 		obj->SetHoldingItem(typeObj);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
 	}
 	case OBJECT_TYPE_KNIGHT:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CKnight();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_LIMITED_OBJ:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CLimitedObject();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_BAT:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CBat();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_FLEA:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CFlea();
-		CSpawnFlea::GetInstance()->Add((int)Monsters::FLEA,obj);
+		CSpawnFlea::GetInstance()->Add((int)Monsters::FLEA, obj);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}	
 	case OBJECT_TYPE_MONKEY:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CMonkey();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_SKELETON:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CSkeleton();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
 	case OBJECT_TYPE_BONE:
 		obj = new CBoneWeapon();
-		//CWeapons::GetInstance()->Add((int)Weapon::BONE, obj);
 		break;
 	case OBJECT_TYPE_RAVEN:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
 		obj = new CRaven();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
+	}
+	case OBJECT_TYPE_ZOMBIE:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
+		obj = new CZombie();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
+		break;
+	}
+	case OBJECT_TYPE_BOSS:
+	{
+		int firstcellcolumn = atoi(tokens[4].c_str());
+		int firstcellrow = atoi(tokens[5].c_str());
+		int lastcellcolumn = atoi(tokens[6].c_str());
+		int lastcellrow = atoi(tokens[7].c_str());
+		obj = new CBoss();
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
+		break;
+	}
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
 		float b = atof(tokens[5].c_str());
 		int scene_id = atoi(tokens[6].c_str());
+
+		int firstcellcolumn = atoi(tokens[7].c_str());
+		int firstcellrow = atoi(tokens[8].c_str());
+		int lastcellcolumn = atoi(tokens[9].c_str());
+		int lastcellrow = atoi(tokens[10].c_str());
+
 		obj = new CPortal(x, y, r, b, scene_id);
+		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 	}
 	break;
 	default:
@@ -483,6 +598,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 void CPlayScene::Load()
 {
+	this->cells = new CCells();
+	this->cells->Init();
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 	ifstream f;
 	f.open(sceneFilePath);
@@ -539,15 +656,12 @@ void CPlayScene::Load()
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	GetVisibleObjects();
-	this->cells = new CCells();
-	this->cells->Init();
 }
 
 void CPlayScene::Update(DWORD dt)
 {
 	// We know that SIMON is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
-
 
 	CBoard::GetInstance()->Update(dt);
 	vector<LPGAMEOBJECT> coObjects;
@@ -565,7 +679,6 @@ void CPlayScene::Update(DWORD dt)
 	player->GetPosition(cx, cy);
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	//CGame *game = CGame::GetInstance();
 	float xc, yc;
 	CCameraChangeViewObject::GetInstance()->GetPosition(xc, yc);
 
@@ -596,10 +709,33 @@ void CPlayScene::Update(DWORD dt)
 		cx = mapWidth - game->GetScreenWidth();
 
 
+	if (game->GetCurrentSceneID() == 4)
+	{
+		/*if (isBoss)
+		{
+			if (xS <= 1290)
+			{
+				xS = 1290;
+			}
+		}*/
+		if (xS > 1290)
+		{
+			player->isBoss = true;
+		}
+	}
 
-	CGame::GetInstance()->SetCamPos(cx, cy-79);
+	if (player->isBoss)
+	{
+		CGame::GetInstance()->SetCamPos(mapWidth - VIEWPORT_WIDTH +16, 0 - 79);
+	}
+	else
+	{
+		CGame::GetInstance()->SetCamPos(cx, cy - 79);
+	}
 	float left, top, right, bottom;
 	game->CamereBoundingBox(left, top, right, bottom);
+
+	
 
 	updateObjects.clear();
 	// get cell in screen && get object in this cell
@@ -670,6 +806,8 @@ void CPlayScene::Unload()
 	CItems::GetInstance()->Clear();
 	CFlames::GetInstance()->Clear();
 	CRocks::GetInstance()->Clear();
+	CHitEffects::GetInstance()->Clear();
+	CNumbers::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
@@ -681,8 +819,10 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
+	{
 		simon->SetState((int)SimonStateID::stateJump);
 		break;
+	}
 	case DIK_A:
 		if (CGame::GetInstance()->IsKeyDown(DIK_I) && CSimon::GetInstance()->GetSecondWeapons() != (int)Weapon::NONE)
 		{
@@ -694,10 +834,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			simon->SetState((int)SimonStateID::stateWhipping);
 			break;
 		}
-
 	case DIK_J:
+	{
 		simon->SetState((int)SimonStateID::stateWalkingLeft);
 		break;
+	}
 	case DIK_L:
 		simon->SetState((int)SimonStateID::stateWalkingRight);
 		break;
@@ -722,22 +863,32 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetSecondaryWeapon((int)Weapon::AXE);
 		break;
 	}
+	
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	CSimon *simon = ((CPlayScene*)scence)->player;
-	simon->SetState((int)SimonStateID::stateIdle);
+	switch (KeyCode)
+	{
+	case DIK_K:
+		CSimon::GetInstance()->SetState((int)SimonStateID::stateIdle);
+	}
+	//simon->SetState((int)SimonStateID::stateIdle);
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CSimon *simon = ((CPlayScene*)scence)->player;
+	if (simon == NULL)return;
+
+
 	if (CGame::GetInstance()->IsKeyDown(DIK_K))
 	{
 		simon->SetState((int)SimonStateID::stateGoingDownStairsLeft);
 		simon->SetState((int)SimonStateID::stateSit);
 	}
+
 	else if (CGame::GetInstance()->IsKeyDown(DIK_L))
 	{
 		simon->SetState((int)SimonStateID::stateWalkingRight);
@@ -755,4 +906,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		simon->SetState((int)SimonStateID::stateGoingUpStairsRight);
 	}
 	else simon->SetState((int)SimonStateID::stateIdle);
+
+	
 }

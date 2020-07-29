@@ -12,6 +12,8 @@ void CRaven::GetBoundingBox(float & left, float & top, float & right, float & bo
 
 void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (CSimon::GetInstance()->GetFreezing())
+		return;
 	CGameObject::Update(dt);
 
 	//start 
@@ -140,8 +142,15 @@ void CRaven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CRaven::Render()
 {
-	ChoiceAnimations();
-	CGameObject::Render();
+	if (CSimon::GetInstance()->freezing)
+	{
+		animations->GetInstance()->Get(currentAniID)->RenderbyFrame(animations->Get(currentAniID)->GetCurrentFrame(), x, y, alpha);
+	}
+	else
+	{
+		ChoiceAnimations();
+		CGameObject::Render();
+	}
 }
 
 void CRaven::ChangeDirection()

@@ -12,6 +12,7 @@
 #include "Monkey.h"
 #include "Skeleton.h"
 #include "Raven.h"
+#include "HitEffects.h"
 CAquafina * CAquafina::__instance = NULL;
 
 void CAquafina::GetBoundingBox(float & left, float & top, float & right, float & bottom)
@@ -88,6 +89,7 @@ void CAquafina::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				|| dynamic_cast<CRaven *>(e->obj))
 			{
 				e->obj->BeHit(this->damage);
+				CHitEffects::GetInstance()->Show(e->obj->x, e->obj->y);
 			}
 			else if (dynamic_cast<CBrick*>(e->obj))
 			{

@@ -158,6 +158,7 @@
     <ClCompile Include="BoneWeapon.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="BoomerangItem.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="CameraChangeViewObject.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="BoneWeapon.h" />
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="BoomerangItem.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Bridge.h" />
     <ClInclude Include="CameraChangeViewObject.h" />

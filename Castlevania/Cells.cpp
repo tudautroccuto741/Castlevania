@@ -31,14 +31,14 @@ void CCells::Init()
 
 
 	// Get all the objects in the given map
-	vector<LPGAMEOBJECT> *objects = NULL;
-	CGame::GetInstance()->GetCurrentScene()->GetGameObjects(objects);
-	
+	/*vector<LPGAMEOBJECT> *objects = NULL;
+	CGame::GetInstance()->GetCurrentScene()->GetGameObjects(objects);*/
+		
 	// Put objects into suitable cell
-	for (UINT i = 0; i < objects->size(); ++i)
+	/*for (UINT i = 0; i < objects->size(); ++i)
 	{
-		this->Classify(objects->at(i));
-	}
+		this->Classify(objects->at(i), , , ,);
+	}*/
 
 }
 
@@ -77,20 +77,20 @@ void CCells::GetObjectsInRectangle(float const & left, float const & top,
 }
 
 // Get boundingbox of object
-void CCells::Classify(LPGAMEOBJECT obj)
+void CCells::Classify(LPGAMEOBJECT obj, int firstCellColumn, int firstCellRow, int lastCellColumn, int lastCellRow)
 {
 	int beginCellColumn, beginCellRow, endCellColumn, endCellRow;
 
-	/*beginCellColumn = firstCellColumn;
+	beginCellColumn = firstCellColumn;
 	endCellColumn = lastCellColumn;
 	endCellRow = lastCellRow;
-	beginCellRow = firstCellRow;*/
+	beginCellRow = firstCellRow;
 
-	float left, top, right, bottom;
+	/*float left, top, right, bottom;
 	obj->GetBoundingBox(left, top, right, bottom);
 
 	this->GetCellsContainRectangle(left, top, right, bottom,
-		beginCellColumn, beginCellRow, endCellColumn, endCellRow);
+		beginCellColumn, beginCellRow, endCellColumn, endCellRow);*/
 
 	// add object to the cells
 	for (UINT row = beginCellRow; row <= endCellRow; row++)

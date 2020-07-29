@@ -36,6 +36,7 @@ protected:
 	void _ParseSection_TILE_MAP_INFOR(string line);
 	void _ParseSection_TILE_MAP(string line);
 public:
+
 	CPlayScene(int id, LPCWSTR filePath);
 	virtual void Load();
 	virtual void Update(DWORD dt);

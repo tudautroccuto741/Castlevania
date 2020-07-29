@@ -23,7 +23,6 @@ enum class KnightStateID
 
 class CKnight : public CGameObject
 {
-	DWORD dame_start;
 	
 public:
 

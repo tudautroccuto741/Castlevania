@@ -32,15 +32,61 @@
 #include "BoneWeapon.h"
 #include "Board.h"
 #include "Numbers.h"
-
+#include "Boss.h"
+#include "Zombie.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	CGameObject::Update(dt);
 
-	vy += SIMON_GRAVITY * dt;
+	if (isJumping)
+	{
+		if (vy > SIMON_MAX_SPEED_WITH_JUMP_GRAVITY)
+		{
+			vy += SIMON_FALL_GRAVITY * this->dt;
 
+			if (isSitting == true)
+				this->StandUp();
+		}
+		else
+			vy += SIMON_JUMP_GRAVITY * this->dt;
+	}
+	else
+	{
+		if (stairs == 0)
+		{
+			if (vy != 0)
+				controllable = false;
+
+			vy += SIMON_FALL_GRAVITY * this->dt;
+		}
+	}
+	
 	if (vx < 0 && x < 0) x = 0;
+	if (vy > SIMON_MAX_SPEED_Y)
+		vy = SIMON_MAX_SPEED_Y;
+
+	// scene 4
+	
+	if (sceneID == 4)
+	{
+		if (x <= 1026 && isBoss)
+		{
+			x = 1026;
+		}
+	}
+
+
+	//freezing
+	if (freezeTime < 3000 && freezing)
+	{
+		freezeTime += dt;
+	}
+	else
+	{
+		SetFreezing(false);
+		freezeTime = 0;
+	}
 
 	// untouchable
 	if (untouchable_start > 0)
@@ -69,16 +115,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				this->weapons->ChoiceWeapon(secondWeapon);
 				isUsingweapon = false;
-				if (secondWeapon == (int)Weapon::WATCH)
-				{
-					if (GetTickCount() - startFreezeTime > freezeTime)
-					{
-						for (UINT i = 0; i < this->objects.size(); ++i)
-							this->objects[i]->SetFreezing(false);
-
-						this->freezing = false;
-					}
-				}
 			}
 		}
 	}
@@ -94,11 +130,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{		
 		Dying();
 	}	
-	if (GetTickCount() - start_die >= SIMON_TIME_TO_DIE && isDying)
+	if (GetTickCount() - start_die >= SIMON_TIME_TO_DIE && isDying
+		||CBoard::GetInstance()->GetTime()<=0)
 	{
 		isDying = false;
 		Revive();
 		start_die = 0;
+		CBoard::GetInstance()->SetTime(300);
 	}
 
 	if (flicker_time > 0)
@@ -130,7 +168,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	// overlapping
 	ovlObjects.clear();
-
 	for (UINT i = 0; i < coObjects->size(); ++i)
 	{
 		if (this->IsOverlapping(coObjects->at(i)))
@@ -179,6 +216,15 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					y += ny * 0.4f;
 					vy = 0;
+					if (health > 0)
+						controllable = true;
+
+
+					if (isJumping)
+					{
+						this->StandUp();
+						isJumping = false;
+					}
 				}
 				if (stairs != 0)
 				{
@@ -225,7 +271,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (e->nx != 0 || e->ny != 0)
 				{
 					e->obj->SetVisible(false);
-					/*SetHealth(this->health + 2);*/
+					SetHealth(this->health + 2);
 				}
 			}
 			else if (dynamic_cast<CCrown *>(e->obj)
@@ -280,7 +326,9 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CKnight *>(e->obj)
 				|| dynamic_cast<CFlea *>(e->obj)
 				|| dynamic_cast<CMonkey *>(e->obj)
-				|| dynamic_cast<CSkeleton *>(e->obj))
+				|| dynamic_cast<CSkeleton *>(e->obj)
+				|| dynamic_cast<CZombie *>(e->obj)
+				|| dynamic_cast<CBoss *>(e->obj))
 			{
 				if (untouchable == 0)
 				{
@@ -328,9 +376,12 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					y += ny * 0.4;
 					vy = 0;
+					if (health > 0)
+						controllable = true;
 					isInBridge = true;
 					vxDefault = e->obj->vx;
 					vx = vxDefault;
+
 				}
 				else
 				{
@@ -497,10 +548,13 @@ void CSimon::WalkingRight()
 {
 	if (stairs == 0)
 	{
-		this->nx = 1;
-		if (!isSitting)
+		if (!isJumping && startTimeAttack == 0)
 		{
-			this->vx = SIMON_WALKING_SPEED * this->nx + vxDefault;
+			this->nx = 1;
+			if (!isSitting)
+			{
+				this->vx = SIMON_WALKING_SPEED * this->nx + vxDefault;
+			}
 		}
 	}
 	else
@@ -526,11 +580,16 @@ void CSimon::WalkingLeft()
 {
 	if (stairs == 0)
 	{
-		this->nx = -1;
-		if (!isSitting)
+		
+		if (!isJumping && startTimeAttack == 0)
 		{
-			this->vx = SIMON_WALKING_SPEED*this->nx + vxDefault;
+			this->nx = -1;
+			if (!isSitting)
+			{
+				this->vx = SIMON_WALKING_SPEED * this->nx + vxDefault;
+			}
 		}
+		
 	}
 	else
 	{
@@ -764,10 +823,12 @@ void CSimon::BeHit()
 	if (stairs == 0)
 	{
 		beHit = true;
-		//vx = vy = dx = dy = 0;
+		controllable = false;
+		vx = vy = dx = dy = 0;
 		this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
 		this->vy = -SIMON_IS_PUSHED_Y;
 		isJumping = true;
+		isAttacking = false;
 		untouchable_start = 0;
 		health -= 2;
 	}
@@ -799,6 +860,7 @@ void CSimon::Revive()
 	else if(sceneID == 2)
 	{
 		SetPosition(560, 672);
+		//CGame::GetInstance()->SwitchScene(3);
 	}
 	else if (sceneID == 3)
 	{
@@ -829,13 +891,21 @@ void CSimon::Overlapping()
 			obj->SetVisible(false);
 			heart += 1;
 		}
-		else if (dynamic_cast<CCrown *>(obj)
-			|| dynamic_cast<CIIitem *>(obj)
-			|| dynamic_cast<CWhiteMoneyBag *>(obj)
-			|| dynamic_cast<CRedMoneyBag *>(obj)
+		else if (dynamic_cast<CIIitem *>(obj)
 			|| dynamic_cast<CMeat *>(obj))
 		{
 			obj->SetVisible(false);
+		}
+		else if (dynamic_cast<CCrown *>(obj)
+			|| dynamic_cast<CWhiteMoneyBag *>(obj))
+		{
+			obj->SetVisible(false);
+			CNumbers::GetInstance()->ShowNumbers((int)NumberAniID::IDLE2, obj->x + 32, obj->y + 32);
+		}
+		else if ( dynamic_cast<CRedMoneyBag *>(obj))			
+		{
+			obj->SetVisible(false);
+			CNumbers::GetInstance()->ShowNumbers((int)NumberAniID::IDLE1, obj->x + 32, obj->y + 32);
 		}
 		else if (dynamic_cast<CKnifeItem *>(obj))
 		{
@@ -861,7 +931,10 @@ void CSimon::Overlapping()
 		}
 		else if (dynamic_cast<CKnight *>(obj)
 			||dynamic_cast<CFlea *>(obj)
-			|| dynamic_cast<CMonkey *>(obj))
+			|| dynamic_cast<CSkeleton *>(obj)
+			|| dynamic_cast<CMonkey *>(obj)
+			|| dynamic_cast<CZombie *>(obj)
+			|| dynamic_cast<CBoss *>(obj))
 		{
 			if (untouchable == 0)
 			{
@@ -887,49 +960,49 @@ void CSimon::SetVisible(bool isVisble)
 }
 
 void CSimon::SetState(int state)
-{
-	if (isDying)return;
-	if (isAttacking) return;
-	if (isUsingweapon)return;
-	if (beHit) return;
-	if (flickering)return;
-	/*if (isJumping) return;*/
-	switch (state)
+{	
+	if (controllable)
 	{
-	case (int)SimonStateID::stateWalkingRight:
-		if (!isJumping)
+		if (isDying)return;
+		if (isAttacking) return;
+		if (isUsingweapon)return;
+		if (beHit) return;
+		if (flickering)return;
+
+		//if (isJumping && !isAttacking) return;
+		switch (state)
 		{
+		case (int)SimonStateID::stateWalkingRight:
 			WalkingRight();
-		}
-		break;
-	case (int)SimonStateID::stateWalkingLeft:
-		if (!isJumping)
-		{
+			break;
+		case (int)SimonStateID::stateWalkingLeft:
 			WalkingLeft();
+			break;
+		case (int)SimonStateID::stateJump:
+			Jumping();
+			break;
+		case (int)SimonStateID::stateSit:
+			Sitting();
+			break;
+		case (int)SimonStateID::stateWhipping:
+			Whipping();
+			break;
+		case (int)SimonStateID::stateUseWeapon:
+			UseWeapon();
+			break;
+		case (int)SimonStateID::stateGoingUpStairsRight:
+			GoingUpStairs();
+			break;
+		case (int)SimonStateID::stateGoingDownStairsLeft:
+			GoingDownStairs();
+			break;
+		case (int)SimonStateID::stateIdle:
+			Idle();
+			break;
 		}
-		break;
-	case (int)SimonStateID::stateJump:
-		Jumping();
-		break;
-	case (int)SimonStateID::stateSit:
-		Sitting();
-		break;
-	case (int)SimonStateID::stateWhipping:
-		Whipping();
-		break;
-	case (int)SimonStateID::stateUseWeapon:
-		UseWeapon();
-		break;
-	case (int)SimonStateID::stateGoingUpStairsRight:
-		GoingUpStairs();
-		break;
-	case (int)SimonStateID::stateGoingDownStairsLeft:
-		GoingDownStairs();
-		break;
-	case (int)SimonStateID::stateIdle:
-		Idle();
-		break;
+		this->states = state;
 	}
+	
 }
 
 void CSimon::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -980,6 +1053,7 @@ CSimon::CSimon()
 	isSitting = false;
 	isInBridge = false;
 	flickering = false;
+	controllable = true;
 	flicker_time = 0;
 	health = SIMON_DEFAULT_HEALTH;
 	life = SIMON_LIFES;
@@ -987,6 +1061,7 @@ CSimon::CSimon()
 	isDying = false;
 	start_die = 0;
 	sceneID = CGame::GetInstance()->GetCurrentSceneID();
+	states = (int)SimonStateID::stateIdle;
 }
 
 CSimon::~CSimon()

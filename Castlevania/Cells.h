@@ -21,11 +21,11 @@ class CCells
 	int cellWidth;
 
 public:
-	int firstCellColumn = 0, firstCellRow = 0;
-	int lastCellColumn = 0, lastCellRow = 0;
+	/*int firstCellColumn = 0, firstCellRow = 0;
+	int lastCellColumn = 0, lastCellRow = 0;*/
 
 	void Init();
-	void Classify(LPGAMEOBJECT obj);
+	void Classify(LPGAMEOBJECT obj, int firstCellColumn, int firstCellRow, int lastCellColumn, int lastCellRow);
 	void GetCellsContainRectangle(float const &left, float const &top,
 		float const &right, float const &bottom,
 		int &firstCellColumn, int &firstCellRow,
@@ -36,9 +36,9 @@ public:
 		float const &right, float const &bottom,
 		vector<LPGAMEOBJECT> &objects);
 
-	void SetFirstCellColumn(int &cellcolumn) { this->firstCellColumn = cellcolumn; }
+	/*void SetFirstCellColumn(int &cellcolumn) { this->firstCellColumn = cellcolumn; }
 	void SetLastCellColumn(int &cellcolumn) { this->lastCellColumn = cellcolumn; }
 	void SetFirstCellRow(int &cellrow) { this->firstCellRow = cellrow; }
-	void SetLastCellRow(int &cellrow) { this->lastCellRow = cellrow; }
+	void SetLastCellRow(int &cellrow) { this->lastCellRow = cellrow; }*/
 };
 

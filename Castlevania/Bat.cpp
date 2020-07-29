@@ -10,6 +10,8 @@ void CBat::GetBoundingBox(float & left, float & top, float & right, float & bott
 
 void CBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (CSimon::GetInstance()->GetFreezing())
+		return;
 	CGameObject::Update(dt);
 	// Update the position
 	x += dx;
@@ -90,8 +92,15 @@ void CBat::ChoiceAnimations()
 
 void CBat::Render()
 {
-	ChoiceAnimations();
-	CGameObject::Render();
+	if (CSimon::GetInstance()->freezing)
+	{
+		animations->GetInstance()->Get(currentAniID)->RenderbyFrame(animations->Get(currentAniID)->GetCurrentFrame(), x, y, alpha);
+	}
+	else
+	{
+		ChoiceAnimations();
+		CGameObject::Render();
+	}
 }
 
 CBat::CBat()

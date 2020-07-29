@@ -249,9 +249,6 @@
     <ClCompile Include="SpawnFlea.cpp">
       <Filter>Source Files\Objects\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Watch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BoneWeapon.cpp">
       <Filter>Source Files\Objects\Weapons</Filter>
     </ClCompile>
@@ -261,10 +258,16 @@
     <ClCompile Include="Numbers.cpp">
       <Filter>Source Files\Objects\Items</Filter>
     </ClCompile>
-    <ClCompile Include="HitEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HitEffects.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Watch.cpp">
+      <Filter>Source Files\Objects\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -458,9 +461,6 @@
     <ClInclude Include="SpawnFlea.h">
       <Filter>Header Files\Objects\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Watch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BoneWeapon.h">
       <Filter>Header Files\Objects\Weapons</Filter>
     </ClInclude>
@@ -471,9 +471,15 @@
       <Filter>Header Files\Objects\Items</Filter>
     </ClInclude>
     <ClInclude Include="HitEffect.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="HitEffects.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Watch.h">
+      <Filter>Header Files\Objects\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

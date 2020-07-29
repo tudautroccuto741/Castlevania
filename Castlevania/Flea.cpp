@@ -11,6 +11,8 @@ void CFlea::GetBoundingBox(float & left, float & top, float & right, float & bot
 
 void CFlea::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (CSimon::GetInstance()->GetFreezing())
+		return;
 	CGameObject::Update(dt);
 	// Update the position
 	x += dx;
@@ -120,8 +122,15 @@ void CFlea::ChoiceAnimations()
 
 void CFlea::Render()
 {
-	ChoiceAnimations();
-	CGameObject::Render();
+	if (CSimon::GetInstance()->freezing)
+	{
+		animations->GetInstance()->Get(currentAniID)->RenderbyFrame(animations->Get(currentAniID)->GetCurrentFrame(), x, y, alpha);
+	}
+	else
+	{
+		ChoiceAnimations();
+		CGameObject::Render();
+	}
 }
 
 CFlea::CFlea()

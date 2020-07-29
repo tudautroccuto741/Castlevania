@@ -16,9 +16,18 @@ void CCrown::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// grow up
 	float xS, yS;
 	CSimon::GetInstance()->GetPosition(xS, yS);
-	
-	// growing up in this place
+	if (xS >= DISTANCE_SIMON_GROW_UP_X && yS <= DISTANCE_SIMON_GROW_UP_Y)
+	{
+		currentAniID = (int)CrownAniID::GROWUP;
+		vy = -CROWN_GROWING_UP_SPEED;
+	}
 	if (y <= LIMITED_GROW_UP_Y)
+	{
+		y = LIMITED_GROW_UP_Y;
+		vy = 0;
+	}
+	// growing up in this place
+	/*if (y <= LIMITED_GROW_UP_Y)
 	{
 		y = LIMITED_GROW_UP_Y;
 		vy = 0;
@@ -30,7 +39,7 @@ void CCrown::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			currentAniID = (int)CrownAniID::GROWUP;
 			vy = -CROWN_GROWING_UP_SPEED;
 		}
-	}
+	}*/
 
 	// Update position
 	x += dx;
@@ -42,4 +51,5 @@ CCrown::CCrown()
 {
 	visible = true;
 	currentAniID = (int)CrownAniID::IDLE;
+	vx = vy = 0;
 }

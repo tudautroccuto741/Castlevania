@@ -40,6 +40,7 @@ public:
 	void SetWeapon(int weapons) { weapon = weapons; }
 	int GetWeapon() { return weapon; }
 	int GetTime() { return _time; }
+	void SetTime(int time) { this->_time = time; }
 	void TimeDown() {
 		if (isStop)
 		{

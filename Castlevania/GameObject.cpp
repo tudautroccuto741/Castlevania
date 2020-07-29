@@ -214,7 +214,6 @@ void CGameObject::BeHit(int damage)
 void CGameObject::Render()
 {
 	animations->Get(currentAniID)->Render(x, y, alpha);
-
 	this->RenderBoundingBox();
 }
 

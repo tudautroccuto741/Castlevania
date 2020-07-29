@@ -111,7 +111,7 @@ void CWeapons::UseAxe()
 
 void CWeapons::UseWatch()
 {
-	LPGAMEOBJECT watch = GetWeapon((int)Weapon::WATCH);
+	CSimon::GetInstance()->SetFreezing(true);
 }
 
 void CWeapons::UseBone()

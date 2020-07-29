@@ -16,6 +16,7 @@
 #include "Monkey.h"
 #include "Skeleton.h"
 #include "Raven.h"
+#include"HitEffects.h"
 
 CKnife * CKnife::__instance = NULL;
 
@@ -68,6 +69,8 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vx = 0;
 						e->obj->BeHit(this->damage);
 						this->SetVisible(false);
+						CHitEffects::GetInstance()->Show(e->obj->x, e->obj->y);
+
 					}
 				}
 

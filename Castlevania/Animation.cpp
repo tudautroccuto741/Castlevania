@@ -27,6 +27,11 @@ void CAnimation::Add(int spriteId, DWORD time)
 	frames.push_back(frame);
 }
 
+void CAnimation::RenderbyFrame(int currentFrame, float x, float y, int alpha)
+{
+	frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
+}
+
 void CAnimation::Render(float x, float y, int alpha)
 {
 	DWORD now = GetTickCount();

@@ -1,9 +1,12 @@
 #include "Knight.h"
 #include "Brick.h"
 #include "LimitedObject.h"
+#include"Simon.h"
 
 void CKnight::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (CSimon::GetInstance()->GetFreezing())
+		return;
 	CGameObject::Update(dt);
 	//x += dx;
 	vy += KNIGHT_GRAVITY * dt;
@@ -86,8 +89,16 @@ void CKnight::ChoiceAnimation()
 
 void CKnight::Render()
 {
-	ChoiceAnimation();
-	CGameObject::Render();
+	if (CSimon::GetInstance()->freezing)
+	{
+		animations->GetInstance()->Get(currentAniID)->RenderbyFrame(animations->Get(currentAniID)->GetCurrentFrame(), x, y, alpha);
+	}
+	else
+	{
+		ChoiceAnimation();
+		CGameObject::Render();
+	}
+	
 }
 
 void CKnight::BeHit(int damage)
