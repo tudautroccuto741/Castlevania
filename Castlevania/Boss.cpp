@@ -21,10 +21,6 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		state = FLY_AFTER_SLEEP;
 	}
 	
-	//else
-	//{
-	//	SetState()
-	//}
 
 	float l, t, r, b;
 	CGame::GetInstance()->CamereBoundingBox(l, t, r, b);
@@ -33,7 +29,7 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (x <= l)
 			vx = -vx;
-		if (x >= r)
+		if (x+BOSS_BBOX_WIDTH >= r)
 			vx = -vx;
 		if (y <= t)
 			vy = 0.03f;
@@ -43,8 +39,7 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBoss::ChoiceAnimations()
 {
-	if (vx != 0
-		|| vy!=0)
+	if (state != BOSS_IDLE)
 	{
 		currentAniID = (int)BossAniID::fly;
 	}
@@ -61,7 +56,7 @@ void CBoss::SetState(int state)
 	switch (state)
 	{
 	case FLY_AFTER_SLEEP:
-		if (y <= 90)
+		if (y <= 180)
 		{
 			vy = 0.03f;
 		}
@@ -83,41 +78,41 @@ void CBoss::SetState(int state)
 			timerAttack = 0;
 			isAttack = true;
 		}
-		if ((abs(x - xS) >= 70 && isHitSimon == false) || isAttack == true)
+		if ((abs(x - xS) >= 140 && isHitSimon == false) || isAttack == true)
 		{
 			if (xS < x)
 			{
-				vx = -0.08f;
+				vx = -0.16f;
 				vy = 0.078f;
 				isHitSimon = true;
 			}
 			else
 			{
-				vx = 0.08f;
+				vx = 0.16f;
 				vy = 0.078f;
 				isHitSimon = true;
 			}
 			isAttack = false;
 		}
-		if (abs(y - yS) <= 5) 
+		if (abs(y - yS) <= 10)
 		{
 			vy = 0;
-			if (abs(xS - x) >= 5)
+			if (abs(xS - x) >= 10)
 			{
 				vy = -0.038f;
 				state = FLY_AFTER_ATTACK;
 				this->state = state;
 			}
 		}
-		if (y - yS >= 60) 
+		if (y - yS >= 120)
 		{
 			vy = -0.038f;
 			state = FLY_AFTER_ATTACK;
 			this->state = state;
 		}
 		break;
-	case FLY_AFTER_ATTACK: 
-		if (timerFlyUp < 1200)
+	case FLY_AFTER_ATTACK:
+		if (timerFlyUp < 2400)
 			timerFlyUp += dt;
 		else
 		{
@@ -126,11 +121,10 @@ void CBoss::SetState(int state)
 			this->state = state;
 		}
 		break;
-
 	case FLY_TO_THE_MIDDLE:
-		if (x != 640) 
+		if (x != 1280) 
 		{
-			if (x < 635)
+			if (x < 1270)
 			{
 				vx = 0.07f;
 				vy = -0.01f;
@@ -141,7 +135,7 @@ void CBoss::SetState(int state)
 				vy = -0.01f;
 			}
 		}
-		if (x >= 620 && x < 650)
+		if (x >= 1240 && x < 1300)
 		{
 			vx = 0;
 			vy = 0;
@@ -151,12 +145,12 @@ void CBoss::SetState(int state)
 		break;
 
 	case AIM:
-		if (this->y <= 100)
+		if (this->y <= 200)
 			vy = 0.02f;
 		else
 			vy = 0;
 
-		if (abs(x - xS)> 60)
+		if (abs(x - xS)> 120)
 		{
 			if (xS < x)
 				vx = -0.055f;
@@ -204,7 +198,7 @@ void CBoss::GetBoundingBox(float & left, float & top, float & right, float & bot
 
 CBoss::CBoss()
 {
-	state = 0;
+	state = BOSS_IDLE;
 	CGameObject::SetVisible(true);
 	vx = vy = 0;
 	currentAniID = (int)BossAniID::idle;

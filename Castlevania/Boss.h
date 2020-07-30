@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Simon.h"
-
+#define BOSS_IDLE                   0
 #define FLY_AFTER_SLEEP				1
 #define ATTACK						2
 #define FLY_AFTER_ATTACK			3
@@ -37,6 +37,6 @@ protected:
 	DWORD timerAim = 0;
 	DWORD timerAttack = 0;
 	bool isAttack;
-	bool isHitSimon;
+	bool isHitSimon = false;
 	bool isAtBottom;
 };

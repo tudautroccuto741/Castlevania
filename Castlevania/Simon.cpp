@@ -137,6 +137,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		Revive();
 		start_die = 0;
 		CBoard::GetInstance()->SetTime(300);
+		return;
 	}
 
 	if (flicker_time > 0)
@@ -860,7 +861,7 @@ void CSimon::Revive()
 	else if(sceneID == 2)
 	{
 		SetPosition(560, 672);
-		//CGame::GetInstance()->SwitchScene(3);
+		//CGame::GetInstance()->SwitchScene(this->sceneID);
 	}
 	else if (sceneID == 3)
 	{

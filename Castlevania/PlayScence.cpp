@@ -732,10 +732,11 @@ void CPlayScene::Update(DWORD dt)
 	{
 		CGame::GetInstance()->SetCamPos(cx, cy - 79);
 	}
+
+
+
 	float left, top, right, bottom;
 	game->CamereBoundingBox(left, top, right, bottom);
-
-	
 
 	updateObjects.clear();
 	// get cell in screen && get object in this cell
