@@ -817,6 +817,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CSimon *simon = ((CPlayScene*)scence)->player;
+	if (simon->beHit) return;
 	switch (KeyCode)
 	{
 	case DIK_SPACE:

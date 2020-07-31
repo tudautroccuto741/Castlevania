@@ -108,6 +108,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			whip->SetVisible(false);
 			startTimeAttack = 0;
 		}
+		
 
 		if (isUsingweapon)
 		{
@@ -542,6 +543,9 @@ void CSimon::Idle()
 	isAttacking = false;
 	isUsingweapon = false;
 	beHit = false;
+	isAttacking = false;
+	whip->SetVisible(false);
+	startTimeAttack = 0;
 	this->StandUp();
 }
 
@@ -701,6 +705,8 @@ void CSimon::GoingUpStairs()
 		{
 			x = xS;
 			y = yS;
+			stairs = 1;
+			this->nx = objS->GetDirection();
 		}
 		else
 		{
@@ -823,14 +829,19 @@ void CSimon::BeHit()
 	}
 	if (stairs == 0)
 	{
+		//whip->ResetAnimation(whip->GetCurrentAniID());
+		isAttacking = false;
+		whip->SetVisible(false);
+		startTimeAttack = 0;
 		beHit = true;
 		controllable = false;
 		vx = vy = dx = dy = 0;
 		this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
-		this->vy = -SIMON_IS_PUSHED_Y;
+		this->vy = -0.4;
 		isJumping = true;
 		isAttacking = false;
 		untouchable_start = 0;
+		startTimeAttack = 0;
 		health -= 2;
 	}
 }
@@ -861,7 +872,7 @@ void CSimon::Revive()
 	else if(sceneID == 2)
 	{
 		SetPosition(560, 672);
-		//CGame::GetInstance()->SwitchScene(this->sceneID);
+		CGame::GetInstance()->SwitchScene(this->sceneID);
 	}
 	else if (sceneID == 3)
 	{

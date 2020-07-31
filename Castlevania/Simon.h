@@ -30,7 +30,7 @@
 #define SIMON_UNTOUCHABLE_TIME				5000
 #define SIMON_FLICKERING_TIME				1000
 #define SIMON_ATTACK_TIME					450
-#define SIMON_DEFAULT_HEALTH				16
+#define SIMON_DEFAULT_HEALTH				2
 #define SIMON_LIFES							3
 #define SIMON_HEARTS						5
 #define SIMON_TIME_TO_DIE					2000
@@ -97,7 +97,6 @@ class CSimon : public CGameObject
 	bool controllable;
 	bool isJumping;
 	bool isAttacking;
-	bool beHit;
 	bool isUsingweapon;
 	bool isSitting;
 	bool isInBridge; // simon in a bridge
@@ -125,6 +124,7 @@ class CSimon : public CGameObject
 public:
 	bool freezing;
 	bool isBoss = false;
+	bool beHit;
 
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL) override;

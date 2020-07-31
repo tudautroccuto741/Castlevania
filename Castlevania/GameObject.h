@@ -152,6 +152,8 @@ public:
 	int GetDamage() { return this->damage; }
 	
 	virtual void SetFreezing(bool freezing) { this->freezing = freezing; }
+	virtual void SpawnPosition(float x, float y);
+
 
 	//2 object moving
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);

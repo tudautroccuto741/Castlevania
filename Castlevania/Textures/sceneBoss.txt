@@ -146,8 +146,8 @@
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = SIMON , 1 = Whip, 2 = Candle, 3 = Brick, 4 = Flames, 6 = Heart, 7 = WhipItem, 8 = KnifeItem, 9 = Knife
 # SIMON
-#0	30	96	100
-0	1276	284	100
+0	30	96	100
+#0	1276	284	100
 # WHIP
 1	108	288	200
 # DOOR
