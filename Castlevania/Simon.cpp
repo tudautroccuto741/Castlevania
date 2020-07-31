@@ -383,7 +383,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					isInBridge = true;
 					vxDefault = e->obj->vx;
 					vx = vxDefault;
-
 				}
 				else
 				{
@@ -872,7 +871,7 @@ void CSimon::Revive()
 	else if(sceneID == 2)
 	{
 		SetPosition(560, 672);
-		CGame::GetInstance()->SwitchScene(this->sceneID);
+		//CGame::GetInstance()->SwitchScene(this->sceneID);
 	}
 	else if (sceneID == 3)
 	{
@@ -978,7 +977,7 @@ void CSimon::SetState(int state)
 		if (isDying)return;
 		if (isAttacking) return;
 		if (isUsingweapon)return;
-		if (beHit) return;
+		//if (beHit) return;
 		if (flickering)return;
 
 		//if (isJumping && !isAttacking) return;

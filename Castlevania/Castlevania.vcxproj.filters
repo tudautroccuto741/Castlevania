@@ -268,7 +268,7 @@
       <Filter>Source Files\Objects\Weapons</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -480,7 +480,7 @@
       <Filter>Header Files\Objects\Weapons</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

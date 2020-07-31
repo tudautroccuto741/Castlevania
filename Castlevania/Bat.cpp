@@ -103,6 +103,11 @@ void CBat::Render()
 	}
 }
 
+//void CBat::Destroy()
+//{
+//
+//}
+
 CBat::CBat()
 {
 	vx = 0;

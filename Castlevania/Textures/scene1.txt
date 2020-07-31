@@ -84,7 +84,7 @@
 4444444	0	0	4444444
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	1376	225	0	1408	287	1	5	1	5	1
+50	1376	225	0	1408	287	2	5	1	5	1
 [TILEMAP_INFOR]
 # tilesetWidth	tilesetHeight	mapWidth	mapHeight	limitedSmallMap
 544	288	1536	384	0	0

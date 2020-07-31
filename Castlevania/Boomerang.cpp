@@ -19,6 +19,7 @@
 #include "Skeleton.h"
 #include "Raven.h"
 #include "Game.h"
+#include "Boss.h"
 
 CBoomerang * CBoomerang::__instance = NULL;
 
@@ -90,7 +91,8 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				|| dynamic_cast<CMonkey *>(e->obj)
 				|| dynamic_cast<CZombie *>(e->obj)
 				|| dynamic_cast<CSkeleton *>(e->obj)
-				|| dynamic_cast<CRaven *>(e->obj))
+				|| dynamic_cast<CRaven *>(e->obj)
+				|| dynamic_cast<CBoss *>(e->obj))
 			{
 				if (e->nx != 0 || e->ny != 0)
 				{

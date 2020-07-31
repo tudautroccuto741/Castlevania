@@ -19,7 +19,6 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (xS > x + BOSS_BBOX_WIDTH && health > 0 && state == 0)
 	{
 		state = (int)BossStateID::flyAfterSleepp;
-		//SetState((int)BossStateID::flyAfterSleepp);
 	}
 	
 

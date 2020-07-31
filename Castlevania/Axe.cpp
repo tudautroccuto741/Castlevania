@@ -12,6 +12,7 @@
 #include "Skeleton.h"
 #include "Raven.h"
 #include "HitEffects.h"
+#include "Boss.h"
 CAxe * CAxe::__instance = NULL;
 
 void CAxe::GetBoundingBox(float & left, float & top, float & right, float & bottom)
@@ -65,7 +66,8 @@ void CAxe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				|| dynamic_cast<CMonkey *>(e->obj)
 				|| dynamic_cast<CZombie *>(e->obj)
 				|| dynamic_cast<CSkeleton *>(e->obj)
-				|| dynamic_cast<CRaven *>(e->obj))
+				|| dynamic_cast<CRaven *>(e->obj)
+				|| dynamic_cast<CBoss *>(e->obj))
 			{
 				e->obj->BeHit(this->damage);
 				CHitEffects::GetInstance()->Show(e->obj->x, e->obj->y);

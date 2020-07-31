@@ -80,6 +80,9 @@ public:
 	float y;
 	int alpha = 255;
 
+	float defaultX;
+	float defaultY;
+
 	float vx;
 	float vy;
 
@@ -152,7 +155,8 @@ public:
 	int GetDamage() { return this->damage; }
 	
 	virtual void SetFreezing(bool freezing) { this->freezing = freezing; }
-	virtual void SpawnPosition(float x, float y);
+	
+	void SetDefaultPosition(float x, float y) { this->defaultX = x; this->defaultY = y; }
 
 
 	//2 object moving

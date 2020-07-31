@@ -582,6 +582,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
+	obj->SetDefaultPosition(x, y);
 	// General object setup
 	obj->SetPosition(x, y);
 
@@ -798,7 +799,8 @@ void CPlayScene::Unload()
 		{ ; }
 		else 
 		{ 
-			delete objects[i]; 
+			//delete objects[i]; 
+			objects.erase(objects.begin() + i);
 		}
 	}
 
