@@ -81,7 +81,6 @@ void CAquafina::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CSmallCandle *>(e->obj)
 				|| dynamic_cast<CCandle *>(e->obj)
 				|| dynamic_cast<CKnight *>(e->obj)
-				|| dynamic_cast<CSecretBrick *>(e->obj)
 				|| dynamic_cast<CBat *>(e->obj)
 				|| dynamic_cast<CFlea *>(e->obj)
 				|| dynamic_cast<CMonkey *>(e->obj)
@@ -93,7 +92,8 @@ void CAquafina::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				e->obj->BeHit(this->damage);
 				CHitEffects::GetInstance()->Show(e->obj->x, e->obj->y);
 			}
-			else if (dynamic_cast<CBrick*>(e->obj))
+			else if (dynamic_cast<CBrick*>(e->obj)
+				|| dynamic_cast<CSecretBrick *>(e->obj))
 			{
 				vx = vy = 0;
 				if (!boom)

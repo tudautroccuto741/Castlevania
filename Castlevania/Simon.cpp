@@ -34,6 +34,7 @@
 #include "Numbers.h"
 #include "Boss.h"
 #include "Zombie.h"
+#include "Door.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -206,7 +207,8 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			// collision with brick
 
 			if (dynamic_cast<CBrick *>(e->obj)
-				|| dynamic_cast<CSecretBrick *>(e->obj))
+				|| dynamic_cast<CSecretBrick *>(e->obj)
+				|| dynamic_cast<CDoor *>(e->obj))
 			{
 				vxDefault = 0;
 				if (e->ny < 0)
@@ -828,20 +830,24 @@ void CSimon::BeHit()
 	}
 	if (stairs == 0)
 	{
-		//whip->ResetAnimation(whip->GetCurrentAniID());
 		isAttacking = false;
 		whip->SetVisible(false);
 		startTimeAttack = 0;
 		beHit = true;
-		controllable = false;
+		//controllable = false;
 		vx = vy = dx = dy = 0;
 		this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
-		this->vy = -0.4;
+		this->vy = -SIMON_IS_PUSHED_Y;
 		isJumping = true;
 		isAttacking = false;
 		untouchable_start = 0;
-		startTimeAttack = 0;
 		health -= 2;
+	}
+	else
+	{
+		StartUntouchable();
+		health -= 2;
+
 	}
 }
 
@@ -977,10 +983,8 @@ void CSimon::SetState(int state)
 		if (isDying)return;
 		if (isAttacking) return;
 		if (isUsingweapon)return;
-		//if (beHit) return;
 		if (flickering)return;
 
-		//if (isJumping && !isAttacking) return;
 		switch (state)
 		{
 		case (int)SimonStateID::stateWalkingRight:

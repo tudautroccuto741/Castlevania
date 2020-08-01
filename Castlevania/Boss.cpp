@@ -1,6 +1,8 @@
 ﻿#include "Boss.h"
 #include "Game.h"
 
+CBoss* CBoss::__instance = NULL;
+
 void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
@@ -34,7 +36,10 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (y <= t)
 			vy = 0.03f;
 	}
-	
+	if (start_untouchable != 0)
+	{
+		Untouchable();
+	}
 }
 
 void CBoss::ChoiceAnimations()
@@ -194,6 +199,12 @@ void CBoss::GetBoundingBox(float & left, float & top, float & right, float & bot
 	top = y;
 	right = BOSS_BBOX_WIDTH + left;
 	bottom = BOSS_BBOX_HEIGHT + top;
+}
+
+CBoss* CBoss::GetInstance()
+{
+	if (__instance == NULL) __instance = new CBoss();
+	return __instance;
 }
 
 CBoss::CBoss()

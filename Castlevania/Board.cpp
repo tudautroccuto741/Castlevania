@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "PlayScence.h"
 #include "GameObject.h"
+#include "Boss.h"
 
 CBoard* CBoard::__instance = NULL;
 
@@ -30,6 +31,7 @@ void CBoard::Render()
 	CSprites* sprites = CSprites::GetInstance();
 	sprites->Get(969)->Draw(cx, cy, 255);
 	CSimon* simon = CSimon::GetInstance();	
+	CBoss* boss = CBoss::GetInstance();
 
 	drawBoard->DrawNumber(6, cx + 110, cy + 12, simon->GetScore());
 	drawBoard->DrawNumber(4, cx + 295, cy + 12, _time);
@@ -37,6 +39,7 @@ void CBoard::Render()
 	drawBoard->DrawNumber(2, cx + 400, cy + 32, simon->GetHeart());
 	drawBoard->DrawNumber(2, cx + 400, cy + 52, simon->GetLife());
 	drawBoard->DrawEnergyBar(cx + 110, cy + 30, 0, simon->GetHealth());
+	drawBoard->DrawEnergyBar(cx + 110, cy + 50, 1, boss->GetHealth());
 	if (weapon != 0)
 	{
 		switch (weapon)

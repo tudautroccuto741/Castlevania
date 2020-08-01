@@ -558,7 +558,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int firstcellrow = atoi(tokens[5].c_str());
 		int lastcellcolumn = atoi(tokens[6].c_str());
 		int lastcellrow = atoi(tokens[7].c_str());
-		obj = new CBoss();
+		obj = CBoss::GetInstance();
 		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
 	}

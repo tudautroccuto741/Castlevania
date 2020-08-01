@@ -24,9 +24,12 @@ enum class BossStateID
 
 class CBoss : public CGameObject
 {
+
+	static CBoss* __instance;
+
 public:
 	int state;
-
+	static CBoss* GetInstance();
 	CBoss();
 	~CBoss();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) override;
