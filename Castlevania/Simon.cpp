@@ -801,6 +801,8 @@ void CSimon::GoingDownStairs()
 		{
 			x = xS;
 			y = yS;
+			nx = objS->GetDirection();
+			stairs = -1;
 		}
 		else
 		{
