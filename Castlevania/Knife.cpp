@@ -70,6 +70,8 @@ void CKnife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						e->obj->BeHit(this->damage);
 						this->SetVisible(false);
 						CHitEffects::GetInstance()->Show(e->obj->x, e->obj->y);
+						if (e->obj->GetHealth() <= 0)
+							CSimon::GetInstance()->SetScore(200);
 
 					}
 				}

@@ -20,6 +20,7 @@
 #include "Raven.h"
 #include "Game.h"
 #include "Boss.h"
+#include "HitEffects.h"
 
 CBoomerang * CBoomerang::__instance = NULL;
 
@@ -97,6 +98,9 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					vx = 0;
 					e->obj->BeHit(damage);
+					CHitEffects::GetInstance()->Show(e->obj->x, e->obj->y);
+					if (e->obj->GetHealth() <= 0)
+						CSimon::GetInstance()->SetScore(200);
 				}
 			}
 			if (dynamic_cast<CSimon *>(e->obj))

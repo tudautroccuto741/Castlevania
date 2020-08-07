@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #define FLEA_BBOX_WIDTH				32
 #define FLEA_BBOX_HEIGHT			32
-#define FLEA_SPEED_VX				0.04
+#define FLEA_SPEED_VX				0.03
 #define FLEA_SPEED_VY				0.02
 #define FLEA_DEFAULT_HEALTH			3
 #define FLEA_DAMAGE					2

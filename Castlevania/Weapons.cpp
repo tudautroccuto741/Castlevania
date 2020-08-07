@@ -73,6 +73,7 @@ void CWeapons::UseKnife()
 	float xK = xS;
 	float yK = yS + DISTANCE_OF_KNIFE_AND_SIMON;
 	knife->SetPosition(xK, yK);
+	CSimon::GetInstance()->SetHeart(1);
 }
 
 void CWeapons::UseBoomerang()
@@ -85,6 +86,7 @@ void CWeapons::UseBoomerang()
 	float xB = xS;
 	float yB = yS + DISTANCE_OF_BOOMERANG_AND_SIMON;
 	boom->SetPosition(xB, yB);
+	CSimon::GetInstance()->SetHeart(1);
 }
 
 void CWeapons::UseAquafina()
@@ -95,6 +97,7 @@ void CWeapons::UseAquafina()
 	aquafina->SetVisible(true);
 	CSimon::GetInstance()->GetPosition(xS, yS);
 	aquafina->SetPosition(xS, yS);
+	CSimon::GetInstance()->SetHeart(1);
 }
 
 void CWeapons::UseAxe()
@@ -107,6 +110,7 @@ void CWeapons::UseAxe()
 	float xK = xS;
 	float yK = yS;
 	axe->SetPosition(xK, yK);
+	CSimon::GetInstance()->SetHeart(1);
 }
 
 void CWeapons::UseWatch()

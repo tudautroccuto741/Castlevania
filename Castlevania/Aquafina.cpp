@@ -91,6 +91,8 @@ void CAquafina::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				e->obj->BeHit(this->damage);
 				CHitEffects::GetInstance()->Show(e->obj->x, e->obj->y);
+				if (e->obj->GetHealth() <= 0)
+					CSimon::GetInstance()->SetScore(200);
 			}
 			else if (dynamic_cast<CBrick*>(e->obj)
 				|| dynamic_cast<CSecretBrick *>(e->obj))

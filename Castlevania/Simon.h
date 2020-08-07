@@ -167,6 +167,7 @@ public:
 	int GetSecondWeapons() { return this->secondWeapon; }
 	void SetSecondaryWeapon(int weapon) { this->secondWeapon = weapon; }
 	int GetHeart() { return heart; }
+	void SetHeart(int _heart) { this->heart -= _heart; }
 	int GetLife() { return life; }
 	int GetScore() { return score; }
 	void SetScore(int _score) { score += _score; }

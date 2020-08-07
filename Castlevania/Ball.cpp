@@ -53,8 +53,8 @@ void CBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	if (!this->IsInViewport())
-		SetVisible(false);
+	//if (!this->IsInViewport())
+	//	SetVisible(false);
 }
 
 CBall::CBall()

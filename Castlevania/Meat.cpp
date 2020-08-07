@@ -12,7 +12,7 @@ void CMeat::GetBoundingBox(float &l, float &t, float &r, float &b)
 void CMeat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-	vy = GAME_GRAVITY * dt;				// simple fall down
+	vy += GAME_GRAVITY * dt;				// simple fall down
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -20,6 +20,7 @@ void CMeat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 	CalcPotentialCollisions(coObjects, coEvents);
 
+	this->currentAniID = (int)MeatAniID::idle;
 
 	if (coEvents.size() == 0)
 	{
@@ -53,8 +54,8 @@ void CMeat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	if (!this->IsInViewport())
-		SetVisible(false);
+	/*if (!this->IsInViewport())
+		SetVisible(false);*/
 }
 
 CMeat::CMeat()

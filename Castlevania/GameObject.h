@@ -98,7 +98,7 @@ public:
 
 	int health = 0;
 	int damage = 0;
-
+	int point = 0;
 
 
 	CAnimations* animations; //to get animations
@@ -149,8 +149,9 @@ public:
 	int GetHeight() { return this->height; }
 	void RenderBoundingBox();
 
-	// Health, Damage
+	// Health, Damage, point
 	int GetHealth() { return this->health; }
+	int GetPoint() { return point; }
 	void SetHealth(int health) { this->health = health; }
 	int GetDamage() { return this->damage; }
 	

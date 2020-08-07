@@ -35,6 +35,7 @@
 #include "Boss.h"
 #include "Zombie.h"
 #include "Door.h"
+#include "Ball.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -68,7 +69,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vy = SIMON_MAX_SPEED_Y;
 
 	// scene 4
-	
 	if (sceneID == 4)
 	{
 		if (x <= 1026 && isBoss)
@@ -101,6 +101,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// Attacking
 	// check attack state
+	if (GetHeart() <= 0)
+	{
+		isUsingweapon = false;
+	}
 	if (startTimeAttack > 0)
 	{
 		if (isAttacking && GetTickCount() - startTimeAttack > SIMON_ATTACK_TIME)
@@ -110,7 +114,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			startTimeAttack = 0;
 		}
 		
-
+		// using weapon
 		if (isUsingweapon)
 		{
 			if (animations->Get(currentAniID)->GetCurrentFrame() == 2)
@@ -126,7 +130,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		OnStairs();
 		vy = 0;
 	}
-
+	
 	// Dying and revive
 	if (health <= 0 && !isJumping && start_die == 0)	// Simon has landed on the ground
 	{		
@@ -149,7 +153,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	// show a flea
-	
 	if (sceneID == 3)
 	{
 		if (x <= POSITION_FLEA_TO_VISIBLE 
@@ -217,6 +220,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						isJumping = false;
 						beHit = false;
+						controllable = true;
 					}
 					y += ny * 0.4f;
 					vy = 0;
@@ -233,6 +237,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (stairs != 0)
 				{
 					x += dx;
+					y += dy;
 					beHit = false;
 				}
 
@@ -283,11 +288,13 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				e->obj->SetVisible(false);
 				CNumbers::GetInstance()->ShowNumbers((int)NumberAniID::IDLE2, e->obj->x+32, e->obj->y+32);
+				SetScore(700);
 			}
 			else if (dynamic_cast<CRedMoneyBag *>(e->obj))
 			{
 				e->obj->SetVisible(false);
 				CNumbers::GetInstance()->ShowNumbers((int)NumberAniID::IDLE1, e->obj->x + 32, e->obj->y + 32);
+				SetScore(100);
 			}
 			else if (dynamic_cast<CKnifeItem *>(e->obj))
 			{
@@ -377,6 +384,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						isJumping = false;
 						beHit = false;
+						controllable = true;
 					}
 					y += ny * 0.4;
 					vy = 0;
@@ -390,6 +398,14 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					isInBridge = false;
 					vxDefault = 0;
+				}
+			}
+			else if (dynamic_cast<CBall *>(e->obj))
+			{
+				if (e->nx != 0 || e->ny != 0)
+				{
+					e->obj->SetVisible(false);
+					SetHealth(16);
 				}
 			}
 			else if (dynamic_cast<CPortal *>(e->obj))
@@ -620,7 +636,7 @@ void CSimon::Flickering()
 {
 	if (flickering && GetTickCount()-flicker_time >= SIMON_FLICKERING_TIME)
 	{
-		isAttacking = false;
+		//isAttacking = false;
 		isJumping = false;
 		flickering = false;
 		flicker_time = 0;
@@ -665,13 +681,17 @@ void CSimon::StandUp()
 
 void CSimon::Whipping()
 {
-	if (!isJumping)
+	if (startTimeAttack == 0)
 	{
-		vx = vxDefault;
+		startTimeAttack = GetTickCount();
+		if (!isJumping)
+		{
+			vx = vxDefault;
+		}
+		isAttacking = true;
+		this->whip->SetVisible(true);
 	}
-	isAttacking = true;
-	startTimeAttack = GetTickCount();
-	this->whip->SetVisible(true);
+	
 }
 
 void CSimon::UseWeapon()
@@ -836,7 +856,7 @@ void CSimon::BeHit()
 		whip->SetVisible(false);
 		startTimeAttack = 0;
 		beHit = true;
-		//controllable = false;
+		controllable = false;
 		vx = vy = dx = dy = 0;
 		this->vx = (-this->nx)*SIMON_IS_PUSHED_X;
 		this->vy = -SIMON_IS_PUSHED_Y;
@@ -879,11 +899,17 @@ void CSimon::Revive()
 	else if(sceneID == 2)
 	{
 		SetPosition(560, 672);
-		//CGame::GetInstance()->SwitchScene(this->sceneID);
+		CGame::GetInstance()->SwitchScene(this->sceneID);
 	}
 	else if (sceneID == 3)
 	{
 		SetPosition(1486, 640);
+		CGame::GetInstance()->SwitchScene(this->sceneID);
+	}
+	else if (sceneID == 4)
+	{
+		SetPosition(30, 96);
+		CGame::GetInstance()->SwitchScene(this->sceneID);
 	}
 }
 
@@ -986,7 +1012,7 @@ void CSimon::SetState(int state)
 		if (isAttacking) return;
 		if (isUsingweapon)return;
 		if (flickering)return;
-
+		if (beHit)return;
 		switch (state)
 		{
 		case (int)SimonStateID::stateWalkingRight:

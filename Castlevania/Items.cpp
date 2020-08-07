@@ -16,9 +16,16 @@ void CItems::CheckAndDrop(LPGAMEOBJECT object)
 	int item = object->GetHoldingItem();
 	if (item != (int)Item::NONE)
 	{
-		float x, y;
-		object->GetPosition(x, y);
-		Drop(item, x, y);
+		if (item == (int)Item::BALL)
+		{
+			Drop(item, 1200, 37);
+		}
+		else
+		{
+			float x, y;
+			object->GetPosition(x, y);
+			Drop(item, x, y);
+		}
 	}
 }
 

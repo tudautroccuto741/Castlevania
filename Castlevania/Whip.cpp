@@ -40,8 +40,12 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						if (dynamic_cast<CCandle *>(coObjects->at(i))
 							|| dynamic_cast<CSmallCandle *>(coObjects->at(i))
 							|| dynamic_cast<CKnight *>(coObjects->at(i))
-							|| dynamic_cast<CSecretBrick *>(coObjects->at(i))
-							|| dynamic_cast<CBat *>(coObjects->at(i))
+							|| dynamic_cast<CSecretBrick *>(coObjects->at(i)))
+						{
+							coObjects->at(i)->BeHit(this->damage);
+							CHitEffects::GetInstance()->Show(coObjects->at(i)->x, coObjects->at(i)->y);
+						}
+						if (dynamic_cast<CBat *>(coObjects->at(i))
 							|| dynamic_cast<CFlea *>(coObjects->at(i))
 							|| dynamic_cast<CMonkey *>(coObjects->at(i))
 							|| dynamic_cast<CZombie *>(coObjects->at(i))
@@ -51,6 +55,8 @@ void CWhip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						{
 							coObjects->at(i)->BeHit(this->damage);
 							CHitEffects::GetInstance()->Show(coObjects->at(i)->x, coObjects->at(i)->y);
+							if (coObjects->at(i)->GetHealth() <= 0)
+								CSimon::GetInstance()->SetScore(200);
 						}
 				
 					}

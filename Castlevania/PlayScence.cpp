@@ -554,11 +554,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BOSS:
 	{
-		int firstcellcolumn = atoi(tokens[4].c_str());
-		int firstcellrow = atoi(tokens[5].c_str());
-		int lastcellcolumn = atoi(tokens[6].c_str());
-		int lastcellrow = atoi(tokens[7].c_str());
+		int typeObj = atoi(tokens[4].c_str());
+		int firstcellcolumn = atoi(tokens[5].c_str());
+		int firstcellrow = atoi(tokens[6].c_str());
+		int lastcellcolumn = atoi(tokens[7].c_str());
+		int lastcellrow = atoi(tokens[8].c_str());
 		obj = CBoss::GetInstance();
+		if (typeObj != -1)
+		{
+			obj->SetHoldingItem(typeObj);
+		}
 		CGame::GetInstance()->GetCurrentScene()->GetCells()->Classify(obj, firstcellcolumn, firstcellrow, lastcellcolumn, lastcellrow);
 		break;
 	}
